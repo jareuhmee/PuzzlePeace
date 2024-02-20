@@ -1,12 +1,19 @@
 import { Link } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
+import { app } from '../firebase/firebase.js'
 
 export default function LandingPage() {
+  const handleLoginPress = () => {
+    // Log Firebase app information when the login button is pressed
+    console.log('Firebase app:', app);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>PuzzlePeace</Text>
       <View style={styles.separator} />
-      <Link href="/(tabs)/journal">Login</Link>
+      {/* Adding onPress handler to the Link component */}
+      <Link href="/(tabs)/journal" onPress={handleLoginPress}>Login</Link>
     </View>
   );
 }
