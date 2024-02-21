@@ -13,7 +13,6 @@ export default function Login() {
     setLoading(true);
     try {
         const response = await signInWithEmailAndPassword(auth, email, password);
-        router.replace("/(tabs)/home");
     }
     catch (error) {
         console.log(error);

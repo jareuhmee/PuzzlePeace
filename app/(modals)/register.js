@@ -13,7 +13,6 @@ export default function Register() {
     setLoading(true);
     try {
         const response = await createUserWithEmailAndPassword(auth, email, password);
-        router.replace("/(tabs)/home");
     } 
     catch (error) {
         console.log(error);

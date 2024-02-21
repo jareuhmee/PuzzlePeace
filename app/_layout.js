@@ -1,7 +1,9 @@
+import { onAuthStateChanged } from '@firebase/auth';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { auth } from '../firebase/firebase.js'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -37,6 +39,22 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      if (user) {
+        console.log(user.email, "logged in.")
+        router.replace("/(tabs)/home");
+      }
+      else {
+        console.log("User logged out.")
+        router.replace("/");
+      }
+    });
+  }, [])
+
   return (
     <Stack>
       <Stack.Screen name="index" 
