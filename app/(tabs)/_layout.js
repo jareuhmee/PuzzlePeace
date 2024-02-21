@@ -4,16 +4,23 @@ export default function TabLayout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="journal"
+        name="home"
         options={{
-          title: "Journal",
+          title: "Home",
           headerShown: false
         }} 
       />
       <Tabs.Screen
-        name="analyze" 
+        name="new-entry"
         options={{
-          title: "Analyze",
+          title: "New Entry",
+          headerShown: false
+        }} 
+      />
+      <Tabs.Screen
+        name="stats" 
+        options={{
+          title: "Stats",
           headerShown: false
         }} 
       />

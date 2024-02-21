@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Analyze() {
+export default function NewEntry() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Analyze</Text>
+      <Text style={styles.title}>New Entry</Text>
     </View>
   );
 }
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'DMSans'
   }
 });
 

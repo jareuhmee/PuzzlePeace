@@ -1,12 +1,9 @@
-import { Link } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Settings() {
+export default function Home() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
-      <View style={styles.separator} />
-      <Link href="/">Logout</Link>
+      <Text style={styles.title}>Home</Text>
     </View>
   );
 }
@@ -20,11 +17,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: 'DMSans'
-  },
-  separator: {
-    marginVertical: 15,
-    height: 1,
-    width: '80%',
   }
 });
 
