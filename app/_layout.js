@@ -46,11 +46,11 @@ function RootLayoutNav() {
       setUser(user);
       if (user) {
         console.log(user.email, "logged in.")
-        router.replace("/(tabs)/home");
+        router.replace("/(auth)/child-select");
       }
       else {
         console.log("User logged out.")
-        router.replace("/");
+        router.navigate("/");
       }
     });
   }, [])
@@ -59,23 +59,37 @@ function RootLayoutNav() {
     <Stack>
       <Stack.Screen name="index" 
         options={{
-          title: "Landing Page",
+          title: "Landing Page", 
           headerShown: false
-        }} />
-      <Stack.Screen name="(modals)/login" 
+        }} 
+      />
+      <Stack.Screen name="(auth)/login" 
         options={{ 
           presentation: 'modal', 
           headerShown: false
-        }} />
-      <Stack.Screen name="(modals)/register" 
+        }} 
+      />
+      <Stack.Screen name="(auth)/register" 
         options={{ 
           presentation: 'modal', 
           headerShown: false
-        }} />
-      <Stack.Screen name="(tabs)" 
+        }} 
+      />
+      <Stack.Screen name="(auth)/child-select" 
+        options={{ 
+          headerShown: false
+        }} 
+      />
+      <Stack.Screen name="(auth)/child-add" 
+        options={{ 
+          headerShown: false
+        }} 
+      />
+      <Stack.Screen name="(screens)" 
         options={{
           headerShown: false
-        }} />
+        }} 
+      />
     </Stack>
   );
 }

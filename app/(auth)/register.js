@@ -13,6 +13,7 @@ export default function Register() {
     setLoading(true);
     try {
         const response = await createUserWithEmailAndPassword(auth, email, password);
+        router.replace("/(auth)/child-add");
     } 
     catch (error) {
         console.log(error);

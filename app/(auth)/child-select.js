@@ -1,23 +1,16 @@
-import { Link } from 'expo-router';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { router } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { auth } from '../../firebase/firebase.js'
 
-export default function LandingPage() {
+export default function ChildSelect() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>PuzzlePeace</Text>
+      <Text style={styles.title}>Child Select</Text>
       <View style={styles.separator} />
 
-      <Link href="/(auth)/login" asChild>
-        <Pressable style={styles.button}>
-          <Text style={styles.text}>Login</Text>
-        </Pressable>
-      </Link>
-
-      <Link href="/(auth)/register" asChild>
-        <Pressable style={styles.button}>
-          <Text style={styles.text}>Sign Up</Text>
-        </Pressable>
-      </Link>
+      <Pressable style={styles.button} onPress={() => router.replace("/(screens)/home")}>
+        <Text style={styles.text}>Submit</Text>
+      </Pressable>
 
     </View>
   );
@@ -56,3 +49,4 @@ const styles = StyleSheet.create({
     fontFamily:'DMSans'
   }
 });
+
