@@ -87,8 +87,23 @@ function RootLayoutNav() {
       />
       <Stack.Screen name="(screens)" 
         options={{
-          headerShown: false
+          headerShown: false,
+          title: ''
         }} 
+      />
+      <Stack.Screen name="(modals)/new-entry" 
+        options={{
+          title: 'New Report',
+          presentation: 'formSheet',
+          headerStyle: {
+            backgroundColor: '#76B18F',
+            
+          },
+          headerTitleStyle: {
+            fontFamily: 'DMSans',
+            fontSize: 20
+          },
+        }}
       />
     </Stack>
   );

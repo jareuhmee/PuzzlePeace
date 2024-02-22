@@ -5,7 +5,7 @@ import { auth } from '../../firebase/firebase.js'
 export default function Settings() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
+      {/* <Text style={styles.title}>Settings</Text> */}
       <View style={styles.separator} />
 
       <Pressable style={styles.button} onPress={() => auth.signOut()}>
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#76B18F'
   },
   title: {
     fontSize: 20,
