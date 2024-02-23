@@ -1,58 +1,68 @@
-import { Tabs } from 'expo-router';
+import { Tabs } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
 
 export default function TabLayout() {
   return (
     <Tabs
-    screenOptions={{
-      tabBarStyle: { backgroundColor: '#ffffff' },
-      tabBarActiveTintColor: '#76A4B0',
-      tabBarInactiveTintColor: 'black',
-      tabBarLabelStyle: {
-        fontFamily: 'DMMono',
-        fontSize: 12
-      }
-    }}>
-      <Tabs.Screen
-        name="stats" 
-        options={{
-          title: 'Stats',
-          headerStyle: {
-            height: 120
-          },
-          headerTitleStyle: {
-            fontFamily: 'DMSans',
-            fontSize: 24
-          },
-          headerTransparent: true
-        }}
-      />
+      screenOptions={{
+        tabBarStyle: { backgroundColor: Colors.tabBarBackground },
+        tabBarActiveTintColor: Colors.tint,
+        tabBarInactiveTintColor: "white",
+        tabBarLabelStyle: {
+          fontFamily: "DMSans",
+        },
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Reports',
+          title: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
           headerStyle: {
-            height: 120
+            height: 120,
           },
           headerTitleStyle: {
-            fontFamily: 'DMSans',
-            fontSize: 24
+            fontFamily: "DMSans",
+            fontSize: 24,
           },
-          
-          headerTransparent: true
+          headerTransparent: true,
+        }}
+      />
+      <Tabs.Screen
+        name="stats"
+        options={{
+          title: "Stats",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="stats-chart" size={size} color={color} />
+          ),
+          headerStyle: {
+            height: 120,
+          },
+          headerTitleStyle: {
+            fontFamily: "DMSans",
+            fontSize: 24,
+          },
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
+          title: "Settings",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings" size={size} color={color} />
+          ),
           headerStyle: {
-            height: 120
+            height: 120,
           },
           headerTitleStyle: {
-            fontFamily: 'DMSans',
-            fontSize: 24
+            fontFamily: "DMSans",
+            fontSize: 24,
           },
-          headerTransparent: true
+          headerTransparent: true,
         }}
       />
     </Tabs>

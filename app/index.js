@@ -1,5 +1,6 @@
-import { Link } from 'expo-router';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { Link } from "expo-router";
+import { StyleSheet, Text, View, Pressable } from "react-native";
+import Colors from "../constants/Colors";
 
 export default function LandingPage() {
   return (
@@ -18,7 +19,6 @@ export default function LandingPage() {
           <Text style={styles.text}>Sign Up</Text>
         </Pressable>
       </Link>
-
     </View>
   );
 }
@@ -26,33 +26,33 @@ export default function LandingPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#76B18F'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.background,
   },
   title: {
     fontSize: 36,
-    fontFamily: 'DMSans'
+    fontFamily: "DMSans",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
   button: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 4,
     height: 50,
     width: 200,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 4,
     padding: 10,
-    backgroundColor: '#ffffff'
-    
+    backgroundColor: Colors.primary,
+    borderColor: "white",
   },
   text: {
     fontSize: 16,
-    fontFamily:'DMSans'
-  }
+    fontFamily: "DMSans",
+  },
 });

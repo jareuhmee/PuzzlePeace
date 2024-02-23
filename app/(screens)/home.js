@@ -1,23 +1,27 @@
-import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { auth } from '../../firebase/firebase.js'
+import { router } from "expo-router";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { auth } from "../../firebase/firebase.js";
+import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import Colors from "../../constants/Colors.js";
 
 export default function Home() {
-  return ( <>
-  
-    <View style={styles.container}>
-      {/* <Text style={styles.title}>Reports</Text> */}
-      <View style={styles.separator} />
+  return (
+    <>
+      <View style={styles.container}>
+        {/* <Text style={styles.title}>Reports</Text> */}
+        <View style={styles.separator} />
+      </View>
 
-      
-
-    </View>
-
-    <View style={styles.buttonContainer}>
-      <Pressable style={styles.button} onPress={() => router.navigate("/(modals)/new-entry")}>
-        <Text style={styles.plus}>➕</Text>
-      </Pressable>
-    </View>
+      <View style={styles.buttonContainer}>
+        <Pressable
+          style={styles.button}
+          onPress={() => router.navigate("/(modals)/new-entry")}
+        >
+          <FontAwesome name="pencil-square-o" size={50} color="black" />
+          <Text style={styles.label}>New Entry</Text>
+        </Pressable>
+      </View>
     </>
   );
 }
@@ -25,42 +29,30 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#76B18F'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.background,
   },
   buttonContainer: {
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#76B18F'
+    alignItems: "flex-end",
+    padding: 20,
+    backgroundColor: Colors.background,
   },
   title: {
     fontSize: 20,
-    fontFamily: 'DMSans'
+    fontFamily: "DMSans",
   },
   separator: {
     marginVertical: 15,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
   button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 4,
-    height: 60,
-    width: 60,
-    borderWidth: 2,
-    borderRadius: 50,
-    backgroundColor: '#ffffff'
-    
+    alignItems: "flex-end",
+    backgroundColor: Colors.background,
   },
-  plus: {
-    fontSize: 32,
-    fontFamily:'DMSans'
-  },
-  text: {
+  label: {
     fontSize: 12,
-    fontFamily:'DMSans'
-  }
+    fontFamily: "DMSans",
+  },
 });
-

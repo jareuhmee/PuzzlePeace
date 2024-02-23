@@ -1,9 +1,15 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from "react-native";
+import Colors from "../../constants/Colors";
 
 export default function NewEntry() {
   return (
     <View style={styles.container}>
-      <TextInput style={styles.input} multiline numberOfLines={4} placeholder='Add note...' />
+      <TextInput
+        style={styles.input}
+        multiline
+        numberOfLines={4}
+        placeholder="Add note..."
+      />
     </View>
   );
 }
@@ -11,22 +17,21 @@ export default function NewEntry() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#76B18F'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.background,
   },
   input: {
     marginVertical: 4,
     width: 300,
     height: 200,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 4,
     padding: 10,
-    backgroundColor: '#ffffff'
+    backgroundColor: "white",
   },
   title: {
     fontSize: 20,
-    fontFamily: 'DMSans'
-  }
+    fontFamily: "DMSans",
+  },
 });
-
