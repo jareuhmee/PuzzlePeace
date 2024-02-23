@@ -1,23 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
-import Colors from "../../constants/Colors";
+import { Text, View } from "react-native";
+import { defaultStyles } from "../../constants/Styles";
 
 export default function Stats() {
   return (
-    <View style={styles.container}>
-      {/* <Text style={styles.title}>Stats</Text> */}
+    <View style={defaultStyles.container}>
+      {/* <Text style={defaultStyles.title}>Stats</Text> */}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.background,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: "DMSans",
-  },
-});

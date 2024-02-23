@@ -1,9 +1,9 @@
 import { StyleSheet, TextInput, View } from "react-native";
-import Colors from "../../constants/Colors";
+import { defaultStyles } from "../../constants/Styles";
 
 export default function NewEntry() {
   return (
-    <View style={styles.container}>
+    <View style={defaultStyles.container}>
       <TextInput
         style={styles.input}
         multiline
@@ -15,12 +15,6 @@ export default function NewEntry() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.background,
-  },
   input: {
     marginVertical: 4,
     width: 300,
@@ -29,9 +23,5 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     backgroundColor: "white",
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: "DMSans",
   },
 });

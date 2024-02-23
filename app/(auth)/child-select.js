@@ -1,54 +1,19 @@
 import { router } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { auth } from "../../firebase/firebase.js";
-import Colors from "../../constants/Colors.js";
+import { TouchableOpacity, Text, View } from "react-native";
+import { defaultStyles } from "../../constants/Styles.js";
 
 export default function ChildSelect() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Child Select</Text>
-      <View style={styles.separator} />
+    <View style={defaultStyles.container}>
+      <Text style={defaultStyles.title}>Child Select</Text>
+      <View style={defaultStyles.separator} />
 
-      <Pressable
-        style={styles.button}
+      <TouchableOpacity
+        style={defaultStyles.btn}
         onPress={() => router.replace("/(screens)/home")}
       >
-        <Text style={styles.text}>Submit</Text>
-      </Pressable>
+        <Text style={defaultStyles.btnText}>Submit</Text>
+      </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.background,
-  },
-  title: {
-    fontSize: 36,
-    fontFamily: "DMSans",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 4,
-    height: 50,
-    width: 200,
-    borderWidth: 2,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: Colors.primary,
-    borderColor: "white",
-  },
-  text: {
-    fontSize: 16,
-    fontFamily: "DMSans",
-  },
-});

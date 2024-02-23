@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { router } from "expo-router";
 import {
-  StyleSheet,
   Text,
   TextInput,
   View,
-  Pressable,
+  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import { auth } from "../../firebase/firebase.js";
 import { signInWithEmailAndPassword } from "@firebase/auth";
-import Colors from "../../constants/Colors.js";
+import { defaultStyles } from "../../constants/Styles.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,19 +29,19 @@ export default function Login() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <View style={styles.separator} />
+    <View style={defaultStyles.container}>
+      <Text style={defaultStyles.title}>Login</Text>
+      <View style={defaultStyles.separator} />
 
       <TextInput
-        style={styles.input}
+        style={defaultStyles.input}
         value={email}
         placeholder="Email"
         autoCapitalize="none"
         onChangeText={(text) => setEmail(text)}
       />
       <TextInput
-        style={styles.input}
+        style={defaultStyles.input}
         secureTextEntry={true}
         value={password}
         placeholder="Password"
@@ -50,60 +49,17 @@ export default function Login() {
         onChangeText={(text) => setPassword(text)}
       />
 
-      <View style={styles.separator} />
+      <View style={defaultStyles.separator} />
 
       {loading ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
-          <Pressable style={styles.button} onPress={signIn}>
-            <Text style={styles.text}>Login</Text>
-          </Pressable>
+          <TouchableOpacity style={defaultStyles.btn} onPress={signIn}>
+            <Text style={defaultStyles.btnText}>Login</Text>
+          </TouchableOpacity>
         </>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.background,
-  },
-  title: {
-    fontSize: 36,
-    fontFamily: "DMSans",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-  input: {
-    marginVertical: 4,
-    height: 50,
-    width: 250,
-    borderWidth: 2,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "#ffffff",
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 4,
-    height: 50,
-    width: 200,
-    borderWidth: 2,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: Colors.primary,
-    borderColor: "white",
-  },
-  text: {
-    fontSize: 16,
-    fontFamily: "DMSans",
-  },
-});
