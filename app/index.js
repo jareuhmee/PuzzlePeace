@@ -19,6 +19,12 @@ export default function LandingPage() {
           <Text style={defaultStyles.btnText}>Sign Up</Text>
         </TouchableOpacity>
       </Link>
+
+      <Link href="/(customize)/customize" asChild>
+        <TouchableOpacity style={defaultStyles.btn}>
+          <Text style={defaultStyles.btnText}>TEST: Customize Page</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 }

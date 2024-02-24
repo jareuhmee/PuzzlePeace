@@ -93,10 +93,58 @@ function RootLayoutNav() {
         }}
       />
       <Stack.Screen
+        name="(customize)"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="(modals)/new-entry"
         options={{
           title: "New Report",
           presentation: "formSheet",
+          headerStyle: {
+            backgroundColor: Colors.background,
+          },
+          headerTitleStyle: {
+            fontFamily: "DMSans",
+            fontSize: 20,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="(modals)/create-trigger"
+        options={{
+          title: "Create Trigger",
+          presentation: "modal",
+          headerStyle: {
+            backgroundColor: Colors.background,
+          },
+          headerTitleStyle: {
+            fontFamily: "DMSans",
+            fontSize: 20,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="(modals)/create-behavior"
+        options={{
+          title: "Create Behavior",
+          presentation: "modal",
+          headerStyle: {
+            backgroundColor: Colors.background,
+          },
+          headerTitleStyle: {
+            fontFamily: "DMSans",
+            fontSize: 20,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="(modals)/create-resolution"
+        options={{
+          title: "Create Resolution",
+          presentation: "modal",
           headerStyle: {
             backgroundColor: Colors.background,
           },
