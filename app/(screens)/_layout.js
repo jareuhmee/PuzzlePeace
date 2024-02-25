@@ -28,7 +28,7 @@ export default function TabLayout() {
             fontFamily: "DMSans",
             fontSize: 24,
           },
-          headerTransparent: true,
+          headerShown: false,
         }}
       />
       <Tabs.Screen
