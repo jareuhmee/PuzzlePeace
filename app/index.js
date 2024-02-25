@@ -1,37 +1,28 @@
-import { Link } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
-import { app } from '../firebase/firebase.js'
+import { Link } from "expo-router";
+import { Text, View, TouchableOpacity } from "react-native";
+import { defaultStyles } from "../constants/Styles";
 
 export default function LandingPage() {
-  const handleLoginPress = () => {
-    // Log Firebase app information when the login button is pressed
-    console.log('Firebase app:', app);
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>PuzzlePeace</Text>
-      <View style={styles.separator} />
-      {/* Adding onPress handler to the Link component */}
-      <Link href="/(tabs)/journal" onPress={handleLoginPress}>Login</Link>
+    <View style={defaultStyles.container}>
+      <Text style={defaultStyles.title}>PuzzlePeace</Text>
+      <View style={defaultStyles.separator} />
+
+      <Link href="/(auth)/register" asChild>
+        <TouchableOpacity style={defaultStyles.btn}>
+          <Text style={defaultStyles.btnText}>Get Started</Text>
+        </TouchableOpacity>
+      </Link>
+
+
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={defaultStyles.loginText}>Have an account?</Text>
+          <Link href="/(auth)/login" asChild>
+            <TouchableOpacity style={defaultStyles}>
+              <Text style={defaultStyles.loginTextBold}>Login</Text>
+            </TouchableOpacity>
+          </Link>
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  }
-});
-
