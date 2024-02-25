@@ -1,14 +1,47 @@
-import { useRef } from "react";
+import { useRef, useCallback, useMemo } from "react";
 import { router } from "expo-router";
 import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { defaultStyles } from "../../constants/Styles.js";
 import Colors from "../../constants/Colors.js";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetModal,
+  BottomSheetScrollView,
+  BottomSheetBackdrop,
+} from "@gorhom/bottom-sheet";
 
 export default function Home() {
   const bottomSheetRef = useRef(null);
   const handleOpenPress = () => bottomSheetRef.current.present();
+
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
+    ),
+    []
+  );
+
+  const renderItem = useCallback(
+    (item) => (
+      <View key={item} style={styles.itemContainer}>
+        <Text style={defaultStyles.btnText}>{item}</Text>
+      </View>
+    ),
+    []
+  );
+
+  // Mock Data: List of children
+  const data = useMemo(
+    () =>
+      Array(8)
+        .fill(0)
+        .map((_, index) => `Child ${index + 1}`),
+    []
+  );
 
   return (
     <View style={defaultStyles.container}>
@@ -34,10 +67,12 @@ export default function Home() {
       </View>
 
       {/* Change Child Bottom Sheet */}
-      <BottomSheetModal snapPoints={["50%"]} ref={bottomSheetRef}>
-        <View style={styles.contentContainer}>
-          <Text>Change Child</Text>
-        </View>
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        snapPoints={["50%"]}
+        backdropComponent={renderBackdrop}
+      >
+        <BottomSheetScrollView>{data.map(renderItem)}</BottomSheetScrollView>
       </BottomSheetModal>
     </View>
   );
@@ -51,6 +86,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     gap: 10,
     marginTop: 80,
+  },
+  itemContainer: {
+    padding: 20,
+    margin: 10,
+    backgroundColor: "#eee",
+    borderRadius: 10,
   },
   btnContainer: {
     alignItems: "flex-end",
