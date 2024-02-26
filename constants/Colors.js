@@ -1,6 +1,6 @@
 export default {
-  background: "#76B18F",
-  primary: "#E3EFE8",
+  background: "#FAF9F6",
+  primary: "#3a644b",
   tint: "#76B18F",
   tabBarBackground: "black",
 };

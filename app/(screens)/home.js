@@ -28,7 +28,7 @@ export default function Home() {
   const renderItem = useCallback(
     (item) => (
       <View key={item} style={styles.itemContainer}>
-        <Text style={defaultStyles.btnText}>{item}</Text>
+        <Text style={styles.btnText}>{item}</Text>
       </View>
     ),
     []
@@ -102,6 +102,11 @@ const styles = StyleSheet.create({
   btn: {
     alignItems: "flex-end",
     backgroundColor: Colors.background,
+  },
+  btnText: {
+    fontSize: 16,
+    fontFamily: "DMSans",
+    color: "black",
   },
   label: {
     fontSize: 12,
