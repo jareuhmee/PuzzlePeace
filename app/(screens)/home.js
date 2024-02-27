@@ -9,10 +9,14 @@ import {
   BottomSheetScrollView,
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
+import * as Haptics from "expo-haptics";
 
 export default function Home() {
   const bottomSheetRef = useRef(null);
-  const handleOpenPress = () => bottomSheetRef.current.present();
+  const handleChildSelect = () => (
+    bottomSheetRef.current.present(),
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+  );
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -43,12 +47,20 @@ export default function Home() {
     []
   );
 
+  const handleNewEntry = () => (
+    router.navigate("/(modals)/new-entry"),
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+  );
+
   return (
     <View style={defaultStyles.container}>
       {/* Child Name */}
-      <TouchableOpacity style={styles.nameContainer} onPress={handleOpenPress}>
+      <TouchableOpacity
+        style={styles.nameContainer}
+        onPress={handleChildSelect}
+      >
         <Text style={defaultStyles.title}>John Doe</Text>
-        <FontAwesome name="caret-down" size={30} color="black" />
+        <FontAwesome name="caret-down" size={30} color={Colors.primary} />
       </TouchableOpacity>
 
       <View style={defaultStyles.container}>
@@ -57,11 +69,12 @@ export default function Home() {
 
       {/* New Entry Button */}
       <View style={styles.btnContainer}>
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => router.navigate("/(modals)/new-entry")}
-        >
-          <FontAwesome name="pencil-square-o" size={50} color="black" />
+        <TouchableOpacity style={styles.btn} onPress={handleNewEntry}>
+          <FontAwesome
+            name="pencil-square-o"
+            size={50}
+            color={Colors.primary}
+          />
           <Text style={styles.label}>New Entry</Text>
         </TouchableOpacity>
       </View>
@@ -111,6 +124,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     fontFamily: "DMSans",
+    color: Colors.primary,
   },
   container: {
     flex: 1,

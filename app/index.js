@@ -14,11 +14,11 @@ export default function LandingPage() {
         </TouchableOpacity>
       </Link>
 
-      <Link href="/(customize)/customize" asChild>
+      {/* <Link href="/(customize)/customize" asChild>
         <TouchableOpacity style={defaultStyles.btn}>
           <Text style={defaultStyles.btnText}>TEST: Customize Page</Text>
         </TouchableOpacity>
-      </Link>
+      </Link> */}
 
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text style={defaultStyles.loginText}>Have an account?</Text>
