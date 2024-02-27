@@ -105,7 +105,7 @@ function RootLayoutNav() {
           <Stack.Screen
             name="(modals)/new-entry"
             options={{
-              title: "New Report",
+              title: "New Entry",
               presentation: "formSheet",
               headerStyle: {
                 backgroundColor: Colors.background,
