@@ -117,6 +117,20 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
+            name="(modals)/entry"
+            options={{
+              title: "Entry",
+              presentation: "formSheet",
+              headerStyle: {
+                backgroundColor: Colors.background,
+              },
+              headerTitleStyle: {
+                fontFamily: "DMSans",
+                fontSize: 20,
+              },
+            }}
+          />
+          <Stack.Screen
             name="(modals)/create-trigger"
             options={{
               title: "Create Trigger",

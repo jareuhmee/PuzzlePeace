@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { defaultStyles } from "../../constants/Styles.js";
 import Colors from "../../constants/Colors.js";
 import {
@@ -40,16 +41,21 @@ export default function Home() {
 
   const renderItem = useCallback(
     (item) => (
-      <View key={item} style={styles.itemContainer}>
+      <TouchableOpacity key={item} style={styles.itemContainer}>
         <Text style={styles.btnText}>{item}</Text>
-      </View>
+      </TouchableOpacity>
     ),
     []
   );
 
   const handleNewEntry = () => (
     router.navigate("/(modals)/new-entry"),
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+  );
+
+  const handleOpenEntry = () => (
+    router.navigate("/(modals)/entry"),
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
 
   return (
@@ -64,42 +70,60 @@ export default function Home() {
       </TouchableOpacity>
 
       {/* Previous Entries */}
-      <View style={entryStyles.flatListContainer}>
+      <View>
         <FlatList
           data={Object.keys(mockEntries)}
           renderItem={({ item }) => (
-            <View style={entryStyles.entryContainer}>
+            <TouchableOpacity
+              style={entryStyles.entryContainer}
+              onPress={handleOpenEntry}
+            >
               {/* Date */}
-              <View style={entryStyles.leftColumn}>
-                <View style={entryStyles.dateContainer}>
-                  <Text style={entryStyles.dayText}>
-                    {mockEntries[item].day}
-                  </Text>
-                  <Text style={entryStyles.dateText}>
-                    {mockEntries[item].date}
-                  </Text>
-                </View>
-              </View>
+              <Text style={entryStyles.title}>
+                {mockEntries[item].day}, {mockEntries[item].date}
+              </Text>
+              {/* Time & Location */}
+              <Text style={entryStyles.textSmall}>
+                {mockEntries[item].time} • {mockEntries[item].location}
+              </Text>
               {/* Intensity */}
               <View style={entryStyles.intensityContainer}>
-                <View style={entryStyles.intensityBoxContainer}>
-                  {Array.from({
-                    length: parseInt(mockEntries[item].intensity),
-                  }).map((_, index) => (
-                    <View key={index} style={entryStyles.intensityBox} />
-                  ))}
-
-                  {Array.from({
-                    length: 5 - parseInt(mockEntries[item].intensity),
-                  }).map((_, index) => (
-                    <View key={index} style={entryStyles.emptyBox} />
-                  ))}
-                </View>
-                <Text style={entryStyles.intensityText}>INTENSITY</Text>
+                {Array.from({
+                  length: parseInt(mockEntries[item].intensity),
+                }).map((_, index) => (
+                  <View key={index} style={entryStyles.intensityBox} />
+                ))}
+                {Array.from({
+                  length: 5 - parseInt(mockEntries[item].intensity),
+                }).map((_, index) => (
+                  <View key={index} style={entryStyles.emptyBox} />
+                ))}
               </View>
-            </View>
+              {/* Behaviors */}
+              <View style={entryStyles.behaviorContainer}>
+                {Array.from(mockEntries[item].behaviors).map((behavior) => (
+                  <View key={behavior} style={entryStyles.behavior}>
+                    <Text key={behavior} style={entryStyles.behaviorText}>
+                      {behavior}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+              {/* Note */}
+              <Text style={entryStyles.text}>{mockEntries[item].note}</Text>
+              {/* Expand Button */}
+              <View style={entryStyles.expandButton}>
+                <Feather
+                  name="more-horizontal"
+                  size={14}
+                  color={Colors.tint}
+                  style={{ alignSelf: "center" }}
+                />
+              </View>
+            </TouchableOpacity>
           )}
           keyExtractor={(item) => item}
+          contentContainerStyle={{ paddingBottom: 160 }}
         />
       </View>
 
@@ -127,10 +151,6 @@ export default function Home() {
 }
 
 const entryStyles = StyleSheet.create({
-  flatListContainer: {
-    flex: 1,
-    marginBottom: -34,
-  },
   entryContainer: {
     padding: 10,
     marginVertical: 10,
@@ -138,8 +158,18 @@ const entryStyles = StyleSheet.create({
     borderColor: Colors.primary,
     borderRadius: 10,
     borderWidth: 2,
-    flexDirection: "row",
-    gap: 10,
+  },
+  expandButton: {
+    padding: 5,
+    borderRadius: 30,
+    borderColor: Colors.tint,
+    borderWidth: 1,
+    width: 30,
+    height: 30,
+    position: "absolute",
+    right: 10,
+    top: 10,
+    justifyContent: "center",
   },
   title: {
     fontSize: 16,
@@ -147,54 +177,21 @@ const entryStyles = StyleSheet.create({
     color: "black",
   },
   text: {
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: "DMSans",
     color: "black",
   },
   textSmall: {
     fontSize: 12,
-    fontFamily: "DMSans",
-    color: "black",
-  },
-
-  leftColumn: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    borderRadius: 4,
-    gap: 10,
-  },
-  dateContainer: {
-    flexDirection: "column",
-    alignItems: "center",
-    padding: 6,
-    gap: 4,
-    borderRadius: 4,
-    backgroundColor: "#eee",
-    width: "100%",
-  },
-  dayText: {
-    fontSize: 12,
-    fontFamily: "DMSans",
-    color: "black",
-  },
-  dateText: {
-    fontSize: 12,
-    fontFamily: "DMSans",
+    fontFamily: "DMMono",
     color: "black",
   },
 
   intensityContainer: {
-    flexDirection: "column",
-    padding: 2,
-    gap: 4,
-    borderRadius: 4,
-  },
-  intensityBoxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
     gap: 2,
+    marginVertical: 5,
   },
   intensityBox: {
     width: 15,
@@ -211,6 +208,23 @@ const entryStyles = StyleSheet.create({
   },
   intensityText: {
     fontSize: 10,
+    fontFamily: "DMMono",
+    color: "black",
+  },
+
+  behaviorContainer: {
+    flexDirection: "row",
+    gap: 5,
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  behavior: {
+    padding: 5,
+    borderRadius: 2,
+    backgroundColor: "#eee",
+  },
+  behaviorText: {
+    fontSize: 11,
     fontFamily: "DMMono",
     color: "black",
   },
@@ -267,43 +281,75 @@ const styles = StyleSheet.create({
 const mockEntries = {
   0: {
     day: "WEDNESDAY",
-    date: "FEB-28-2024",
+    date: "FEB 28",
+    time: "12:30 PM",
+    location: "Oak's Mall",
+    behaviors: ["Screaming", "Hitting"],
     intensity: 2,
+    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
   },
   1: {
     day: "TUESDAY",
-    date: "FEB-27-2024",
+    date: "FEB 27",
+    time: "8:00 AM",
+    location: "Home",
+    behaviors: ["Crying", "Yelling", "Hitting"],
     intensity: 1,
+    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
   },
   2: {
     day: "MONDAY",
-    date: "FEB-26-2024",
+    date: "FEB 26",
+    time: "8:00 AM",
+    location: "Home",
+    behaviors: ["Crying", "Yelling", "Hitting"],
     intensity: 4,
+    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
   },
   3: {
     day: "SUNDAY",
-    date: "FEB-25-2024",
+    date: "FEB 25",
+    time: "8:00 AM",
+    location: "Home",
+    behaviors: ["Crying", "Yelling", "Hitting"],
     intensity: 2,
+    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
   },
   4: {
     day: "SATURDAY",
-    date: "FEB-24-2024",
+    date: "FEB 24",
+    time: "8:00 AM",
+    location: "Home",
+    behaviors: ["Crying", "Yelling", "Hitting"],
     intensity: 3,
+    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
   },
   5: {
     day: "FRIDAY",
-    date: "FEB-23-2024",
+    date: "FEB 23",
+    time: "8:00 AM",
+    location: "Home",
+    behaviors: ["Crying", "Yelling", "Hitting"],
     intensity: 5,
+    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
   },
   6: {
     day: "THURSDAY",
-    date: "FEB-22-2024",
+    date: "FEB 22",
+    time: "8:00 AM",
+    location: "Home",
+    behaviors: ["Crying", "Yelling", "Hitting"],
     intensity: 4,
+    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
   },
   7: {
     day: "WEDNESDAY",
-    date: "FEB-21-2024",
+    date: "FEB 21",
+    time: "8:00 AM",
+    location: "Home",
+    behaviors: ["Crying", "Yelling", "Hitting"],
     intensity: 1,
+    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
   },
 };
 
