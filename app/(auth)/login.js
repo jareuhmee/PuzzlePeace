@@ -30,7 +30,7 @@ export default function Login() {
 
   return (
     <View style={defaultStyles.container}>
-      <Text style={defaultStyles.title}>Login</Text>
+      <Text style={defaultStyles.title}>Log In</Text>
       <View style={defaultStyles.separator} />
 
       <TextInput
