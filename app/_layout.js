@@ -5,6 +5,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { auth } from "../firebase/firebase.js";
 import Colors from "../constants/Colors.js";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,61 +53,127 @@ function RootLayoutNav() {
   }, []);
 
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{
-          title: "Landing Page",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="(auth)/login"
-        options={{
-          presentation: "modal",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="(auth)/register"
-        options={{
-          presentation: "modal",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="(auth)/child-select"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="(auth)/child-add"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="(screens)"
-        options={{
-          headerShown: false,
-          title: "",
-        }}
-      />
-      <Stack.Screen
-        name="(modals)/new-entry"
-        options={{
-          title: "New Report",
-          presentation: "formSheet",
-          headerStyle: {
-            backgroundColor: Colors.background,
-          },
-          headerTitleStyle: {
-            fontFamily: "DMSans",
-            fontSize: 20,
-          },
-        }}
-      />
-    </Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <Stack>
+          <Stack.Screen
+            name="index"
+            options={{
+              title: "Landing Page",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(auth)/login"
+            options={{
+              presentation: "modal",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(auth)/register"
+            options={{
+              presentation: "modal",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(auth)/child-select"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(auth)/child-add"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(screens)"
+            options={{
+              headerShown: false,
+              title: "",
+            }}
+          />
+          <Stack.Screen
+            name="(customize)"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(modals)/new-entry"
+            options={{
+              title: "New Entry",
+              presentation: "formSheet",
+              headerStyle: {
+                backgroundColor: Colors.background,
+              },
+              headerTitleStyle: {
+                fontFamily: "DMSans",
+                fontSize: 20,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="(modals)/entry"
+            options={{
+              title: "Entry",
+              presentation: "formSheet",
+              headerStyle: {
+                backgroundColor: Colors.background,
+              },
+              headerTitleStyle: {
+                fontFamily: "DMSans",
+                fontSize: 20,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="(modals)/create-trigger"
+            options={{
+              title: "Create Trigger",
+              presentation: "modal",
+              headerStyle: {
+                backgroundColor: Colors.background,
+              },
+              headerTitleStyle: {
+                fontFamily: "DMSans",
+                fontSize: 20,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="(modals)/create-behavior"
+            options={{
+              title: "Create Behavior",
+              presentation: "modal",
+              headerStyle: {
+                backgroundColor: Colors.background,
+              },
+              headerTitleStyle: {
+                fontFamily: "DMSans",
+                fontSize: 20,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="(modals)/create-resolution"
+            options={{
+              title: "Create Resolution",
+              presentation: "modal",
+              headerStyle: {
+                backgroundColor: Colors.background,
+              },
+              headerTitleStyle: {
+                fontFamily: "DMSans",
+                fontSize: 20,
+              },
+            }}
+          />
+        </Stack>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

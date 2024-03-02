@@ -11,6 +11,7 @@ export const defaultStyles = StyleSheet.create({
   title: {
     fontSize: 36,
     fontFamily: "DMSans",
+    color: "#3a644b",
   },
   separator: {
     marginVertical: 30,
@@ -37,10 +38,26 @@ export const defaultStyles = StyleSheet.create({
     padding: 10,
     backgroundColor: Colors.primary,
     borderColor: "white",
+    borderRadius: 25,
   },
   btnText: {
     fontSize: 16,
     fontFamily: "DMSans",
+    color: "#FAF9F6",
+  },
+  loginText: {
+    fontSize: 16,
+    fontFamily: "DMSans",
+    color: "#3a644b",
+    marginRight: 8,
+    marginTop: 18,
+  },
+  loginTextBold: {
+    fontSize: 16,
+    fontFamily: "DMSans",
+    color: "#3a644b",
+    marginRight: 8,
+    marginTop: 18,
   },
   btnContainer: {
     alignItems: "center",

@@ -6,7 +6,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { backgroundColor: Colors.tabBarBackground },
+        tabBarStyle: { backgroundColor: Colors.primary },
         tabBarActiveTintColor: Colors.tint,
         tabBarInactiveTintColor: "white",
         tabBarLabelStyle: {
@@ -28,7 +28,7 @@ export default function TabLayout() {
             fontFamily: "DMSans",
             fontSize: 24,
           },
-          headerTransparent: true,
+          headerShown: false,
         }}
       />
       <Tabs.Screen

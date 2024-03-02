@@ -8,17 +8,26 @@ export default function LandingPage() {
       <Text style={defaultStyles.title}>PuzzlePeace</Text>
       <View style={defaultStyles.separator} />
 
-      <Link href="/(auth)/login" asChild>
+      <Link href="/(auth)/register" asChild>
         <TouchableOpacity style={defaultStyles.btn}>
-          <Text style={defaultStyles.btnText}>Login</Text>
+          <Text style={defaultStyles.btnText}>Get Started</Text>
         </TouchableOpacity>
       </Link>
 
-      <Link href="/(auth)/register" asChild>
+      {/* <Link href="/(customize)/customize" asChild>
         <TouchableOpacity style={defaultStyles.btn}>
-          <Text style={defaultStyles.btnText}>Sign Up</Text>
+          <Text style={defaultStyles.btnText}>TEST: Customize Page</Text>
         </TouchableOpacity>
-      </Link>
+      </Link> */}
+
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={defaultStyles.loginText}>Have an account?</Text>
+        <Link href="/(auth)/login" asChild>
+          <TouchableOpacity style={defaultStyles}>
+            <Text style={defaultStyles.loginTextBold}>Login</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
     </View>
   );
 }
