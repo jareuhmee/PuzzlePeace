@@ -44,10 +44,12 @@ function RootLayoutNav() {
       setUser(user);
       if (user) {
         console.log(user.email, "logged in.");
+        while (router.canGoBack()) router.back();
         router.replace("/(auth)/child-select");
       } else {
         console.log("User logged out.");
-        router.navigate("/");
+        while (router.canGoBack()) router.back();
+        router.replace("/");
       }
     });
   }, []);
@@ -61,6 +63,7 @@ function RootLayoutNav() {
             options={{
               title: "Landing Page",
               headerShown: false,
+              animation: "fade",
             }}
           />
           <Stack.Screen
@@ -81,6 +84,7 @@ function RootLayoutNav() {
             name="(auth)/child-select"
             options={{
               headerShown: false,
+              animation: "fade_from_bottom",
             }}
           />
           <Stack.Screen
@@ -90,10 +94,11 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="(screens)"
+            name="[child]"
             options={{
               headerShown: false,
               title: "",
+              animation: "fade_from_bottom",
             }}
           />
           <Stack.Screen

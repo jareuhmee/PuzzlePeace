@@ -1,5 +1,5 @@
 import { useRef, useCallback, useMemo } from "react";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -22,6 +22,8 @@ import * as Haptics from "expo-haptics";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
+  const { child } = useLocalSearchParams();
+
   const bottomSheetRef = useRef(null);
   const handleChildSelect = () => (
     bottomSheetRef.current.present(),
@@ -41,7 +43,15 @@ export default function Home() {
 
   const renderItem = useCallback(
     (item) => (
-      <TouchableOpacity key={item} style={styles.itemContainer}>
+      <TouchableOpacity
+        key={item}
+        style={styles.itemContainer}
+        onPress={() => {
+          router.replace(item);
+          router.navigate(`${item}/home`);
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        }}
+      >
         <Text style={styles.btnText}>{item}</Text>
       </TouchableOpacity>
     ),
@@ -65,7 +75,7 @@ export default function Home() {
         style={styles.nameContainer}
         onPress={handleChildSelect}
       >
-        <Text style={defaultStyles.title}>John Doe</Text>
+        <Text style={defaultStyles.title}>{child}</Text>
         <FontAwesome name="caret-down" size={30} color={Colors.primary} />
       </TouchableOpacity>
 
@@ -355,25 +365,10 @@ const mockEntries = {
 
 // Mock Data: List of children
 const mockChildren = {
-  0: "John Doe",
-  1: "Jane Doe",
-  2: "John Smith",
-  3: "Jane Smith",
-  4: "John Johnson",
-  5: "Jane Johnson",
-  6: "John Brown",
-  7: "Jane Brown",
-  8: "John Davis",
-  9: "Jane Davis",
-  10: "John Miller",
-  11: "Jane Miller",
-  12: "John Wilson",
-  13: "Jane Wilson",
-  14: "John Moore",
-  15: "Jane Moore",
-  16: "John Taylor",
-  17: "Jane Taylor",
-  18: "John Anderson",
-  19: "Jane Anderson",
-  20: "John Thomas",
+  0: "Alice",
+  1: "Bryan",
+  2: "Cole",
+  3: "Jemar",
+  4: "John",
+  5: "Maddy",
 };
