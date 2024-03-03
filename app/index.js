@@ -1,11 +1,18 @@
 import { Link } from "expo-router";
 import { Text, View, TouchableOpacity } from "react-native";
 import { defaultStyles } from "../constants/Styles";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPuzzlePiece } from "@fortawesome/free-solid-svg-icons";
 
 export default function LandingPage() {
   return (
     <View style={defaultStyles.container}>
       <Text style={defaultStyles.title}>PuzzlePeace</Text>
+      <FontAwesomeIcon
+        icon={faPuzzlePiece}
+        style={defaultStyles.title}
+        size={40}
+      />
       <View style={defaultStyles.separator} />
 
       <Link href="/(auth)/register" asChild>

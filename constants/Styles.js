@@ -54,10 +54,11 @@ export const defaultStyles = StyleSheet.create({
   },
   loginTextBold: {
     fontSize: 16,
-    fontFamily: "DMSans",
+    fontFamily: "DMSansExtraBold",
     color: "#3a644b",
     marginRight: 8,
     marginTop: 18,
+    textDecorationLine: "underline",
   },
   btnContainer: {
     alignItems: "center",
