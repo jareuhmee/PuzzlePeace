@@ -11,8 +11,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { defaultStyles } from "../../constants/Styles.js";
-import Colors from "../../constants/Colors.js";
+import { defaultStyles } from "../../../constants/Styles.js";
+import Colors from "../../../constants/Colors.js";
 import {
   BottomSheetModal,
   BottomSheetScrollView,

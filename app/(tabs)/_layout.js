@@ -15,7 +15,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="[child]/home"
         options={{
           title: "Home",
           tabBarIcon: ({ color, size }) => (
@@ -32,7 +32,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="stats"
+        name="[child]/stats"
         options={{
           title: "Stats",
           tabBarIcon: ({ color, size }) => (
@@ -55,14 +55,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings" size={size} color={color} />
           ),
-          headerStyle: {
-            height: 120,
-          },
-          headerTitleStyle: {
-            fontFamily: "DMSans",
-            fontSize: 24,
-          },
-          headerTransparent: true,
+          headerShown: false,
         }}
       />
     </Tabs>

@@ -20,7 +20,7 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     DMSans: require("../assets/fonts/DMSans-SemiBold.ttf"),
     DMMono: require("../assets/fonts/DMMono-Regular.ttf"),
-    DMSansExtraBold: require("../assets/fonts/DMSans-ExtraBold.ttf")
+    DMSansExtraBold: require("../assets/fonts/DMSans-ExtraBold.ttf"),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -95,7 +95,7 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="[child]"
+            name="(tabs)"
             options={{
               headerShown: false,
               title: "",

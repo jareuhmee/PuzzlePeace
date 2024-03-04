@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { defaultStyles } from "../../constants/Styles";
+import { defaultStyles } from "../../../constants/Styles";
 import { useGlobalSearchParams } from "expo-router";
 
 export default function Stats() {
