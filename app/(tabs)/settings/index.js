@@ -15,20 +15,19 @@ import { Ionicons } from "@expo/vector-icons";
 export default function Settings() {
   const account = [
     {
-      name: "Change Name",
+      name: "Profile Name",
     },
     {
-      name: "Change Picture",
+      name: "Profile Picture",
     },
     {
-      name: "Change Email",
+      name: "Email",
     },
     {
-      name: "Change Password",
+      name: "Password",
     },
   ];
 
-  // Mock Data: List of children
   const mockChildren = [
     {
       name: "Alice",
@@ -56,25 +55,8 @@ export default function Settings() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingBottom: 40 }}
       >
-        {/* Children Settings */}
-        <View style={styles.block}>
-          <FlatList
-            data={mockChildren}
-            scrollEnabled={false}
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.item}
-                onPress={() => router.navigate(`settings/${item.name}`)}
-              >
-                <Text style={{ fontSize: 18, flex: 1 }}>{item.name}</Text>
-                <Ionicons name="chevron-forward" size={20} color="gray" />
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-
         {/* Account Settings */}
+        <Text style={styles.header}>Account Settings</Text>
         <View style={styles.block}>
           <FlatList
             data={account}
@@ -87,7 +69,26 @@ export default function Settings() {
                   backgroundColor={item.backgroundColor}
                 /> */}
 
-                <Text style={{ fontSize: 18, flex: 1 }}>{item.name}</Text>
+                <Text style={styles.text}>{item.name}</Text>
+                <Ionicons name="chevron-forward" size={20} color="gray" />
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+
+        {/* Children Settings */}
+        <Text style={styles.header}>Children Settings</Text>
+        <View style={styles.block}>
+          <FlatList
+            data={mockChildren}
+            scrollEnabled={false}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.item}
+                onPress={() => router.navigate(`settings/${item.name}`)}
+              >
+                <Text style={styles.text}>{item.name}</Text>
                 <Ionicons name="chevron-forward" size={20} color="gray" />
               </TouchableOpacity>
             )}
@@ -113,7 +114,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     marginHorizontal: 14,
-    marginTop: 20,
+    marginTop: 10,
   },
   item: {
     flexDirection: "row",
@@ -125,5 +126,17 @@ export const styles = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: "lightgray",
     marginLeft: 10,
+  },
+  header: {
+    fontSize: 22,
+    fontFamily: "DMSans",
+    color: Colors.primary,
+    marginHorizontal: 24,
+    marginTop: 20,
+  },
+  text: {
+    fontSize: 18,
+    flex: 1,
+    fontFamily: "DMSans",
   },
 });

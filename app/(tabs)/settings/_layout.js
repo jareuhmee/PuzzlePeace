@@ -1,7 +1,9 @@
-import { Stack } from "expo-router";
+import { Stack, useGlobalSearchParams } from "expo-router";
 import Colors from "../../../constants/Colors";
 
 export default function SettingsLayout() {
+  const { child } = useGlobalSearchParams();
+
   return (
     <Stack>
       <Stack.Screen
@@ -10,27 +12,31 @@ export default function SettingsLayout() {
           title: "Settings",
           headerLargeTitle: true,
           headerShadowVisible: false,
-
           headerStyle: {
             backgroundColor: Colors.background,
           },
           headerTitleStyle: {
             fontFamily: "DMSans",
+            color: Colors.primary,
+            fontSize: 18,
           },
         }}
       />
       <Stack.Screen
         name="[child]"
         options={{
-          title: "",
+          title: `${child}'s Settings`,
+          headerLargeTitle: true,
+          headerShadowVisible: false,
+
           headerStyle: {
-            height: 120,
+            backgroundColor: Colors.background,
           },
           headerTitleStyle: {
             fontFamily: "DMSans",
-            fontSize: 24,
+            color: Colors.primary,
+            fontSize: 18,
           },
-          headerTransparent: true,
         }}
       />
     </Stack>
