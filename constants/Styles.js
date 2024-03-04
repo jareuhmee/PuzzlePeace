@@ -20,12 +20,18 @@ export const defaultStyles = StyleSheet.create({
   },
   input: {
     marginVertical: 4,
-    height: 50,
-    width: 250,
+    height: 55,
+    width: 315,
     borderWidth: 2,
     borderRadius: 4,
     padding: 10,
     backgroundColor: "#ffffff",
+    fontFamily: "DMMono",
+    fontSize: 18,
+    borderBottomColor: "#F2F2F2",
+    borderLeftColor: "white",
+    borderRightColor: "white",
+    borderTopColor: "white"
   },
   btn: {
     alignItems: "center",
@@ -38,7 +44,7 @@ export const defaultStyles = StyleSheet.create({
     padding: 10,
     backgroundColor: Colors.primary,
     borderColor: "white",
-    borderRadius: 25
+    borderRadius: 25,
   },
   btnText: {
     fontSize: 16,
@@ -64,5 +70,37 @@ export const defaultStyles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     backgroundColor: Colors.background,
+},
+  loginPageLogIn: {
+    fontSize: 36,
+    fontFamily: "DMMono",
+    color: "#3a644b",
+},
+  loginPageLoginBtn: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 4,
+    height: 56,
+    width: 328,
+    borderWidth: 2,
+    borderRadius: 4,
+    padding: 10,
+    backgroundColor: Colors.primary,
+    borderColor: "white",
+    borderRadius: 25,
+    marginBottom: 170
+},
+  iconOnLogin: {
+    color: "#3a644b",
+    marginBottom: 22,
+},
+  loginPageForgotBtn: {
+      fontSize: 16,
+      fontFamily: "DMSans",
+      color: "#3a644b",
+      position: 'absolute',
+      bottom: 120,
+      left: -60
+
   }
 });
