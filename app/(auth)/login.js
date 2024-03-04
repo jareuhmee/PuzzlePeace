@@ -8,8 +8,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { auth } from "../../firebase/firebase.js";
-import { signInWithEmailAndPassword } from "@firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "@firebase/auth";
 import { defaultStyles } from "../../constants/Styles.js";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -22,15 +24,26 @@ export default function Login() {
       const response = await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.log(error);
-      alert("Sign in failed: " + error.message);
+      alert("Sign in failed: " + error.message + " Please enter a valid email and password.");
     } finally {
       setLoading(false);
     }
   };
 
+  const resetPassword = async () => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent! Please check your inbox.");
+    } catch (error) {
+      console.log(error);
+      alert("Failed to send password reset email: " + error.message + " Please enter a valid email address in the designated area.");
+    }
+  };
+
   return (
     <View style={defaultStyles.container}>
-      <Text style={defaultStyles.title}>Log In</Text>
+      <FontAwesomeIcon icon={faPuzzlePiece} style={defaultStyles.iconOnLogin} size={55}/>
+      <Text style={defaultStyles.loginPageLogIn}>Log In</Text>
       <View style={defaultStyles.separator} />
 
       <TextInput
@@ -55,8 +68,11 @@ export default function Login() {
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
-          <TouchableOpacity style={defaultStyles.btn} onPress={signIn}>
-            <Text style={defaultStyles.btnText}>Login</Text>
+          <TouchableOpacity style={defaultStyles.loginPageLoginBtn} onPress={signIn}>
+            <Text style={defaultStyles.btnText}>Log In</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={resetPassword}>
+            <Text style={defaultStyles.loginPageForgotBtn}>Forgot Password?</Text>
           </TouchableOpacity>
         </>
       )}
