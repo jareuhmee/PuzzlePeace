@@ -68,6 +68,15 @@ export default function Home() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
 
+  const intensityColors = [
+    "",
+    "#76B18F",
+    "#8DB483",
+    "#A3B777",
+    "#BABA6B",
+    "#D0BC5F",
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Child Name */}
@@ -101,12 +110,30 @@ export default function Home() {
                 {Array.from({
                   length: parseInt(mockEntries[item].intensity),
                 }).map((_, index) => (
-                  <View key={index} style={entryStyles.intensityBox} />
+                  <View
+                    key={index}
+                    style={[
+                      entryStyles.intensityBox,
+                      {
+                        backgroundColor:
+                          intensityColors[mockEntries[item].intensity],
+                      },
+                    ]}
+                  />
                 ))}
                 {Array.from({
                   length: 5 - parseInt(mockEntries[item].intensity),
                 }).map((_, index) => (
-                  <View key={index} style={entryStyles.emptyBox} />
+                  <View
+                    key={index}
+                    style={[
+                      entryStyles.emptyBox,
+                      {
+                        borderColor:
+                          intensityColors[mockEntries[item].intensity],
+                      },
+                    ]}
+                  />
                 ))}
               </View>
               {/* Behaviors */}
