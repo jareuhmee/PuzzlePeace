@@ -8,7 +8,7 @@ export default function ChildSelect() {
       key={child}
       style={defaultStyles.btn}
       onPress={() => {
-        router.replace(`(tabs)/${child}/home`);
+        router.replace(`/(tabs)/${child}/home`);
       }}
     >
       <Text style={defaultStyles.btnText}>{child}</Text>

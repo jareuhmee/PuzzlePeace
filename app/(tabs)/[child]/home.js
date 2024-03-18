@@ -47,8 +47,9 @@ export default function Home() {
         key={item}
         style={styles.itemContainer}
         onPress={() => {
-          router.replace(item);
-          router.navigate(`${item}/home`);
+          // router.replace(item);
+          router.replace("/(auth)/child-select");
+          router.replace(`${item}/home`);
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }}
       >
@@ -63,8 +64,8 @@ export default function Home() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
 
-  const handleOpenEntry = () => (
-    router.navigate("/(modals)/entry"),
+  const handleOpenEntry = (entry) => (
+    router.navigate(`/(modals)/${entry}`),
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
 
@@ -95,7 +96,7 @@ export default function Home() {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={entryStyles.entryContainer}
-              onPress={handleOpenEntry}
+              onPress={() => handleOpenEntry(item)}
             >
               {/* Date */}
               <Text style={entryStyles.title}>

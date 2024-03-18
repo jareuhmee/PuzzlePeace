@@ -123,17 +123,18 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="(modals)/entry"
+            name="(modals)/[entry]"
             options={{
               title: "Entry",
               presentation: "formSheet",
-              headerStyle: {
-                backgroundColor: Colors.background,
-              },
-              headerTitleStyle: {
-                fontFamily: "DMSans",
-                fontSize: 20,
-              },
+              headerShown: false,
+              // headerStyle: {
+              //   backgroundColor: Colors.background,
+              // },
+              // headerTitleStyle: {
+              //   fontFamily: "DMSans",
+              //   fontSize: 20,
+              // },
             }}
           />
           <Stack.Screen
