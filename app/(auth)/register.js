@@ -10,11 +10,15 @@ import {
 import { auth } from "../../firebase/firebase.js";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { defaultStyles } from "../../constants/Styles.js";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faInfinity } from '@fortawesome/free-solid-svg-icons';
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState("");
+  const [firstName, setFirstName] = useState("");
+
 
   const signUp = async () => {
     setLoading(true);
@@ -35,7 +39,8 @@ export default function Register() {
 
   return (
     <View style={defaultStyles.container}>
-      <Text style={defaultStyles.title}>Sign Up</Text>
+      <FontAwesomeIcon icon={faInfinity} style={defaultStyles.iconOnLogin} size={70}/>
+      <Text style={defaultStyles.loginPageLogIn}>Create an Account</Text>
       <View style={defaultStyles.separator} />
 
       <TextInput
@@ -53,6 +58,14 @@ export default function Register() {
         autoCapitalize="none"
         onChangeText={(text) => setPassword(text)}
       />
+      <TextInput
+        style={defaultStyles.input}
+        value={firstName}
+        placeholder="Your First Name"
+        autoCapitalize="words"
+        onChangeText={(text) => setFirstName(text)}
+      />
+
 
       <View style={defaultStyles.separator} />
 
@@ -60,8 +73,8 @@ export default function Register() {
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
-          <TouchableOpacity style={defaultStyles.btn} onPress={signUp}>
-            <Text style={defaultStyles.btnText}>Sign Up</Text>
+          <TouchableOpacity style={defaultStyles.signUpPageCABtn} onPress={signUp}>
+            <Text style={defaultStyles.btnText}>Create an Account</Text>
           </TouchableOpacity>
         </>
       )}

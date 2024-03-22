@@ -11,7 +11,7 @@ import { auth } from "../../firebase/firebase.js";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "@firebase/auth";
 import { defaultStyles } from "../../constants/Styles.js";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
+import { faInfinity } from '@fortawesome/free-solid-svg-icons';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -42,7 +42,7 @@ export default function Login() {
 
   return (
     <View style={defaultStyles.container}>
-      <FontAwesomeIcon icon={faPuzzlePiece} style={defaultStyles.iconOnLogin} size={55}/>
+      <FontAwesomeIcon icon={faInfinity} style={defaultStyles.iconOnLogin} size={70}/>
       <Text style={defaultStyles.loginPageLogIn}>Log In</Text>
       <View style={defaultStyles.separator} />
 

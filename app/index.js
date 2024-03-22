@@ -2,21 +2,21 @@ import { Link } from "expo-router";
 import { Text, View, TouchableOpacity } from "react-native";
 import { defaultStyles } from "../constants/Styles";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPuzzlePiece } from "@fortawesome/free-solid-svg-icons";
+import { faInfinity } from "@fortawesome/free-solid-svg-icons";
 
 export default function LandingPage() {
   return (
     <View style={defaultStyles.container}>
       <Text style={defaultStyles.title}>PuzzlePeace</Text>
       <FontAwesomeIcon
-        icon={faPuzzlePiece}
+        icon={faInfinity}
         style={defaultStyles.title}
-        size={40}
+        size={50}
       />
       <View style={defaultStyles.separator} />
 
       <Link href="/(auth)/register" asChild>
-        <TouchableOpacity style={defaultStyles.btn}>
+        <TouchableOpacity style={defaultStyles.firstBtn}>
           <Text style={defaultStyles.btnText}>Get Started</Text>
         </TouchableOpacity>
       </Link>
