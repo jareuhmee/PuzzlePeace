@@ -13,7 +13,7 @@ export default function ChildAdd() {
     setChildName(text);
   };
 
-  const handleDateChange = (selectedDate) => {
+  const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || birthday;
     setBirthday(currentDate);
   };
