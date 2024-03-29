@@ -20,15 +20,21 @@ export default function Entry() {
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened before?</Text>
-        <Text style={styles.title}>Triggers:</Text>
+        <Text style={styles.title}>Triggers</Text>
       </View>
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened during?</Text>
+        <Text style={styles.title}>Behaviors</Text>
       </View>
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened after?</Text>
+        <Text style={styles.title}>Resolutions</Text>
+      </View>
+
+      <View style={styles.box}>
+        <Text style={styles.h1}>Note</Text>
       </View>
     </ScrollView>
     // </View>
@@ -40,8 +46,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   containerContent: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
+    paddingBottom: 40,
   },
   box: {
     padding: 10,
@@ -51,6 +58,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     width: "90%",
+    height: 100,
   },
   expandButton: {
     padding: 5,
