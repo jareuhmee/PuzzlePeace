@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity, 
   Pressable,
-  FlatList} from "react-native";
+  } from "react-native";
 import { defaultStyles } from "../../../constants/Styles.js";
 import { useGlobalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,13 +20,15 @@ import {
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import * as Haptics from "expo-haptics";
+import BarGraph from "../../../components/BarGraph.js";
 
 export default function Stats() {
   const { child } = useGlobalSearchParams();
   const [timeFrame, setTimeFrame] = useState("1W"); //1W, 1M, 3M, 6M, 1Y
   const [statistics, setStatistics] = useState(mockStats);
   const bottomSheetRef = useRef(null);
-
+  //handle reRender on changing TimeFrame
+  //recomputation of graphs: 
   //handle switching child across home and stats.js
   const renderBackdrop = useCallback(
     (props) => (
@@ -60,6 +62,7 @@ export default function Stats() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
 
+
   //subcomponents
   const GenStatCard = ({statisticTitle, value}) => {
     return(
@@ -74,7 +77,7 @@ export default function Stats() {
       <View style={styles_stats.buttonContainer}>
         {timeFrames.map((item, index) => (
           <Pressable
-            id="index"
+            id={index}
             onPress={() => setTimeFrame(item)}
             style={timeFrame === item ? styles_stats.btnClicked : styles_stats.btn}>
             <Text>{item}</Text>
@@ -95,7 +98,7 @@ export default function Stats() {
           </View>
           <View style={styles_stats.row}>
             <GenStatCard 
-            statisticTitle={"Average Duration"}
+            statisticTitle={"Average Intensity"}
             value={statistics.averageDuration}
             ></GenStatCard>
             <GenStatCard 
@@ -104,8 +107,9 @@ export default function Stats() {
             ></GenStatCard>
           </View>
       </View>
-      {/* Line Graph for total meltdowns */}
-      
+      {/* Bar Graph for total meltdowns */}
+      <Text style={styles_stats.header}>Bar Graph of Meltdowns</Text>
+      <BarGraph></BarGraph>
     </SafeAreaView>
   );
 }
@@ -115,7 +119,7 @@ const timeFrames = ["1W", "1M", "3M", "6M", "1Y"];
 const mockStats = {
   totalMeltdowns: 4,
   mostCommonTrigger: "Loud Environment",
-  averageDuration: "30m",
+  averageIntensity: "3.57",
   mostUsedResolution: "Fidget Toys"
   
 }
@@ -130,7 +134,7 @@ const mockChildren = {
 };
 
 //Styles
-export const styles_stats = StyleSheet.create({
+const styles_stats = StyleSheet.create({
   container: {
     backgroundColor: Colors.background,
     flex: 1,
@@ -160,7 +164,6 @@ export const styles_stats = StyleSheet.create({
     marginVertical: 10,
     width: "75%",
 
-    
   },
   btn: {
     borderColor: Colors.primary,
@@ -207,7 +210,8 @@ export const styles_stats = StyleSheet.create({
 
   },
   statValue: {
-    alignSelf: "stretch",
+    alignSelf: "center",
+    textAlign: 'center',
     fontFamily: "DMSans",
     marginTop: 10
   }
