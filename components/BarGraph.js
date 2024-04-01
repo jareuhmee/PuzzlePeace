@@ -11,9 +11,18 @@ function BarGraph(){
     const [data, setData] = useState(barData);
     useEffect(() => {
         const option = {
+            tooltip: {
+                trigger: 'item',
+                position: [10,250],
+                borderColor: Colors.primary,
+                textStyle: {
+                  fontFamily: "sans-serif",
+                  fontSize: 12
+                },
+              },
             xAxis: {
                 type: 'category',
-                data: [data.startDate, '', '', '', data.endDate]
+                data: data.timeEndPoints
             },
             yAxis: {
                 type: 'value'
@@ -22,7 +31,7 @@ function BarGraph(){
                 {
                     data: [2, 3, 1, 1, 3],
                     type: 'bar',
-                    color: Colors.primary
+                    color: Colors.tint
                 }
             ]
         };
@@ -42,7 +51,7 @@ function BarGraph(){
 
     return(
         <View style={styles_barGraph.graphContainer}>
-            <Text>Meltdown Occurences from {data.startDate} to {data.endDate}</Text>
+            <Text style={styles_barGraph.header}>Meltdown Occurences from {data.startDate} to {data.endDate}</Text>
             <SkiaChart ref={skiaRef}></SkiaChart>
         </View>
     )
@@ -50,8 +59,8 @@ function BarGraph(){
 
 const styles_barGraph = StyleSheet.create({
     graphContainer: {
-        backgroundColor: Colors.tint,
-        borderWidth: 3,
+        backgroundColor: Colors.grey,
+        borderWidth: 2,
         borderColor: Colors.primary,
         borderRadius: 10,
         display: 'flex',
@@ -59,13 +68,16 @@ const styles_barGraph = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         marginTop: 20,
-        width: '75%',
-        height: '40%'
+        width: 300,
+        height: 400
     },
     header: {
+        fontSize: 22,
         fontFamily: "DMSans",
-        fontWeight: "bold",
+        fontWeight: 'bold',
         color: Colors.primary,
+        marginHorizontal: 20,
+        marginTop: 20
     }
 
 })
@@ -76,5 +88,5 @@ export default BarGraph
 var barData = {
     startDate: 'Feb 25',
     endDate: 'Mar 24',
-    timeEndPoints: ['2-25', '3-3', '3-10', '3-17', '3-24'],
+    timeEndPoints: ['Wk1', 'Wk2', 'Wk3', 'Wk4', 'Wk5'],
 }

@@ -20,7 +20,8 @@ import {
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import * as Haptics from "expo-haptics";
-import BarGraph from "../../../components/BarGraph.js";
+import BarGraph from "../../../components/BarGraph.js"
+import PieGraph from "../../../components/PieGraph.js";
 
 export default function Stats() {
   const { child } = useGlobalSearchParams();
@@ -74,6 +75,7 @@ export default function Stats() {
   }
   return (
     <SafeAreaView style={styles_stats.container}>
+      <ScrollView contentContainerStyle={{paddingBottom: 200, alignItems: 'center'}}>
       <View style={styles_stats.buttonContainer}>
         {timeFrames.map((item, index) => (
           <Pressable
@@ -99,7 +101,7 @@ export default function Stats() {
           <View style={styles_stats.row}>
             <GenStatCard 
             statisticTitle={"Average Intensity"}
-            value={statistics.averageDuration}
+            value={statistics.averageIntensity}
             ></GenStatCard>
             <GenStatCard 
             statisticTitle={"Most Used Resolution"}
@@ -108,8 +110,9 @@ export default function Stats() {
           </View>
       </View>
       {/* Bar Graph for total meltdowns */}
-      <Text style={styles_stats.header}>Bar Graph of Meltdowns</Text>
-      <BarGraph></BarGraph>
+      <BarGraph barData={statistics.barData}></BarGraph>
+      <PieGraph pieData={statistics.triggerData}></PieGraph>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -117,10 +120,29 @@ const timeFrames = ["1W", "1M", "3M", "6M", "1Y"];
 
 //data we want to load will look like this object
 const mockStats = {
+  childName: "Jenna",
   totalMeltdowns: 4,
   mostCommonTrigger: "Loud Environment",
   averageIntensity: "3.57",
-  mostUsedResolution: "Fidget Toys"
+  mostUsedResolution: "Fidget Toys",
+
+  barData: {
+    startDate: 'Feb 25',
+    endDate: 'Mar 24',
+    timeEndPoints: ['Wk1', 'Wk2', 'Wk3', 'Wk4', 'Wk5'],
+  },
+
+  triggerData:  {
+    name: "Trigger Occurrences",
+    childName: "Jenna",
+    pieData: [
+        {value: 8, name: 'Loud Noises'},
+        {value: 6, name: 'Routine change'},
+        {value: 4, name: 'Waiting in line'},
+        {value: 4, name: 'Scolding'},
+        {value: 2, name: 'Too many options'}
+    ]
+}
   
 }
 
@@ -183,6 +205,7 @@ const styles_stats = StyleSheet.create({
     borderRadius: 10,
   },
   header: {
+    alignSelf: 'left',
     fontSize: 22,
     fontFamily: "DMSans",
     color: Colors.primary,
@@ -194,25 +217,34 @@ const styles_stats = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center"
   },
+  genStatContainer: {
+    justifyContent: 'center',
+    width: 350
+  },
   statCard: {
+    flexDirection: "column",
     borderWidth: 2,
     borderColor: Colors.primary,
+    backgroundColor: Colors.grey,
     borderRadius: 5,
     marginHorizontal: 10,
     marginVertical: 10,
     padding: 5,
-    width: 120,
-    height: 70
+    width: 130,
+    height: 80
   },
   statCardHeader: {
     fontFamily: "DMSans",
-    fontSize: 10
+    fontWeight: "200",
+    fontSize: 12,
+    color: Colors.primary
 
   },
   statValue: {
     alignSelf: "center",
     textAlign: 'center',
     fontFamily: "DMSans",
-    marginTop: 10
+    marginTop: 10,
+    fontSize: 14
   }
 });
