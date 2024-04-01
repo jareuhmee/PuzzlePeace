@@ -18,6 +18,11 @@ export const defaultStyles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  separator2: {
+    marginVertical: 15,
+    height: 1,
+    width: "80%",
+  },
   input: {
     marginVertical: 4,
     height: 55,
@@ -143,5 +148,13 @@ export const defaultStyles = StyleSheet.create({
     borderColor: "white",
     borderRadius: 25,
     marginTop: -30,
+  },
+  resetPassBtn: {
+    alignItems: "center",
+    fontSize: 20,
+    fontFamily: "DMSans",
+    color: "#3a644b",
+    marginBottom: 45
   }
+
 });

@@ -81,6 +81,13 @@ function RootLayoutNav() {
               headerShown: false,
             }}
           />
+           <Stack.Screen
+            name="(auth)/pw-reset"
+            options={{
+              presentation: "modal",
+              headerShown: false,
+            }}
+          />
           <Stack.Screen
             name="(auth)/child-select"
             options={{
