@@ -1,6 +1,6 @@
 import {app, auth} from "./firebase/firebase.js"
-import {getDatabase, onValue, ref, set, remove, get, push, update} from "firebase/database"
-
+import {getDatabase, onValue, ref, set, remove, get, 
+        push, update, query, isEqual, orderByChild} from "firebase/database"
 /*##################### USER REQUESTS ###################*/
 export function createUser(userID, email, firstName, lastName, children){
   //Future update: connect to user auth account; reference register.js
@@ -133,6 +133,21 @@ export function getEntry(entryID){
     return snapshot.val();
   })
 }
+/**
+ * 
+ * @param {int}    childID  ID of child whos entries are returned 
+ * @returns {JSON} queried children's entries
+ */
+export function getEntriesByChild(childID){
+  const db = getDatabase(app);
+  const childEntriesRef= query(ref(db, '/Entries/'), orderByChild('childID'), equalTo(childID));
+  return get(childEntriesRef).val();
+}
+
+
+//notes: filtering may be harder
+//idea: keep entries as a global variable, call request once
+//take entries into statistics and filter based on date range
 // export function removeEntry(entryID){
 //   const db = getDatabase(app);
 //   //detach from child entry
