@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { auth } from "../../firebase/firebase.js";
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "@firebase/auth";
+import { signInWithEmailAndPassword } from "@firebase/auth";
 import { defaultStyles } from "../../constants/Styles.js";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faInfinity } from '@fortawesome/free-solid-svg-icons';
@@ -30,14 +30,8 @@ export default function Login() {
     }
   };
 
-  const resetPassword = async () => {
-    try {
-      await sendPasswordResetEmail(auth, email);
-      alert("Password reset email sent! Please check your inbox.");
-    } catch (error) {
-      console.log(error);
-      alert("Failed to send password reset email: " + error.message + " Please enter a valid email address in the designated area.");
-    }
+  const navigateToPasswordReset = () => {
+    router.replace("/(auth)/pw-reset");
   };
 
   return (
@@ -62,7 +56,7 @@ export default function Login() {
         onChangeText={(text) => setPassword(text)}
       />
 
-      <View style={defaultStyles.separator} />
+      <View style={defaultStyles.separator2} />
 
       {loading ? (
         <ActivityIndicator size="large" color="#ffffff" />
@@ -71,7 +65,7 @@ export default function Login() {
           <TouchableOpacity style={defaultStyles.loginPageLoginBtn} onPress={signIn}>
             <Text style={defaultStyles.btnText}>Log In</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={resetPassword}>
+          <TouchableOpacity onPress={navigateToPasswordReset}>
             <Text style={defaultStyles.loginPageForgotBtn}>Forgot Password?</Text>
           </TouchableOpacity>
         </>
