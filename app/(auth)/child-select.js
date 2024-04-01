@@ -4,9 +4,17 @@ import { defaultStyles } from "../../constants/Styles.js";
 
 export default function ChildSelect() {
   const renderChildButton = (child, index) => (
-    <View key={index} style={{ flexDirection: 'row-reverse', alignItems: 'center', marginBottom: 5, width: 250, marginLeft: 30 }}>
+    <View
+      key={index}
+      style={{
+        flexDirection: "row-reverse",
+        alignItems: "center",
+        marginBottom: 5,
+        width: 250,
+        marginLeft: 30,
+      }}
+    >
       <TouchableOpacity
-        
         style={[defaultStyles.btn, { flex: 1 }]}
         onPress={() => {
           router.replace(`(tabs)/${child}/home`);
@@ -19,20 +27,20 @@ export default function ChildSelect() {
       </View>
     </View>
   );
-  
+
   const styles = {
     profilePicCircle: {
       width: 40,
       height: 40,
-      borderRadius: 20, 
+      borderRadius: 20,
       borderWidth: 2,
       borderColor: "#3a644b",
       marginRight: 5,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
     },
   };
-  
+
   return (
     <View style={defaultStyles.container}>
       <Text style={defaultStyles.title}>Child Select</Text>
@@ -42,7 +50,7 @@ export default function ChildSelect() {
 
       <TouchableOpacity
         style={defaultStyles.addChildBtn}
-        onPress={() => router.replace('/(auth)/child-add')}
+        onPress={() => router.replace("/(auth)/child-add")}
       >
         <Text style={defaultStyles.btnText}>Add Child</Text>
       </TouchableOpacity>

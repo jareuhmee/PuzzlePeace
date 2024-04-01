@@ -47,8 +47,9 @@ export default function Home() {
         key={item}
         style={styles.itemContainer}
         onPress={() => {
-          router.replace(item);
-          router.navigate(`${item}/home`);
+          // router.replace(item);
+          router.replace("/(auth)/child-select");
+          router.replace(`${item}/home`);
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }}
       >
@@ -63,10 +64,19 @@ export default function Home() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
 
-  const handleOpenEntry = () => (
-    router.navigate("/(modals)/entry"),
+  const handleOpenEntry = (entry) => (
+    router.navigate(`/(modals)/${entry}`),
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
+
+  const intensityColors = [
+    "",
+    "#76B18F",
+    "#8DB483",
+    "#A3B777",
+    "#BABA6B",
+    "#D0BC5F",
+  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,7 +96,7 @@ export default function Home() {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={entryStyles.entryContainer}
-              onPress={handleOpenEntry}
+              onPress={() => handleOpenEntry(item)}
             >
               {/* Date */}
               <Text style={entryStyles.title}>
@@ -101,12 +111,30 @@ export default function Home() {
                 {Array.from({
                   length: parseInt(mockEntries[item].intensity),
                 }).map((_, index) => (
-                  <View key={index} style={entryStyles.intensityBox} />
+                  <View
+                    key={index}
+                    style={[
+                      entryStyles.intensityBox,
+                      {
+                        backgroundColor:
+                          intensityColors[mockEntries[item].intensity],
+                      },
+                    ]}
+                  />
                 ))}
                 {Array.from({
                   length: 5 - parseInt(mockEntries[item].intensity),
                 }).map((_, index) => (
-                  <View key={index} style={entryStyles.emptyBox} />
+                  <View
+                    key={index}
+                    style={[
+                      entryStyles.emptyBox,
+                      {
+                        borderColor:
+                          intensityColors[mockEntries[item].intensity],
+                      },
+                    ]}
+                  />
                 ))}
               </View>
               {/* Behaviors */}
