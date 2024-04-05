@@ -252,6 +252,7 @@ const entryStyles = StyleSheet.create({
 
   behaviorContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 5,
     marginTop: 5,
     marginBottom: 10,

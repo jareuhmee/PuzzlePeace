@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -5,11 +6,52 @@ import {
   View,
   ScrollView,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from "react-native";
+import * as Haptics from "expo-haptics";
 import { defaultStyles } from "../../constants/Styles";
 import Colors from "../../constants/Colors";
 
 export default function NewEntry() {
+  const [selectedTriggers, setSelectedTriggers] = useState([]);
+  const [selectedBehaviors, setSelectedBehaviors] = useState([]);
+  const [selectedResolutions, setSelectedResolutions] = useState([]);
+
+  const toggleTrigger = (trigger) => {
+    if (selectedTriggers.includes(trigger)) {
+      setSelectedTriggers(selectedTriggers.filter((item) => item !== trigger));
+    } else {
+      setSelectedTriggers([...selectedTriggers, trigger]);
+    }
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const toggleBehavior = (behavior) => {
+    if (selectedBehaviors.includes(behavior)) {
+      setSelectedBehaviors(
+        selectedBehaviors.filter((item) => item !== behavior)
+      );
+    } else {
+      setSelectedBehaviors([...selectedBehaviors, behavior]);
+    }
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const toggleResolution = (resolution) => {
+    if (selectedResolutions.includes(resolution)) {
+      setSelectedResolutions(
+        selectedResolutions.filter((item) => item !== resolution)
+      );
+    } else {
+      setSelectedResolutions([...selectedResolutions, resolution]);
+    }
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const submitEntry = () => {
+    console.log(selectedTriggers, selectedBehaviors, selectedResolutions);
+  };
+
   return (
     <ScrollView
       style={styles.container}
@@ -21,16 +63,87 @@ export default function NewEntry() {
       <View style={styles.box}>
         <Text style={styles.h1}>What happened before?</Text>
         <Text style={styles.title}>Triggers</Text>
+        <View style={styles.buttonContainer}>
+          {Array.from(mockEntries[0].triggers).map((trigger) => (
+            <TouchableOpacity
+              key={trigger}
+              style={[
+                styles.button,
+                selectedTriggers.includes(trigger) && {
+                  backgroundColor: Colors.tint,
+                },
+              ]}
+              onPress={() => toggleTrigger(trigger)}
+            >
+              <Text
+                style={[
+                  styles.buttonText,
+                  selectedTriggers.includes(trigger) && { color: "white" },
+                ]}
+              >
+                {trigger}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened during?</Text>
         <Text style={styles.title}>Behaviors</Text>
+        <View style={styles.buttonContainer}>
+          {Array.from(mockEntries[0].behaviors).map((behavior) => (
+            <TouchableOpacity
+              key={behavior}
+              style={[
+                styles.button,
+                selectedBehaviors.includes(behavior) && {
+                  backgroundColor: Colors.tint,
+                },
+              ]}
+              onPress={() => toggleBehavior(behavior)}
+            >
+              <Text
+                style={[
+                  styles.buttonText,
+                  selectedBehaviors.includes(behavior) && { color: "white" },
+                ]}
+              >
+                {behavior}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened after?</Text>
         <Text style={styles.title}>Resolutions</Text>
+        <View style={styles.buttonContainer}>
+          {Array.from(mockEntries[0].resolutions).map((resolution) => (
+            <TouchableOpacity
+              key={resolution}
+              style={[
+                styles.button,
+                selectedResolutions.includes(resolution) && {
+                  backgroundColor: Colors.tint,
+                },
+              ]}
+              onPress={() => toggleResolution(resolution)}
+            >
+              <Text
+                style={[
+                  styles.buttonText,
+                  selectedResolutions.includes(resolution) && {
+                    color: "white",
+                  },
+                ]}
+              >
+                {resolution}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       <View style={styles.box}>
@@ -43,7 +156,23 @@ export default function NewEntry() {
         />
       </View>
 
-      <View style={defaultStyles.container}></View>
+      {/* <TouchableOpacity
+        style={[styles.button]}
+        onPress={console.log(
+          selectedBehaviors,
+          selectedResolutions,
+          selectedTriggers
+        )}
+      >
+        <Text style={[styles.buttonText]}>Submit</Text>
+      </TouchableOpacity> */}
+
+      <TouchableOpacity
+        style={defaultStyles.signUpPageCABtn}
+        onPress={submitEntry}
+      >
+        <Text style={defaultStyles.btnText}>Submit Entry</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -56,7 +185,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     alignItems: "center",
     paddingTop: 20,
-    paddingBottom: 40,
+    paddingBottom: 200,
   },
   box: {
     padding: 10,
@@ -125,18 +254,19 @@ const styles = StyleSheet.create({
     color: "black",
   },
 
-  behaviorContainer: {
+  buttonContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 5,
     marginTop: 5,
     marginBottom: 10,
   },
-  behavior: {
+  button: {
     padding: 5,
     borderRadius: 2,
     backgroundColor: "#eee",
   },
-  behaviorText: {
+  buttonText: {
     fontSize: 11,
     fontFamily: "DMMono",
     color: "black",
@@ -152,3 +282,55 @@ const styles = StyleSheet.create({
     // backgroundColor: "white",
   },
 });
+
+const mockEntries = {
+  0: {
+    name: "Alice",
+    triggers: [
+      "Bright Lights",
+      "Loud Noises",
+      "Being Touched",
+      "Hungry",
+      "Tired",
+      "Thirsty",
+      "Anxious",
+      "Overwhelmed",
+      "Confused",
+      "Guilty",
+      "Jealous",
+      "Lonely",
+      "Stressed",
+      "Rejected",
+      "Ignored",
+      "Teased",
+      "Threatened",
+      "Disciplined",
+      "Yelled At",
+      "Consequences",
+      "Change In Routine",
+    ],
+    behaviors: [
+      "Screaming",
+      "Crying",
+      "Running",
+      "Punching",
+      "Kicking",
+      "Jumping",
+      "Biting",
+    ],
+    resolutions: [
+      "Hugging",
+      "Talking",
+      "Singing",
+      "Dancing",
+      "Drawing",
+      "Reading",
+    ],
+  },
+  1: {
+    name: "Bryan",
+    triggers: ["Screaming", "Hitting"],
+    behaviors: ["Screaming", "Hitting"],
+    resolutions: ["Screaming", "Hitting"],
+  },
+};
