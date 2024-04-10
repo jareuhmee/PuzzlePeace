@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
+import { router } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Haptics from "expo-haptics";
 import { defaultStyles } from "../../constants/Styles";
@@ -145,6 +146,14 @@ export default function NewEntry() {
               </Text>
             </TouchableOpacity>
           ))}
+          <TouchableOpacity
+            style={styles.addBtn}
+            onPress={() => router.replace("/(customize)/add-triggers")}
+          >
+            <Text style={[styles.buttonText, { color: "white" }]}>
+              Add Trigger +
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -173,6 +182,14 @@ export default function NewEntry() {
               </Text>
             </TouchableOpacity>
           ))}
+          <TouchableOpacity
+            style={styles.addBtn}
+            onPress={() => router.replace("/(customize)/add-behaviors")}
+          >
+            <Text style={[styles.buttonText, { color: "white" }]}>
+              Add Behavior +
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -203,6 +220,14 @@ export default function NewEntry() {
               </Text>
             </TouchableOpacity>
           ))}
+          <TouchableOpacity
+            style={styles.addBtn}
+            onPress={() => router.replace("/(customize)/add-resolutions")}
+          >
+            <Text style={[styles.buttonText, { color: "white" }]}>
+              Add Resolution +
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -329,6 +354,11 @@ const styles = StyleSheet.create({
     // borderColor: "gray",
     // padding: 10,
     // backgroundColor: "white",
+  },
+  addBtn: {
+    backgroundColor: Colors.tint,
+    borderRadius: 5,
+    padding: 5,
   },
 });
 
