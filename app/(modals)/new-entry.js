@@ -8,48 +8,94 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Haptics from "expo-haptics";
 import { defaultStyles } from "../../constants/Styles";
 import Colors from "../../constants/Colors";
 
+import { createEntry } from "../../firebase/requests";
+
 export default function NewEntry() {
-  const [selectedTriggers, setSelectedTriggers] = useState([]);
-  const [selectedBehaviors, setSelectedBehaviors] = useState([]);
-  const [selectedResolutions, setSelectedResolutions] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [timeExperience, setTimeExperience] = useState(new Date());
+  const [location, setLocation] = useState("");
+  const [triggers, setTriggers] = useState([]);
+  const [behaviors, setBehaviors] = useState([]);
+  const [resolutions, setResolutions] = useState([]);
+  const [note, setNote] = useState("");
+
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+  };
+
+  const handleTimeExperienceChange = (event, selectedTime) => {
+    const curentTime = selectedTime || timeExperience;
+    setTimeExperience(curentTime);
+  };
 
   const toggleTrigger = (trigger) => {
-    if (selectedTriggers.includes(trigger)) {
-      setSelectedTriggers(selectedTriggers.filter((item) => item !== trigger));
+    if (triggers.includes(trigger)) {
+      setTriggers(triggers.filter((item) => item !== trigger));
     } else {
-      setSelectedTriggers([...selectedTriggers, trigger]);
+      setTriggers([...triggers, trigger]);
     }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   const toggleBehavior = (behavior) => {
-    if (selectedBehaviors.includes(behavior)) {
-      setSelectedBehaviors(
-        selectedBehaviors.filter((item) => item !== behavior)
-      );
+    if (behaviors.includes(behavior)) {
+      setBehaviors(behaviors.filter((item) => item !== behavior));
     } else {
-      setSelectedBehaviors([...selectedBehaviors, behavior]);
+      setBehaviors([...behaviors, behavior]);
     }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   const toggleResolution = (resolution) => {
-    if (selectedResolutions.includes(resolution)) {
-      setSelectedResolutions(
-        selectedResolutions.filter((item) => item !== resolution)
-      );
+    if (resolutions.includes(resolution)) {
+      setResolutions(resolutions.filter((item) => item !== resolution));
     } else {
-      setSelectedResolutions([...selectedResolutions, resolution]);
+      setResolutions([...resolutions, resolution]);
     }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   const submitEntry = () => {
-    console.log(selectedTriggers, selectedBehaviors, selectedResolutions);
+    const formattedDate = date.toISOString().split("T")[0];
+    const formattedTimeExperience = timeExperience.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    const formattedTimeEntry = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    console.log(
+      formattedDate,
+      formattedTimeEntry,
+      formattedTimeExperience,
+      location,
+      triggers,
+      behaviors,
+      resolutions,
+      note
+    );
+    createEntry(
+      formattedDate,
+      formattedTimeEntry,
+      formattedTimeExperience,
+      "", // severity
+      location,
+      triggers,
+      behaviors,
+      resolutions,
+      note,
+      "" // childID
+    );
   };
 
   return (
@@ -57,19 +103,33 @@ export default function NewEntry() {
       style={styles.container}
       contentContainerStyle={styles.containerContent}
     >
-      <Text style={defaultStyles.title}>Test</Text>
-      <Text>Test at Test</Text>
+      {/* <Text style={defaultStyles.h2}>Test</Text> */}
+      {/* <Text>Test at Test</Text> */}
+      <DateTimePicker
+        value={date}
+        mode="date"
+        display="default"
+        onChange={handleDateChange}
+        style={defaultStyles.h2}
+      />
+
+      <DateTimePicker
+        value={timeExperience}
+        mode="time"
+        display="default"
+        onChange={handleTimeExperienceChange}
+      />
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened before?</Text>
-        <Text style={styles.title}>Triggers</Text>
+        <Text style={styles.h2}>Triggers</Text>
         <View style={styles.buttonContainer}>
           {Array.from(mockEntries[0].triggers).map((trigger) => (
             <TouchableOpacity
               key={trigger}
               style={[
                 styles.button,
-                selectedTriggers.includes(trigger) && {
+                triggers.includes(trigger) && {
                   backgroundColor: Colors.tint,
                 },
               ]}
@@ -78,7 +138,7 @@ export default function NewEntry() {
               <Text
                 style={[
                   styles.buttonText,
-                  selectedTriggers.includes(trigger) && { color: "white" },
+                  triggers.includes(trigger) && { color: "white" },
                 ]}
               >
                 {trigger}
@@ -90,14 +150,14 @@ export default function NewEntry() {
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened during?</Text>
-        <Text style={styles.title}>Behaviors</Text>
+        <Text style={styles.h2}>Behaviors</Text>
         <View style={styles.buttonContainer}>
           {Array.from(mockEntries[0].behaviors).map((behavior) => (
             <TouchableOpacity
               key={behavior}
               style={[
                 styles.button,
-                selectedBehaviors.includes(behavior) && {
+                behaviors.includes(behavior) && {
                   backgroundColor: Colors.tint,
                 },
               ]}
@@ -106,7 +166,7 @@ export default function NewEntry() {
               <Text
                 style={[
                   styles.buttonText,
-                  selectedBehaviors.includes(behavior) && { color: "white" },
+                  behaviors.includes(behavior) && { color: "white" },
                 ]}
               >
                 {behavior}
@@ -118,14 +178,14 @@ export default function NewEntry() {
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened after?</Text>
-        <Text style={styles.title}>Resolutions</Text>
+        <Text style={styles.h2}>Resolutions</Text>
         <View style={styles.buttonContainer}>
           {Array.from(mockEntries[0].resolutions).map((resolution) => (
             <TouchableOpacity
               key={resolution}
               style={[
                 styles.button,
-                selectedResolutions.includes(resolution) && {
+                resolutions.includes(resolution) && {
                   backgroundColor: Colors.tint,
                 },
               ]}
@@ -134,7 +194,7 @@ export default function NewEntry() {
               <Text
                 style={[
                   styles.buttonText,
-                  selectedResolutions.includes(resolution) && {
+                  resolutions.includes(resolution) && {
                     color: "white",
                   },
                 ]}
@@ -151,21 +211,10 @@ export default function NewEntry() {
         <TextInput
           style={styles.input}
           multiline
-          // numberOfLines={20}
           placeholder="Add note..."
+          onChangeText={(text) => setNote(text)}
         />
       </View>
-
-      {/* <TouchableOpacity
-        style={[styles.button]}
-        onPress={console.log(
-          selectedBehaviors,
-          selectedResolutions,
-          selectedTriggers
-        )}
-      >
-        <Text style={[styles.buttonText]}>Submit</Text>
-      </TouchableOpacity> */}
 
       <TouchableOpacity
         style={defaultStyles.signUpPageCABtn}
@@ -208,15 +257,15 @@ const styles = StyleSheet.create({
     top: 10,
     justifyContent: "center",
   },
-  title: {
-    fontSize: 16,
-    fontFamily: "DMSans",
-    color: "black",
-  },
   h1: {
     fontSize: 20,
     fontFamily: "DMSans",
     color: Colors.primary,
+  },
+  h2: {
+    fontSize: 16,
+    fontFamily: "DMSans",
+    color: "black",
   },
   text: {
     fontSize: 12,
