@@ -110,12 +110,6 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="(customize)"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
             name="(modals)/[entry]"
             options={{
               title: "Entry",
@@ -170,6 +164,38 @@ function RootLayoutNav() {
                 fontFamily: "DMSans",
                 fontSize: 20,
               },
+            }}
+          />
+          <Stack.Screen
+            name="(customize)/customize"
+            options={{
+              title: "Customize",
+              presentation: "card",
+              headerTransparent: true,
+            }}
+          />
+          <Stack.Screen
+            name="(customize)/add-triggers"
+            options={{
+              title: "Add Triggers",
+              presentation: "card",
+              headerTransparent: true,
+            }}
+          />
+          <Stack.Screen
+            name="(customize)/add-behaviors"
+            options={{
+              title: "Add Behaviors",
+              presentation: "card",
+              headerTransparent: true,
+            }}
+          />
+          <Stack.Screen
+            name="(customize)/add-resolutions"
+            options={{
+              title: "Add Resolutions",
+              presentation: "card",
+              headerTransparent: true,
             }}
           />
         </Stack>
