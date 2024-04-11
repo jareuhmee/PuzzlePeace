@@ -4,6 +4,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { defaultStyles } from '../../constants/Styles.js';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { Keyboard } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { router } from "expo-router";
 
 export default function ChildAdd() {
@@ -23,9 +25,22 @@ export default function ChildAdd() {
     setShowDoneButton(true); // shows the "Done" button only when a date is selected
   };
 
-  const handleProfilePictureSelect = () => {
-    // for now just logging to console
-    console.log('Open camera roll');
+  const handleProfilePictureSelect = async () => {
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
+  
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+  
+    if (!pickerResult.canceled) {
+      profilePicture(pickerResult.uri);
+    }
   };
 
   const handleSubmit = () => {
@@ -38,9 +53,8 @@ export default function ChildAdd() {
 
   const handleDonePress = () => {
     setShowDatePicker(false); // Hides the date picker only when "Done" is pressed
-    setShowDoneButton(false); // // Hide the "Done" button once user is finished picking date 
-  };
-  
+    setShowDoneButton(false); // Hide the "Done" button once user is finished picking date 
+  };  
 
   return (
     <View style={defaultStyles.container}>
@@ -54,6 +68,7 @@ export default function ChildAdd() {
           onChangeText={handleInputChange}
           placeholder="Enter Child's Name"
           placeholderTextColor="#3a644b"
+          returnKeyType="done" 
         />
         <View style={{ backgroundColor: '#e9e9ea', borderRadius: 100, height: 1, width: '100%' }} />
       </View>
