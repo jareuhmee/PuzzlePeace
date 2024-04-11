@@ -125,7 +125,7 @@ export default function NewEntry() {
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened before?</Text>
-        <Text style={styles.h2}>Triggers</Text>
+        <Text style={styles.h2}>Select Triggers</Text>
         <View style={styles.buttonContainer}>
           {Array.from(mockEntries[0].triggers).map((trigger) => (
             <TouchableOpacity
@@ -152,16 +152,14 @@ export default function NewEntry() {
             style={styles.addBtn}
             onPress={() => router.navigate("/(customize)/add-triggers")}
           >
-            <Text style={[styles.buttonText, { color: "white" }]}>
-              Add Trigger +
-            </Text>
+            <Text style={[styles.buttonText]}>Add Trigger +</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened during?</Text>
-        <Text style={styles.h2}>Behaviors</Text>
+        <Text style={styles.h2}>Select Behaviors</Text>
         <View style={styles.buttonContainer}>
           {Array.from(mockEntries[0].behaviors).map((behavior) => (
             <TouchableOpacity
@@ -188,16 +186,15 @@ export default function NewEntry() {
             style={styles.addBtn}
             onPress={() => router.navigate("/(customize)/add-behaviors")}
           >
-            <Text style={[styles.buttonText, { color: "white" }]}>
-              Add Behavior +
-            </Text>
+            <Text style={[styles.buttonText]}>Add Behavior +</Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.h2}>Select Intensity Level</Text>
       </View>
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened after?</Text>
-        <Text style={styles.h2}>Resolutions</Text>
+        <Text style={styles.h2}>Select Resolutions</Text>
         <View style={styles.buttonContainer}>
           {Array.from(mockEntries[0].resolutions).map((resolution) => (
             <TouchableOpacity
@@ -226,9 +223,7 @@ export default function NewEntry() {
             style={styles.addBtn}
             onPress={() => router.navigate("/(customize)/add-resolutions")}
           >
-            <Text style={[styles.buttonText, { color: "white" }]}>
-              Add Resolution +
-            </Text>
+            <Text style={[styles.buttonText]}>Add Resolution +</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -286,11 +281,13 @@ const styles = StyleSheet.create({
   },
   h1: {
     fontSize: 20,
+    paddingBottom: 5,
     fontFamily: "DMSans",
     color: Colors.primary,
   },
   h2: {
     fontSize: 16,
+    paddingBottom: 5,
     fontFamily: "DMSans",
     color: "black",
   },
@@ -338,8 +335,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    padding: 5,
-    borderRadius: 2,
+    padding: 8,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    backgroundColor: "#eee",
+  },
+  addBtn: {
+    padding: 8,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#ddd",
     backgroundColor: "#eee",
   },
   buttonText: {
@@ -356,11 +362,6 @@ const styles = StyleSheet.create({
     // borderColor: "gray",
     // padding: 10,
     // backgroundColor: "white",
-  },
-  addBtn: {
-    backgroundColor: Colors.tint,
-    borderRadius: 5,
-    padding: 5,
   },
 });
 
