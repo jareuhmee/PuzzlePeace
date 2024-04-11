@@ -8,17 +8,20 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Haptics from "expo-haptics";
-import { defaultStyles } from "../../constants/Styles";
-import Colors from "../../constants/Colors";
+import { defaultStyles } from "../../../../constants/Styles";
+import Colors from "../../../../constants/Colors";
 
-import { createEntry } from "../../firebase/requests";
+import { createEntry } from "../../../../firebase/requests";
 
 export default function NewEntry() {
+  const { child } = useLocalSearchParams();
+
   const [date, setDate] = useState(new Date());
   const [timeExperience, setTimeExperience] = useState(new Date());
+  const [intensity, setIntensity] = useState(0);
   const [location, setLocation] = useState("");
   const [triggers, setTriggers] = useState([]);
   const [behaviors, setBehaviors] = useState([]);
@@ -89,13 +92,13 @@ export default function NewEntry() {
       formattedDate,
       formattedTimeEntry,
       formattedTimeExperience,
-      "", // severity
-      location,
+      intensity, // TODO
+      location, // TODO
       triggers,
       behaviors,
       resolutions,
       note,
-      "" // childID
+      child // TODO
     );
   };
 
@@ -104,8 +107,7 @@ export default function NewEntry() {
       style={styles.container}
       contentContainerStyle={styles.containerContent}
     >
-      {/* <Text style={defaultStyles.h2}>Test</Text> */}
-      {/* <Text>Test at Test</Text> */}
+      <Text style={styles.h2}>New Entry For: {child}</Text>
       <DateTimePicker
         value={date}
         mode="date"
@@ -148,7 +150,7 @@ export default function NewEntry() {
           ))}
           <TouchableOpacity
             style={styles.addBtn}
-            onPress={() => router.replace("/(customize)/add-triggers")}
+            onPress={() => router.navigate("/(customize)/add-triggers")}
           >
             <Text style={[styles.buttonText, { color: "white" }]}>
               Add Trigger +
@@ -184,7 +186,7 @@ export default function NewEntry() {
           ))}
           <TouchableOpacity
             style={styles.addBtn}
-            onPress={() => router.replace("/(customize)/add-behaviors")}
+            onPress={() => router.navigate("/(customize)/add-behaviors")}
           >
             <Text style={[styles.buttonText, { color: "white" }]}>
               Add Behavior +
@@ -222,7 +224,7 @@ export default function NewEntry() {
           ))}
           <TouchableOpacity
             style={styles.addBtn}
-            onPress={() => router.replace("/(customize)/add-resolutions")}
+            onPress={() => router.navigate("/(customize)/add-resolutions")}
           >
             <Text style={[styles.buttonText, { color: "white" }]}>
               Add Resolution +

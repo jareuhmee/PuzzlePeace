@@ -81,7 +81,7 @@ function RootLayoutNav() {
               headerShown: false,
             }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="(auth)/pw-reset"
             options={{
               presentation: "modal",
@@ -113,20 +113,6 @@ function RootLayoutNav() {
             name="(customize)"
             options={{
               headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(modals)/new-entry"
-            options={{
-              title: "New Entry",
-              presentation: "formSheet",
-              headerStyle: {
-                backgroundColor: Colors.background,
-              },
-              headerTitleStyle: {
-                fontFamily: "DMSans",
-                fontSize: 20,
-              },
             }}
           />
           <Stack.Screen
