@@ -1,16 +1,10 @@
-import { StyleSheet, View, TouchableOpacity,Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { defaultStyles } from "../../constants/Styles";
-import { router,useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import Colors from "../../constants/Colors";
-import * as Haptics from "expo-haptics";
 
 export default function Entry() {
   const { entry } = useLocalSearchParams();
-  const handleOpenEntry = (entry) => (
-    router.navigate(`/(modals)/${entry}`),
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-  );
-
   const intensityColors = [
     "",
     "#76B18F",
@@ -21,21 +15,16 @@ export default function Entry() {
   ];
 
   return (
-    <View>
+    // <View style={styles.container}>
     <ScrollView
       style={styles.container}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.containerContent}
     >
-      renderItem={({ entry }) => (
-      <TouchableOpacity
-      style={styles.containerContent}
-       onPress={() => handleOpenEntry(entry)}
-     >
       <Text style={defaultStyles.title}>
         {mockEntries[entry].day}, {mockEntries[entry].date}
       </Text>
       <Text>
-        <Text style={styles.textTime}>{mockEntries[entry].time} at {mockEntries[entry].location}
+        <Text style={{fontSize: 16, fontFamily: "DMMono" }}>{mockEntries[entry].time} at {mockEntries[entry].location}
         </Text> 
       </Text>
 
@@ -66,6 +55,7 @@ export default function Entry() {
               </View>
                ))}
         </View>
+        <Text style={styles.title}>Intensity:</Text>
         <View style={styles.intensityContainer}>
                 {Array.from({
                   length: parseInt(mockEntries[entry].intensity),
@@ -99,6 +89,8 @@ export default function Entry() {
       </View>
 
 
+
+
       <View style={styles.box}>
         <Text style={styles.h1}>What happened after?</Text>
         <Text style={styles.title}>Resolutions:</Text>
@@ -117,15 +109,11 @@ export default function Entry() {
         <Text style={styles.text}>{mockEntries[entry].note}</Text>
         </View>
     
-        </TouchableOpacity>
-      )}
+
     </ScrollView>
-  </View>
+    // </View>
   );
 }
-
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -135,14 +123,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginVertical: 10,
-  },
-  entryContainer: {
-    padding: 10,
-    marginVertical: 10,
-    marginHorizontal: 20,
-    borderColor: Colors.primary,
-    borderRadius: 10,
-    borderWidth: 2,
   },
   box: {
     padding: 10,
@@ -187,11 +167,6 @@ const styles = StyleSheet.create({
   },
   textSmall: {
     fontSize: 12,
-    fontFamily: "DMMono",
-    color: "black",
-  },
-  textTime: {
-    fontSize: 15,
     fontFamily: "DMMono",
     color: "black",
   },
