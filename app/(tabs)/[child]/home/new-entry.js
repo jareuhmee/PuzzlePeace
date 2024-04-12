@@ -92,14 +92,17 @@ export default function NewEntry() {
       formattedDate,
       formattedTimeEntry,
       formattedTimeExperience,
-      intensity, // TODO
-      location, // TODO
+      3, // TODO
+      "Home", // TODO
       triggers,
       behaviors,
       resolutions,
       note,
-      child // TODO
+      child
     );
+
+    router.back();
+    router.replace(`${child}/home`);
   };
 
   return (
@@ -107,7 +110,7 @@ export default function NewEntry() {
       style={styles.container}
       contentContainerStyle={styles.containerContent}
     >
-      <Text style={styles.h2}>New Entry For: {child}</Text>
+      <Text style={styles.h2}>ChildID: {child}</Text>
       <DateTimePicker
         value={date}
         mode="date"

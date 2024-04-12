@@ -209,8 +209,21 @@ export function updateEntry(
 export function getEntry(entryID) {
   const db = getDatabase(app);
   const entryRef = ref(db, "/Entries/" + entryID);
-  onValue(entryRef, (snapshot) => {
-    return snapshot.val();
+
+  return new Promise((resolve, reject) => {
+    onValue(
+      entryRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          reject(new Error("Entry not found"));
+        }
+      },
+      (error) => {
+        reject(error);
+      }
+    );
   });
 }
 /**

@@ -10,15 +10,15 @@ import {
 import { auth } from "../../firebase/firebase.js";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { defaultStyles } from "../../constants/Styles.js";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faInfinity } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faInfinity } from "@fortawesome/free-solid-svg-icons";
+import { createUser } from "../../firebase/requests.js";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState("");
   const [firstName, setFirstName] = useState("");
-
 
   const signUp = async () => {
     setLoading(true);
@@ -28,6 +28,9 @@ export default function Register() {
         email,
         password
       );
+
+      createUser(response.user.uid, email, firstName, []);
+
       router.replace("/(auth)/child-add");
     } catch (error) {
       console.log(error);
@@ -39,7 +42,11 @@ export default function Register() {
 
   return (
     <View style={defaultStyles.container}>
-      <FontAwesomeIcon icon={faInfinity} style={defaultStyles.iconOnLogin} size={70}/>
+      <FontAwesomeIcon
+        icon={faInfinity}
+        style={defaultStyles.iconOnLogin}
+        size={70}
+      />
       <Text style={defaultStyles.loginPageLogIn}>Create an Account</Text>
       <View style={defaultStyles.separator} />
 
@@ -66,14 +73,16 @@ export default function Register() {
         onChangeText={(text) => setFirstName(text)}
       />
 
-
       <View style={defaultStyles.separator} />
 
       {loading ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
-          <TouchableOpacity style={defaultStyles.signUpPageCABtn} onPress={signUp}>
+          <TouchableOpacity
+            style={defaultStyles.signUpPageCABtn}
+            onPress={signUp}
+          >
             <Text style={defaultStyles.btnText}>Create an Account</Text>
           </TouchableOpacity>
         </>

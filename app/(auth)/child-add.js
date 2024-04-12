@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { TextInput, TouchableOpacity, Text, View, Image } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { defaultStyles } from '../../constants/Styles.js';
+import React, { useState } from "react";
+import { TextInput, TouchableOpacity, Text, View, Image } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { defaultStyles } from "../../constants/Styles.js";
 import { router } from "expo-router";
 
+import { createChild } from "../../firebase/requests.js";
+import { auth } from "../../firebase/firebase.js";
+
 export default function ChildAdd() {
-  const [childName, setChildName] = useState('');
+  const userID = auth.currentUser.uid;
+
+  const [childName, setChildName] = useState("");
   const [birthday, setBirthday] = useState(new Date());
   const [profilePicture] = useState(null);
 
@@ -20,15 +25,17 @@ export default function ChildAdd() {
 
   const handleProfilePictureSelect = () => {
     // for now just logging to console
-    console.log('Open camera roll');
+    console.log("Open camera roll");
   };
 
   const handleSubmit = () => {
     // for now just logging to console
-    console.log('Child\'s Name:', childName);
-    console.log('Birthday:', birthday);
-    console.log('Profile Picture:', profilePicture);
-    router.replace('/(auth)/child-select')
+    console.log("Child's Name:", childName);
+    console.log("Birthday:", birthday);
+    console.log("Profile Picture:", profilePicture);
+    router.replace("/(auth)/child-select");
+
+    createChild(childName, birthday, "", "", "", [], [userID]);
   };
 
   return (
@@ -36,7 +43,7 @@ export default function ChildAdd() {
       <Text style={defaultStyles.title}>Add Child</Text>
       <View style={defaultStyles.separator} />
 
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text style={{ marginRight: 10 }}>Child's Name:</Text>
         <TextInput
           style={{ flex: 1, borderWidth: 1, padding: 5 }}
@@ -47,9 +54,13 @@ export default function ChildAdd() {
       </View>
 
       <TouchableOpacity
-        style={{ flexDirection: 'row', alignItems: 'center', marginBottom: -25}}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: -25,
+        }}
       >
-        <Text style={{ marginRight: 200, marginTop: 30}}>Birthday:</Text>
+        <Text style={{ marginRight: 200, marginTop: 30 }}>Birthday:</Text>
       </TouchableOpacity>
 
       <DateTimePicker
@@ -59,13 +70,16 @@ export default function ChildAdd() {
         onChange={handleDateChange}
       />
 
-<TouchableOpacity
-        style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}
+      <TouchableOpacity
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 20 }}
         onPress={handleProfilePictureSelect}
       >
         <Text style={{ marginRight: 10 }}>Profile Picture:</Text>
         {profilePicture ? (
-          <Image source={{ uri: profilePicture }} style={{ width: 50, height: 50, borderRadius: 25 }} />
+          <Image
+            source={{ uri: profilePicture }}
+            style={{ width: 50, height: 50, borderRadius: 25 }}
+          />
         ) : (
           <Text style={{ fontSize: 24 }}>+</Text>
         )}
@@ -75,7 +89,6 @@ export default function ChildAdd() {
         style={defaultStyles.addChildBtn}
         onPress={handleSubmit}
       >
-        
         <Text style={defaultStyles.btnText}>Submit</Text>
       </TouchableOpacity>
     </View>
