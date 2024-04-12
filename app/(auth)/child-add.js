@@ -180,12 +180,23 @@ export default function ChildAdd() {
         />
       </View>
 
+      
+      <TouchableOpacity
+        style={defaultStyles.btn}
+        onPress={handleSubmit}
+      >
+        <Text style={defaultStyles.btnText}>Customize Triggers</Text>
+      </TouchableOpacity>
+
+      <View style={defaultStyles.separator2} />
+
       <TouchableOpacity
         style={defaultStyles.addChildBtn}
         onPress={handleSubmit}
       >
         <Text style={defaultStyles.btnText}>Submit</Text>
       </TouchableOpacity>
+
     </View>
   );
 }

@@ -38,7 +38,7 @@ export default function Login() {
     <View style={defaultStyles.container}>
       <FontAwesomeIcon icon={faInfinity} style={defaultStyles.iconOnLogin} size={70}/>
       <Text style={defaultStyles.loginPageLogIn}>Log In</Text>
-      <View style={defaultStyles.separator} />
+      <View style={defaultStyles.separator3} />
 
       <TextInput
         style={defaultStyles.input}
