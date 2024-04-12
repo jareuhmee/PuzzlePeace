@@ -82,6 +82,13 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
+            name="(auth)/pw-reset"
+            options={{
+              presentation: "modal",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name="(auth)/child-select"
             options={{
               headerShown: false,
@@ -100,26 +107,6 @@ function RootLayoutNav() {
               headerShown: false,
               title: "",
               animation: "fade_from_bottom",
-            }}
-          />
-          <Stack.Screen
-            name="(customize)"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(modals)/new-entry"
-            options={{
-              title: "New Entry",
-              presentation: "formSheet",
-              headerStyle: {
-                backgroundColor: Colors.background,
-              },
-              headerTitleStyle: {
-                fontFamily: "DMSans",
-                fontSize: 20,
-              },
             }}
           />
           <Stack.Screen
@@ -177,6 +164,38 @@ function RootLayoutNav() {
                 fontFamily: "DMSans",
                 fontSize: 20,
               },
+            }}
+          />
+          <Stack.Screen
+            name="(customize)/customize"
+            options={{
+              title: "Customize",
+              presentation: "card",
+              headerTransparent: true,
+            }}
+          />
+          <Stack.Screen
+            name="(customize)/add-triggers"
+            options={{
+              title: "Add Triggers",
+              presentation: "card",
+              headerTransparent: true,
+            }}
+          />
+          <Stack.Screen
+            name="(customize)/add-behaviors"
+            options={{
+              title: "Add Behaviors",
+              presentation: "card",
+              headerTransparent: true,
+            }}
+          />
+          <Stack.Screen
+            name="(customize)/add-resolutions"
+            options={{
+              title: "Add Resolutions",
+              presentation: "card",
+              headerTransparent: true,
             }}
           />
         </Stack>

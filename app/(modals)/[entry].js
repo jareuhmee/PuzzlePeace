@@ -31,15 +31,15 @@ export default function Entry() {
       <View style={styles.box}>
         <Text style={styles.h1}>What happened before?</Text>
         <Text style={styles.title}>Triggers:</Text>
-        
+
         <View style={styles.behaviorContainer}>
-            {Array.from(mockEntries[entry].triggers).map((trigger) => (
-              <View key={trigger} style={styles.trigger}>
-                <Text key={trigger} style={styles.triggerText}>
-                  {trigger}
-                </Text>
-              </View>
-               ))}
+          {Array.from(mockEntries[entry].triggers).map((trigger) => (
+            <View key={trigger} style={styles.trigger}>
+              <Text key={trigger} style={styles.triggerText}>
+                {trigger}
+              </Text>
+            </View>
+          ))}
         </View>
       </View>
 
@@ -47,69 +47,63 @@ export default function Entry() {
         <Text style={styles.h1}>What happened during?</Text>
         <Text style={styles.title}>Behaviors:</Text>
         <View style={styles.behaviorContainer}>
-            {Array.from(mockEntries[entry].behaviors).map((behavior) => (
-              <View key={behavior} style={styles.behavior}>
-                <Text key={behavior} style={styles.behaviorText}>
-                  {behavior}
-                </Text>
-              </View>
-               ))}
+          {Array.from(mockEntries[entry].behaviors).map((behavior) => (
+            <View key={behavior} style={styles.behavior}>
+              <Text key={behavior} style={styles.behaviorText}>
+                {behavior}
+              </Text>
+            </View>
+          ))}
         </View>
         <Text style={styles.title}>Intensity:</Text>
         <View style={styles.intensityContainer}>
-                {Array.from({
-                  length: parseInt(mockEntries[entry].intensity),
-                }).map((_, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      styles.intensityBox,
-                      {
-                        backgroundColor:
-                          intensityColors[mockEntries[entry].intensity],
-                      },
-                    ]}
-                  />
-                ))}
-                {Array.from({
-                  length: 5 - parseInt(mockEntries[entry].intensity),
-                }).map((_, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      styles.emptyBox,
-                      {
-                        borderColor:
-                          intensityColors[mockEntries[entry].intensity],
-                      },
-                    ]}
-                  />
-                ))}
-              </View>
+          {Array.from({
+            length: parseInt(mockEntries[entry].intensity),
+          }).map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.intensityBox,
+                {
+                  backgroundColor:
+                    intensityColors[mockEntries[entry].intensity],
+                },
+              ]}
+            />
+          ))}
+          {Array.from({
+            length: 5 - parseInt(mockEntries[entry].intensity),
+          }).map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.emptyBox,
+                {
+                  borderColor: intensityColors[mockEntries[entry].intensity],
+                },
+              ]}
+            />
+          ))}
+        </View>
       </View>
-
-
-
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened after?</Text>
         <Text style={styles.title}>Resolutions:</Text>
         <View style={styles.resolutionContainer}>
-            {Array.from(mockEntries[entry].resolutions).map((resolution) => (
-              <View key={resolution} style={styles.resolution}>
-                <Text key={resolution} style={styles.resolutionText}>
-                  {resolution}
-                </Text>
-              </View>
-               ))}
+          {Array.from(mockEntries[entry].resolutions).map((resolution) => (
+            <View key={resolution} style={styles.resolution}>
+              <Text key={resolution} style={styles.resolutionText}>
+                {resolution}
+              </Text>
+            </View>
+          ))}
         </View>
       </View>
       <View style={styles.box}>
         <Text style={styles.h1}>Notes:</Text>
         <Text style={styles.text}>{mockEntries[entry].note}</Text>
-        </View>
-    
-
+      </View>
     </ScrollView>
     // </View>
   );
@@ -120,7 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   containerContent: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
     marginVertical: 10,
   },
@@ -132,7 +126,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     width: "90%",
-    
   },
   expandButton: {
     padding: 5,
@@ -160,7 +153,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   text: {
-    padding:5,
+    padding: 5,
     fontSize: 12,
     fontFamily: "DMSans",
     color: "black",
@@ -198,7 +191,7 @@ const styles = StyleSheet.create({
 
   behaviorContainer: {
     flexDirection: "row",
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     gap: 5,
     marginTop: 5,
     marginBottom: 10,
@@ -215,7 +208,7 @@ const styles = StyleSheet.create({
   },
   triggerContainer: {
     flexDirection: "row",
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     gap: 5,
     marginTop: 5,
     marginBottom: 10,
@@ -232,7 +225,7 @@ const styles = StyleSheet.create({
   },
   resolutionContainer: {
     flexDirection: "row",
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     gap: 5,
     marginTop: 5,
     marginBottom: 10,
@@ -264,8 +257,6 @@ const styles = StyleSheet.create({
     fontFamily: "DMMono",
     color: "black",
   },
-
-
 });
 
 const mockEntries = {
@@ -351,7 +342,7 @@ const mockEntries = {
     date: "FEB 21",
     time: "8:00 AM",
     location: "Home",
-   triggers: ["Too loud", "Crowded", "Uncomfortable Social Interactions"],
+    triggers: ["Too loud", "Crowded", "Uncomfortable Social Interactions"],
     behaviors: ["Crying", "Yelling", "Hitting"],
     resolutions: ["Leaving the mall", "Wrapping in their blanket"],
     intensity: 1,

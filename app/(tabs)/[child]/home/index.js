@@ -1,4 +1,4 @@
-import { useRef, useCallback, useMemo } from "react";
+import { useRef, useCallback, useState, useEffect } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import {
   StyleSheet,
@@ -11,8 +11,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { defaultStyles } from "../../../constants/Styles.js";
-import Colors from "../../../constants/Colors.js";
+import { defaultStyles } from "../../../../constants/Styles.js";
+import Colors from "../../../../constants/Colors.js";
 import {
   BottomSheetModal,
   BottomSheetScrollView,
@@ -21,8 +21,58 @@ import {
 import * as Haptics from "expo-haptics";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { getChild, getUser, getEntry } from "../../../../firebase/requests.js";
+import { auth } from "../../../../firebase/firebase.js";
+
 export default function Home() {
   const { child } = useLocalSearchParams();
+
+  const userID = auth.currentUser.uid;
+  const [children, setChildren] = useState([]);
+  const [childEntries, setChildEntries] = useState([]);
+
+  useEffect(() => {
+    getUser(userID)
+      .then((userData) => {
+        const childrenArray = Object.entries(userData.children || []);
+        // Fetch child data for each child ID
+        const promises = childrenArray.map(([childID]) =>
+          getChild(childID).then((childData) => ({ childID, ...childData }))
+        );
+        Promise.all(promises)
+          .then((childDataArray) => {
+            setChildren(childDataArray);
+          })
+          .catch((error) => {
+            console.error("Error fetching child data:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error getting user:", error);
+      });
+  }, [userID]);
+
+  const currChild = children.find((childItem) => childItem.childID === child);
+  const childName = currChild ? currChild.childName : "";
+
+  useEffect(() => {
+    if (currChild) {
+      const childEntryIDs = Object.entries(currChild.entries || []);
+      const promises = childEntryIDs.map(([_, entryID]) => {
+        return getEntry(entryID).then((entryData) => ({
+          entryID,
+          ...entryData,
+        }));
+      });
+      Promise.all(promises)
+        .then((entryDataArray) => {
+          setChildEntries(entryDataArray);
+        })
+        .catch((error) => {
+          console.error("Error fetching child entries:", error);
+        });
+    }
+  }, [currChild]);
 
   const bottomSheetRef = useRef(null);
   const handleChildSelect = () => (
@@ -42,25 +92,25 @@ export default function Home() {
   );
 
   const renderItem = useCallback(
-    (item) => (
+    ({ childID, childName }) => (
       <TouchableOpacity
-        key={item}
+        key={childID}
         style={styles.itemContainer}
         onPress={() => {
           // router.replace(item);
           router.replace("/(auth)/child-select");
-          router.replace(`${item}/home`);
+          router.replace(`${childID}/home`);
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }}
       >
-        <Text style={styles.btnText}>{item}</Text>
+        <Text style={styles.btnText}>{childName}</Text>
       </TouchableOpacity>
     ),
     []
   );
 
   const handleNewEntry = () => (
-    router.navigate("/(modals)/new-entry"),
+    router.navigate("./home/new-entry"),
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
 
@@ -68,6 +118,39 @@ export default function Home() {
     router.navigate(`/(modals)/${entry}`),
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
+
+  const formatDate = (inputDate) => {
+    const days = [
+      "SUNDAY",
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+    ];
+    const months = [
+      "JANUARY",
+      "FEBRUARY",
+      "MARCH",
+      "APRIL",
+      "MAY",
+      "JUNE",
+      "JULY",
+      "AUGUST",
+      "SEPTEMBER",
+      "OCTOBER",
+      "NOVEMBER",
+      "DECEMBER",
+    ];
+
+    const dateObj = new Date(inputDate);
+    const day = days[dateObj.getDay()];
+    const month = months[dateObj.getMonth()];
+    const date = dateObj.getDate();
+
+    return `${day}, ${month} ${date}`;
+  };
 
   const intensityColors = [
     "",
@@ -85,53 +168,50 @@ export default function Home() {
         style={styles.nameContainer}
         onPress={handleChildSelect}
       >
-        <Text style={defaultStyles.title}>{child}</Text>
+        <Text style={defaultStyles.title}>{childName}</Text>
         <FontAwesome name="caret-down" size={30} color={Colors.primary} />
       </TouchableOpacity>
 
       {/* Previous Entries */}
       <View>
         <FlatList
-          data={Object.keys(mockEntries)}
+          data={childEntries}
           renderItem={({ item }) => (
             <TouchableOpacity
+              key={item.entryID}
               style={entryStyles.entryContainer}
-              onPress={() => handleOpenEntry(item)}
+              onPress={() => handleOpenEntry(item.entryID)}
             >
               {/* Date */}
-              <Text style={entryStyles.title}>
-                {mockEntries[item].day}, {mockEntries[item].date}
-              </Text>
+              <Text style={entryStyles.title}>{formatDate(item.date)}</Text>
               {/* Time & Location */}
               <Text style={entryStyles.textSmall}>
-                {mockEntries[item].time} • {mockEntries[item].location}
+                {item.time_experience} • {item.location}
               </Text>
               {/* Intensity */}
               <View style={entryStyles.intensityContainer}>
                 {Array.from({
-                  length: parseInt(mockEntries[item].intensity),
+                  length: parseInt(item.severity),
                 }).map((_, index) => (
                   <View
                     key={index}
                     style={[
                       entryStyles.intensityBox,
                       {
-                        backgroundColor:
-                          intensityColors[mockEntries[item].intensity],
+                        backgroundColor: intensityColors[item.severity],
                       },
                     ]}
                   />
                 ))}
                 {Array.from({
-                  length: 5 - parseInt(mockEntries[item].intensity),
+                  length: 5 - parseInt(item.severity),
                 }).map((_, index) => (
                   <View
                     key={index}
                     style={[
                       entryStyles.emptyBox,
                       {
-                        borderColor:
-                          intensityColors[mockEntries[item].intensity],
+                        borderColor: intensityColors[item.severity],
                       },
                     ]}
                   />
@@ -139,7 +219,7 @@ export default function Home() {
               </View>
               {/* Behaviors */}
               <View style={entryStyles.behaviorContainer}>
-                {Array.from(mockEntries[item].behaviors).map((behavior) => (
+                {Array.from(item.behaviors).map((behavior) => (
                   <View key={behavior} style={entryStyles.behavior}>
                     <Text key={behavior} style={entryStyles.behaviorText}>
                       {behavior}
@@ -148,7 +228,7 @@ export default function Home() {
                 ))}
               </View>
               {/* Note */}
-              <Text style={entryStyles.text}>{mockEntries[item].note}</Text>
+              <Text style={entryStyles.text}>{item.notes}</Text>
               {/* Expand Button */}
               <View style={entryStyles.expandButton}>
                 <Feather
@@ -160,7 +240,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.entryID}
           contentContainerStyle={{ paddingBottom: 160 }}
         />
       </View>
@@ -179,9 +259,7 @@ export default function Home() {
         backdropComponent={renderBackdrop}
       >
         <BottomSheetScrollView>
-          {Object.keys(mockChildren).map((key) =>
-            renderItem(mockChildren[key])
-          )}
+          {children.map(renderItem)}
         </BottomSheetScrollView>
       </BottomSheetModal>
     </SafeAreaView>
@@ -252,6 +330,7 @@ const entryStyles = StyleSheet.create({
 
   behaviorContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 5,
     marginTop: 5,
     marginBottom: 10,

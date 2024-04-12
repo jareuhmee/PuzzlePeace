@@ -1,32 +1,63 @@
+import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import { TouchableOpacity, Text, View } from "react-native";
 import { defaultStyles } from "../../constants/Styles.js";
 
+import { getChild, getUser } from "../../firebase/requests.js";
+import { auth } from "../../firebase/firebase.js";
+
 export default function ChildSelect() {
-  const renderChildButton = (child, index) => (
-    <View
-      key={index}
-      style={{
-        flexDirection: "row-reverse",
-        alignItems: "center",
-        marginBottom: 5,
-        width: 250,
-        marginLeft: 30,
-      }}
-    >
-      <TouchableOpacity
-        style={[defaultStyles.btn, { flex: 1 }]}
-        onPress={() => {
-          router.replace(`(tabs)/${child}/home`);
+  const userID = auth.currentUser.uid;
+  const [children, setChildren] = useState([]);
+
+  useEffect(() => {
+    getUser(userID)
+      .then((userData) => {
+        const childrenArray = Object.entries(userData.children || []);
+        // Fetch child data for each child ID
+        const promises = childrenArray.map(([childID]) =>
+          getChild(childID).then((childData) => ({ childID, ...childData }))
+        );
+        Promise.all(promises)
+          .then((childDataArray) => {
+            // Set the array with both childID and childData
+            setChildren(childDataArray);
+          })
+          .catch((error) => {
+            console.error("Error fetching child data:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error getting user:", error);
+      });
+  }, [userID]);
+
+  const renderChildButton = ({ childID, childName }) => {
+    return (
+      <View
+        key={childID}
+        style={{
+          flexDirection: "row-reverse",
+          alignItems: "center",
+          marginBottom: 5,
+          width: 250,
+          marginLeft: 30,
         }}
       >
-        <Text style={defaultStyles.btnText}>{child}</Text>
-      </TouchableOpacity>
-      <View style={styles.profilePicCircle}>
-        {/* profile picture content here */}
+        <TouchableOpacity
+          style={[defaultStyles.btn, { flex: 1 }]}
+          onPress={() => {
+            router.replace(`(tabs)/${childID}/home`);
+          }}
+        >
+          <Text style={defaultStyles.btnText}>{childName}</Text>
+        </TouchableOpacity>
+        <View style={styles.profilePicCircle}>
+          {/* profile picture content here */}
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   const styles = {
     profilePicCircle: {
@@ -46,7 +77,7 @@ export default function ChildSelect() {
       <Text style={defaultStyles.title}>Child Select</Text>
       <View style={defaultStyles.separator} />
 
-      {Object.values(mockChildren).map(renderChildButton)}
+      {children.map(renderChildButton)}
 
       <TouchableOpacity
         style={defaultStyles.addChildBtn}

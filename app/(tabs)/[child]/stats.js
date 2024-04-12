@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity, 
   Pressable,
-  FlatList} from "react-native";
+  } from "react-native";
 import { defaultStyles } from "../../../constants/Styles.js";
 import { useGlobalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,13 +20,16 @@ import {
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import * as Haptics from "expo-haptics";
+import BarGraph from "../../../components/BarGraph.js"
+import PieGraph from "../../../components/PieGraph.js";
 
 export default function Stats() {
   const { child } = useGlobalSearchParams();
   const [timeFrame, setTimeFrame] = useState("1W"); //1W, 1M, 3M, 6M, 1Y
   const [statistics, setStatistics] = useState(mockStats);
   const bottomSheetRef = useRef(null);
-
+  //handle reRender on changing TimeFrame
+  //recomputation of graphs: 
   //handle switching child across home and stats.js
   const renderBackdrop = useCallback(
     (props) => (
@@ -60,6 +63,7 @@ export default function Stats() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   );
 
+
   //subcomponents
   const GenStatCard = ({statisticTitle, value}) => {
     return(
@@ -71,10 +75,11 @@ export default function Stats() {
   }
   return (
     <SafeAreaView style={styles_stats.container}>
+      <ScrollView contentContainerStyle={{paddingBottom: 200, alignItems: 'center'}}>
       <View style={styles_stats.buttonContainer}>
         {timeFrames.map((item, index) => (
           <Pressable
-            id="index"
+            id={index}
             onPress={() => setTimeFrame(item)}
             style={timeFrame === item ? styles_stats.btnClicked : styles_stats.btn}>
             <Text>{item}</Text>
@@ -95,8 +100,8 @@ export default function Stats() {
           </View>
           <View style={styles_stats.row}>
             <GenStatCard 
-            statisticTitle={"Average Duration"}
-            value={statistics.averageDuration}
+            statisticTitle={"Average Intensity"}
+            value={statistics.averageIntensity}
             ></GenStatCard>
             <GenStatCard 
             statisticTitle={"Most Used Resolution"}
@@ -104,8 +109,10 @@ export default function Stats() {
             ></GenStatCard>
           </View>
       </View>
-      {/* Line Graph for total meltdowns */}
-      
+      {/* Bar Graph for total meltdowns */}
+      <BarGraph barData={statistics.barData}></BarGraph>
+      <PieGraph pieData={statistics.triggerData}></PieGraph>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -113,10 +120,29 @@ const timeFrames = ["1W", "1M", "3M", "6M", "1Y"];
 
 //data we want to load will look like this object
 const mockStats = {
+  childName: "Jenna",
   totalMeltdowns: 4,
   mostCommonTrigger: "Loud Environment",
-  averageDuration: "30m",
-  mostUsedResolution: "Fidget Toys"
+  averageIntensity: "3.57",
+  mostUsedResolution: "Fidget Toys",
+
+  barData: {
+    startDate: 'Feb 25',
+    endDate: 'Mar 24',
+    timeEndPoints: ['Wk1', 'Wk2', 'Wk3', 'Wk4', 'Wk5'],
+  },
+
+  triggerData:  {
+    name: "Trigger Occurrences",
+    childName: "Jenna",
+    pieData: [
+        {value: 8, name: 'Loud Noises'},
+        {value: 6, name: 'Routine change'},
+        {value: 4, name: 'Waiting in line'},
+        {value: 4, name: 'Scolding'},
+        {value: 2, name: 'Too many options'}
+    ]
+}
   
 }
 
@@ -130,7 +156,7 @@ const mockChildren = {
 };
 
 //Styles
-export const styles_stats = StyleSheet.create({
+const styles_stats = StyleSheet.create({
   container: {
     backgroundColor: Colors.background,
     flex: 1,
@@ -160,7 +186,6 @@ export const styles_stats = StyleSheet.create({
     marginVertical: 10,
     width: "75%",
 
-    
   },
   btn: {
     borderColor: Colors.primary,
@@ -180,6 +205,7 @@ export const styles_stats = StyleSheet.create({
     borderRadius: 10,
   },
   header: {
+    alignSelf: 'left',
     fontSize: 22,
     fontFamily: "DMSans",
     color: Colors.primary,
@@ -191,24 +217,34 @@ export const styles_stats = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center"
   },
+  genStatContainer: {
+    justifyContent: 'center',
+    width: 350
+  },
   statCard: {
+    flexDirection: "column",
     borderWidth: 2,
     borderColor: Colors.primary,
+    backgroundColor: Colors.grey,
     borderRadius: 5,
     marginHorizontal: 10,
     marginVertical: 10,
     padding: 5,
-    width: 120,
-    height: 70
+    width: 130,
+    height: 80
   },
   statCardHeader: {
     fontFamily: "DMSans",
-    fontSize: 10
+    fontWeight: "200",
+    fontSize: 12,
+    color: Colors.primary
 
   },
   statValue: {
-    alignSelf: "stretch",
+    alignSelf: "center",
+    textAlign: 'center',
     fontFamily: "DMSans",
-    marginTop: 10
+    marginTop: 10,
+    fontSize: 14
   }
 });
