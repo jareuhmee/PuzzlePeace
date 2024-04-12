@@ -3,6 +3,8 @@ import { Text, TextInput, View, TouchableOpacity, ActivityIndicator } from "reac
 import { auth } from "../../firebase/firebase.js";
 import { sendPasswordResetEmail } from "@firebase/auth";
 import { defaultStyles } from "../../constants/Styles.js";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faInfinity } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "expo-router";
 
 export default function PasswordReset() {
@@ -33,6 +35,7 @@ export default function PasswordReset() {
         
       {!resetSent ? (
         <>
+          <FontAwesomeIcon icon={faInfinity} style={defaultStyles.iconOnLogin} size={70}/>
           <Text style={defaultStyles.loginPageLogIn}>Reset Password</Text>
           <View style={defaultStyles.separator} />
 
