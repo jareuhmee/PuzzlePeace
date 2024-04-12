@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { router } from "expo-router";
+import { Link } from "expo-router";
 import { TouchableOpacity, Text, View } from "react-native";
 import { defaultStyles } from "../../constants/Styles.js";
 
@@ -75,16 +76,17 @@ export default function ChildSelect() {
   return (
     <View style={defaultStyles.container}>
       <Text style={defaultStyles.title}>Child Select</Text>
-      <View style={defaultStyles.separator} />
+      <View style={defaultStyles.separator3} />
 
       {children.map(renderChildButton)}
-
+      
+      <Link href="/(auth)/child-add" asChild>
       <TouchableOpacity
         style={defaultStyles.addChildBtn}
-        onPress={() => router.replace("/(auth)/child-add")}
       >
         <Text style={defaultStyles.btnText}>Add Child</Text>
       </TouchableOpacity>
+      </Link>
     </View>
   );
 }

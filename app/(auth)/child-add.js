@@ -4,9 +4,9 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { defaultStyles } from "../../constants/Styles.js";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { Keyboard } from "react-native";
+import { Link } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
-import { router } from "expo-router";
+
 
 import { createChild } from "../../firebase/requests.js";
 import { auth } from "../../firebase/firebase.js";
@@ -54,8 +54,6 @@ export default function ChildAdd() {
     console.log("Child's Name:", childName);
     console.log("Birthday:", birthday);
     console.log("Profile Picture:", profilePicture);
-    router.replace("/(auth)/child-select");
-
     createChild(childName, birthday, "", "", "", [], [userID]);
   };
 
@@ -63,6 +61,7 @@ export default function ChildAdd() {
     setShowDatePicker(false); // Hides the date picker only when "Done" is pressed
     setShowDoneButton(false); // Hide the "Done" button once user is finished picking date
   };
+
 
   return (
     <View style={defaultStyles.container}>
@@ -180,22 +179,24 @@ export default function ChildAdd() {
         />
       </View>
 
-      
+      <Link href="/(customize)/customize" asChild>
       <TouchableOpacity
         style={defaultStyles.btn}
-        onPress={handleSubmit}
       >
         <Text style={defaultStyles.btnText}>Customize Triggers</Text>
       </TouchableOpacity>
+      </Link>
 
       <View style={defaultStyles.separator2} />
 
+      <Link href="/(auth)/child-select" asChild>
       <TouchableOpacity
         style={defaultStyles.addChildBtn}
         onPress={handleSubmit}
       >
         <Text style={defaultStyles.btnText}>Submit</Text>
       </TouchableOpacity>
+      </Link>
 
     </View>
   );
