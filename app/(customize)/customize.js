@@ -21,11 +21,10 @@ export default function Customize() {
 
   return (
     <>
-      <Text style={defaultStyles.title}>Customize</Text>
-
+    
       <View style={defaultStyles.container}>
+      <Text style={defaultStyles.title}>Customize</Text>
         <View style={styles.box}>
-          
           <Text style={defaultStyles.h1}>Triggers</Text>
           {/* Mock Triggers */}
           <View style={styles.behaviorContainer}>
@@ -43,19 +42,36 @@ export default function Customize() {
         </View>
 
         <View style={styles.box}>
+          <Text style={defaultStyles.h1}>Behaviors</Text>
+          {/* Mock Behaviors */}
+          <View style={styles.behaviorContainer}>
+            {Array.from(mockEntries[0].behaviors).map((behavior) => (
+              <View key={behavior} style={styles.behavior}>
+                <Text key={behavior} style={styles.behaviorText}>
+                  {behavior}
+                </Text>
+              </View>
+            ))}
+          </View>
           <TouchableOpacity style={styles.addBtn} onPress={() => router.navigate("./add-behaviors")}>
             <Text style={defaultStyles.btnText}>+</Text>
           </TouchableOpacity>
-          <Text style={defaultStyles.h1}>Behaviors</Text>
-          {/* Example values */}
         </View>
 
         <View style={styles.box}>
+          <Text style={defaultStyles.h1}>Resolutions</Text>
+          <View style={styles.behaviorContainer}>
+            {Array.from(mockEntries[0].resolutions).map((resolution) => (
+              <View key={resolution} style={styles.behavior}>
+                <Text key={resolution} style={styles.behaviorText}>
+                  {resolution}
+                </Text>
+              </View>
+            ))}
+          </View>
           <TouchableOpacity style={styles.addBtn} onPress={() => router.navigate("./add-resolutions")}>
             <Text style={defaultStyles.btnText}>+</Text>
           </TouchableOpacity>
-          <Text style={defaultStyles.h1}>Resolutions</Text>
-          {/* Example values */}
         </View>
 
         <TouchableOpacity
@@ -72,8 +88,13 @@ export default function Customize() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center", 
+  },
   box: {
-    padding: 10,
+    padding: 20,
     marginVertical: 10,
     marginHorizontal: 20,
     borderColor: Colors.primary,
@@ -86,10 +107,14 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     backgroundColor: Colors.tint,
-    borderRadius: 5,
-    padding: 5,
+    borderRadius: 50,
+    width: 30, 
+    height: 30, 
+    alignItems: "center", 
+    justifyContent: "center",
   },
   behaviorContainer: {
+    paddingTop: 10,
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 5,
