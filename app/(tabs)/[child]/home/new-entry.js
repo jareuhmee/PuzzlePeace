@@ -101,7 +101,7 @@ export default function NewEntry() {
       child
     );
 
-    router.back();
+    router.replace("/(auth)/child-select");
     router.replace(`${child}/home`);
   };
 

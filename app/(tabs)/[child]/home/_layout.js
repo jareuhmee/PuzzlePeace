@@ -24,7 +24,7 @@ export default function HomeLayout() {
         name="new-entry"
         options={{
           title: "New Entry",
-          presentation: "formSheet",
+          presentation: "card",
           headerStyle: {
             backgroundColor: Colors.background,
           },
