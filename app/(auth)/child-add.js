@@ -7,18 +7,18 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 
-
 import { createChild } from "../../firebase/requests.js";
 import { auth } from "../../firebase/firebase.js";
+import { uploadChildProfilePicture } from "../../firebase/requests.js";
 
 export default function ChildAdd() {
   const userID = auth.currentUser.uid;
 
   const [childName, setChildName] = useState("");
   const [birthday, setBirthday] = useState(new Date());
-  const [profilePicture] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showDoneButton, setShowDoneButton] = useState(false);
+  const [profilePicture, setProfilePicture] = useState("");
 
   const handleInputChange = (text) => {
     setChildName(text);
@@ -31,8 +31,7 @@ export default function ChildAdd() {
   };
 
   const handleProfilePictureSelect = async () => {
-    let permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
       alert("Permission to access camera roll is required!");
       return;
@@ -43,9 +42,9 @@ export default function ChildAdd() {
       aspect: [1, 1],
       quality: 1,
     });
-
+  
     if (!pickerResult.canceled) {
-      profilePicture(pickerResult.uri);
+      setProfilePicture(pickerResult.assets[0].uri);
     }
   };
 
@@ -54,9 +53,19 @@ export default function ChildAdd() {
     console.log("Child's Name:", childName);
     console.log("Birthday:", birthday);
     console.log("Profile Picture:", profilePicture);
-    createChild(childName, birthday, "", "", "", [], [userID]);
+    
+    try {  
+      const childID = createChild(childName, birthday, "", "", "", [], [userID], profilePicture);
+      console.log("Child created with ID:", childID);
+  
+      if (profilePicture) {
+        uploadChildProfilePicture(childID, profilePicture);
+      }
+    } catch (error) {
+      console.error("Error creating child or uploading profile picture:", error);
+    }
   };
-
+  
   const handleDonePress = () => {
     setShowDatePicker(false); // Hides the date picker only when "Done" is pressed
     setShowDoneButton(false); // Hide the "Done" button once user is finished picking date

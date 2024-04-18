@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { router } from "expo-router";
-import { Link } from "expo-router";
-import { TouchableOpacity, Text, View } from "react-native";
+import { TouchableOpacity, Text, View, Image } from "react-native";
 import { defaultStyles } from "../../constants/Styles.js";
 
 import { getChild, getUser } from "../../firebase/requests.js";
@@ -33,7 +32,7 @@ export default function ChildSelect() {
       });
   }, [userID]);
 
-  const renderChildButton = ({ childID, childName }) => {
+  const renderChildButton = ({ childID, childName, profilePicture }) => {
     return (
       <View
         key={childID}
@@ -53,8 +52,18 @@ export default function ChildSelect() {
         >
           <Text style={defaultStyles.btnText}>{childName}</Text>
         </TouchableOpacity>
+        
+
         <View style={styles.profilePicCircle}>
-          {/* profile picture content here */}
+                  {profilePicture ? (
+                    <Image
+                      source={{ uri: profilePicture }}
+                      style={{ width: 36, height: 36, borderRadius: 18 }}
+                    />
+                  ) : (
+                    <Text>No Pic!</Text>
+                  )}
+              
         </View>
       </View>
     );
@@ -76,27 +85,19 @@ export default function ChildSelect() {
   return (
     <View style={defaultStyles.container}>
       <Text style={defaultStyles.title}>Child Select</Text>
-      <View style={defaultStyles.separator3} />
+      <View style={defaultStyles.separator} />
 
       {children.map(renderChildButton)}
-      
-      <Link href="/(auth)/child-add" asChild>
+
       <TouchableOpacity
         style={defaultStyles.addChildBtn}
+        onPress={() => router.replace("/(auth)/child-add")}
       >
         <Text style={defaultStyles.btnText}>Add Child</Text>
       </TouchableOpacity>
-      </Link>
     </View>
   );
 }
 
-// Mock Data: List of children
-const mockChildren = {
-  0: "Alice",
-  1: "Bryan",
-  2: "Cole",
-  3: "Jemar",
-  4: "John",
-  5: "Maddy",
-};
+
+
