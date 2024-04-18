@@ -28,6 +28,26 @@ export default function NewEntry() {
   const [resolutions, setResolutions] = useState([]);
   const [note, setNote] = useState("");
 
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showDateDoneButton, setShowDateDoneButton] = useState(false);
+
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [showTimeDoneButton, setShowTimeDoneButton] = useState(false);
+
+  const handleInputChange = (text) => {
+    setLocation(text);
+  };
+
+  const handleDateDonePress = () => {
+    setShowDatePicker(false);
+    setShowDateDoneButton(false);
+  };
+
+  const handleTimeDonePress = () => {
+    setShowTimePicker(false);
+    setShowTimeDoneButton(false);
+  };
+
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
@@ -93,7 +113,7 @@ export default function NewEntry() {
       formattedTimeEntry,
       formattedTimeExperience,
       3, // TODO
-      "Home", // TODO
+      location,
       triggers,
       behaviors,
       resolutions,
@@ -110,21 +130,111 @@ export default function NewEntry() {
       style={styles.container}
       contentContainerStyle={styles.containerContent}
     >
-      <Text style={styles.h2}>ChildID: {child}</Text>
-      <DateTimePicker
-        value={date}
-        mode="date"
-        display="default"
-        onChange={handleDateChange}
-        style={defaultStyles.h2}
-      />
+      {/* <Text style={styles.h2}>ChildID: {child}</Text> */}
 
-      <DateTimePicker
-        value={timeExperience}
-        mode="time"
-        display="default"
-        onChange={handleTimeExperienceChange}
-      />
+      <View style={styles.box}>
+        <Text style={styles.h1}>Details</Text>
+        <View
+          style={{
+            backgroundColor: "white",
+            borderRadius: 5,
+            marginBottom: 10,
+          }}
+        >
+          <TextInput
+            style={{ padding: 15 }}
+            value={location}
+            onChangeText={handleInputChange}
+            placeholder="Enter Location"
+            returnKeyType="done"
+          />
+          <View
+            style={{
+              backgroundColor: "#e9e9ea",
+              borderRadius: 100,
+              height: 1,
+              width: "100%",
+            }}
+          />
+        </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            setShowDatePicker(true);
+            setShowDateDoneButton(true);
+          }}
+          style={{
+            backgroundColor: "white",
+            borderRadius: 5,
+            marginBottom: 10,
+          }}
+        >
+          <Text style={{ padding: 15 }}>Date: {date.toLocaleDateString()}</Text>
+          {showDateDoneButton && showDatePicker && (
+            <Text
+              style={{
+                position: "absolute",
+                right: 10,
+                top: 15,
+              }}
+              onPress={handleDateDonePress}
+            >
+              Done
+            </Text>
+          )}
+        </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="inline"
+            onChange={handleDateChange}
+          />
+        )}
+
+        <TouchableOpacity
+          onPress={() => {
+            setShowTimePicker(true);
+            setShowTimeDoneButton(true);
+          }}
+          style={{
+            backgroundColor: "white",
+            borderRadius: 5,
+            marginBottom: 10,
+          }}
+        >
+          <Text style={{ padding: 15 }}>
+            Time:{" "}
+            {timeExperience.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </Text>
+          {showTimeDoneButton && showTimePicker && (
+            <Text
+              style={{
+                position: "absolute",
+                right: 10,
+                top: 15,
+              }}
+              onPress={handleTimeDonePress}
+            >
+              Done
+            </Text>
+          )}
+        </TouchableOpacity>
+
+        {showTimePicker && (
+          <DateTimePicker
+            value={timeExperience}
+            mode="time"
+            display="spinner"
+            onChange={handleTimeExperienceChange}
+          />
+        )}
+      </View>
 
       <View style={styles.box}>
         <Text style={styles.h1}>What happened before?</Text>
