@@ -7,6 +7,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -21,7 +22,7 @@ export default function NewEntry() {
 
   const [date, setDate] = useState(new Date());
   const [timeExperience, setTimeExperience] = useState(new Date());
-  const [intensity, setIntensity] = useState(0);
+  const [intensity, setIntensity] = useState(1);
   const [location, setLocation] = useState("");
   const [triggers, setTriggers] = useState([]);
   const [behaviors, setBehaviors] = useState([]);
@@ -56,6 +57,11 @@ export default function NewEntry() {
   const handleTimeExperienceChange = (event, selectedTime) => {
     const curentTime = selectedTime || timeExperience;
     setTimeExperience(curentTime);
+  };
+
+  const handleIntensitySelect = (level) => {
+    setIntensity(level);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   const toggleTrigger = (trigger) => {
@@ -97,7 +103,6 @@ export default function NewEntry() {
       minute: "2-digit",
       hour12: true,
     });
-
     console.log(
       formattedDate,
       formattedTimeEntry,
@@ -112,7 +117,7 @@ export default function NewEntry() {
       formattedDate,
       formattedTimeEntry,
       formattedTimeExperience,
-      3, // TODO
+      intensity,
       location,
       triggers,
       behaviors,
@@ -303,6 +308,21 @@ export default function NewEntry() {
           </TouchableOpacity>
         </View>
         <Text style={styles.h2}>Select Intensity Level</Text>
+        <Text style={styles.h3}>Intensity Level: {intensity}</Text>
+        <View style={styles.intensityContainer}>
+          {[1, 2, 3, 4, 5].map((level) => (
+            <Pressable
+              key={level}
+              style={[
+                styles.emptyBox,
+                intensity >= level
+                  ? { backgroundColor: Colors.tint }
+                  : { backgroundColor: Colors.background },
+              ]}
+              onPress={() => handleIntensitySelect(level)}
+            />
+          ))}
+        </View>
       </View>
 
       <View style={styles.box}>
@@ -404,6 +424,12 @@ const styles = StyleSheet.create({
     fontFamily: "DMSans",
     color: "black",
   },
+  h3: {
+    fontSize: 12,
+    paddingBottom: 5,
+    fontFamily: "DMSans",
+    color: "black",
+  },
   text: {
     fontSize: 12,
     fontFamily: "DMSans",
@@ -418,20 +444,20 @@ const styles = StyleSheet.create({
   intensityContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 2,
+    gap: 6,
     marginVertical: 5,
   },
   intensityBox: {
-    width: 15,
-    height: 10,
-    borderRadius: 2,
+    width: 45,
+    height: 30,
+    borderRadius: 4,
     backgroundColor: Colors.tint,
   },
   emptyBox: {
-    width: 15,
-    height: 10,
-    borderRadius: 2,
-    borderWidth: 2,
+    width: 45,
+    height: 30,
+    borderRadius: 4,
+    borderWidth: 4,
     borderColor: Colors.tint,
   },
   intensityText: {
