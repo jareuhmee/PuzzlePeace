@@ -29,7 +29,7 @@ export default function AddBehaviors() {
   return (
     <>
       <View style={styles.container}>
-      <Text style={defaultStyles.title}>Add Behaviors</Text>
+        <Text style={defaultStyles.title}>Add Behaviors</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -46,7 +46,10 @@ export default function AddBehaviors() {
           {behaviors.map((behavior) => (
             <View key={behavior} style={styles.behaviorItem}>
               <Text style={styles.behaviorText}>{behavior}</Text>
-              <TouchableOpacity style={styles.deleteButton} onPress={() => deleteBehvaior(behavior)}>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => deleteBehavior(behavior)}
+              >
                 <Text style={styles.deleteButtonText}>+</Text>
               </TouchableOpacity>
             </View>
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: Colors.background,
-    paddingTop: 100, 
+    paddingTop: 100,
   },
   inputContainer: {
     flexDirection: "row",
