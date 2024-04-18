@@ -191,27 +191,27 @@ export default function Home() {
               {/* Intensity */}
               <View style={entryStyles.intensityContainer}>
                 {Array.from({
-                  length: parseInt(item.severity),
+                  length: parseInt(item.intensity),
                 }).map((_, index) => (
                   <View
                     key={index}
                     style={[
                       entryStyles.intensityBox,
                       {
-                        backgroundColor: intensityColors[item.severity],
+                        backgroundColor: intensityColors[item.intensity],
                       },
                     ]}
                   />
                 ))}
                 {Array.from({
-                  length: 5 - parseInt(item.severity),
+                  length: 5 - parseInt(item.intensity),
                 }).map((_, index) => (
                   <View
                     key={index}
                     style={[
                       entryStyles.emptyBox,
                       {
-                        borderColor: intensityColors[item.severity],
+                        borderColor: intensityColors[item.intensity],
                       },
                     ]}
                   />

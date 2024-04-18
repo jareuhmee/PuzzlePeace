@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { 
   Text, 
   View, 
@@ -9,7 +9,7 @@ import {
   Pressable,
   } from "react-native";
 import { defaultStyles } from "../../../constants/Styles.js";
-import { useGlobalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -22,11 +22,40 @@ import {
 import * as Haptics from "expo-haptics";
 import BarGraph from "../../../components/BarGraph.js"
 import PieGraph from "../../../components/PieGraph.js";
+import { auth } from "../../../firebase/firebase.js";
+import { getUser, getChild} from "../../../firebase/requests.js"
 
 export default function Stats() {
   const { child } = useGlobalSearchParams();
-  const [timeFrame, setTimeFrame] = useState("1W"); //1W, 1M, 3M, 6M, 1Y
   const [statistics, setStatistics] = useState(mockStats);
+  const userID = auth.currentUser.uid;
+  const [children, setChildren] = useState([]);
+  //handles change of user account
+  useEffect(() => {
+    getUser(userID)
+      .then((userData) => {
+        const childrenArray = Object.entries(userData.children || []);
+        // Fetch child data for each child ID
+        const promises = childrenArray.map(([childID]) =>
+          getChild(childID).then((childData) => ({ childID, ...childData }))
+        );
+        Promise.all(promises)
+          .then((childDataArray) => {
+            setChildren(childDataArray);
+          })
+          .catch((error) => {
+            console.error("Error fetching child data:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error getting user:", error);
+      });
+  }, [userID]);
+
+  const currChild = children.find((childItem) => childItem.childID === child);
+  const childName = currChild ? currChild.childName : "";
+
+
   const bottomSheetRef = useRef(null);
   //handle reRender on changing TimeFrame
   //recomputation of graphs: 
@@ -43,21 +72,27 @@ export default function Stats() {
   );
   //render list of names
   const renderItem = useCallback(
-    (item) => (
+    ({ childID, childName }) => (
       <TouchableOpacity
-        key={item}
+        key={childID}
         style={styles_stats.itemContainer}
         onPress={() => {
-          router.replace(item);
-          router.navigate(`${item}/home`);
+          // router.replace(item);
+          router.replace("/(auth)/child-select");
+          router.replace(`${childID}/stats`);
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }}
       >
-        <Text style={styles_stats.btnText}>{item}</Text>
+        <Text style={styles_stats.btnText}>{childName}</Text>
       </TouchableOpacity>
     ),
     []
   );
+
+  useEffect(() => {
+
+  }, [])
+
   const handleChildSelect = () => (
     bottomSheetRef.current.present(),
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
@@ -75,18 +110,17 @@ export default function Stats() {
   }
   return (
     <SafeAreaView style={styles_stats.container}>
+      {/* Child Name */}
+      <TouchableOpacity
+        style={styles_stats.nameContainer}
+        onPress={handleChildSelect}
+      >
+        <Text style={defaultStyles.title}>{childName}</Text>
+        <FontAwesome name="caret-down" size={30} color={Colors.primary} />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={{paddingBottom: 200, alignItems: 'center'}}>
-      <View style={styles_stats.buttonContainer}>
-        {timeFrames.map((item, index) => (
-          <Pressable
-            id={index}
-            onPress={() => setTimeFrame(item)}
-            style={timeFrame === item ? styles_stats.btnClicked : styles_stats.btn}>
-            <Text>{item}</Text>
-          </Pressable>
-        ))}
-      </View>
-      <Text style={styles_stats.header}>General Statistics</Text>
+      <Text style={styles_stats.header}> Insights for {childName}</Text>
       <View style={styles_stats.genStatContainer}>
           <View style={styles_stats.row}>
             <GenStatCard 
@@ -113,10 +147,19 @@ export default function Stats() {
       <BarGraph barData={statistics.barData}></BarGraph>
       <PieGraph pieData={statistics.triggerData}></PieGraph>
       </ScrollView>
+      {/* Change Child Bottom Sheet */}
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        snapPoints={["50%"]}
+        backdropComponent={renderBackdrop}
+      >
+        <BottomSheetScrollView>
+          {children.map(renderItem)}
+        </BottomSheetScrollView>
+      </BottomSheetModal>
     </SafeAreaView>
   );
 }
-const timeFrames = ["1W", "1M", "3M", "6M", "1Y"];
 
 //data we want to load will look like this object
 const mockStats = {
@@ -146,15 +189,6 @@ const mockStats = {
   
 }
 
-const mockChildren = {
-  0: "Alice",
-  1: "Bryan",
-  2: "Cole",
-  3: "Jemar",
-  4: "John",
-  5: "Maddy",
-};
-
 //Styles
 const styles_stats = StyleSheet.create({
   container: {
@@ -171,21 +205,6 @@ const styles_stats = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     padding: 20,
-  },
-  buttonContainer: {
-    alignItems: "center",
-    alignSelf: "center",
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: Colors.primary,
-    display: "flex",
-    flexDirection: "row",
-    height: 30,
-    justifyContent: "space-evenly",
-    marginHorizontal: 12,
-    marginVertical: 10,
-    width: "75%",
-
   },
   btn: {
     borderColor: Colors.primary,
@@ -205,7 +224,7 @@ const styles_stats = StyleSheet.create({
     borderRadius: 10,
   },
   header: {
-    alignSelf: 'left',
+    alignSelf: 'flex-start',
     fontSize: 22,
     fontFamily: "DMSans",
     color: Colors.primary,
