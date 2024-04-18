@@ -13,6 +13,7 @@ import {
   orderByChild,
   child,
 } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 /*##################### USER REQUESTS ###################*/
 export function createUser(userID, email, firstName, children) {
   const db = getDatabase(app);
@@ -75,7 +76,8 @@ export function createChild(
   commonBehaviors,
   commonResolutions,
   entries,
-  parentID
+  parentID,
+  profilePicture
 ) {
   const db = getDatabase(app);
   var child = {
@@ -86,6 +88,7 @@ export function createChild(
     commonResolutions: commonResolutions,
     entries: entries,
     parentID: parentID,
+    profilePicture: profilePicture
   };
   const listRef = ref(db, "/Children/");
   const childRef = push(listRef);
@@ -97,6 +100,7 @@ export function createChild(
     "/Users/" + parentID[0] + "/children/" + childRef.key
   );
   set(parentChildrenRef, true); // true indicates primary caregiver
+  return childRef.key
 }
 export function updateChild(
   childID,
@@ -106,7 +110,8 @@ export function updateChild(
   commonBehaviors,
   commonResolutions,
   entries,
-  parentID
+  parentID,
+  profilePicture
 ) {
   const db = getDatabase(app);
   const childRef = ref(db, "/Children/" + childID);
@@ -118,6 +123,7 @@ export function updateChild(
     commonResolutions: commonResolutions,
     entries: entries,
     parentID: parentID,
+    profilePicture: profilePicture
   };
   set(childRef, child);
 }
@@ -252,3 +258,11 @@ export function getEntriesByChild(childID) {
 //   const childRef = ref(db, '/Children' + childID);
 
 // }
+
+/*##################### PROFILE PHOTO(S) ###################*/
+export async function uploadChildProfilePicture(childID, file) {
+  const storage = getStorage(app);
+  const picRef = storageRef(storage, `profile_pictures/children/${childID}`);
+  await uploadBytes(picRef, file);
+  console.log("Child profile picture uploaded successfully");
+}

@@ -48,7 +48,7 @@ export default function Register() {
         size={70}
       />
       <Text style={defaultStyles.loginPageLogIn}>Create an Account</Text>
-      <View style={defaultStyles.separator} />
+      <View style={defaultStyles.separator3} />
 
       <TextInput
         style={defaultStyles.input}
@@ -73,7 +73,7 @@ export default function Register() {
         onChangeText={(text) => setFirstName(text)}
       />
 
-      <View style={defaultStyles.separator} />
+      <View style={defaultStyles.separator2} />
 
       {loading ? (
         <ActivityIndicator size="large" color="#ffffff" />
