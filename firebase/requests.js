@@ -62,10 +62,6 @@ export function getUser(userID) {
     );
   });
 }
-// export function deleteUser(userID){
-//   const db = getDatabase(app);
-//   remove(ref(db, '/Users' + userID));
-// }
 
 /*##################### CHILD REQUESTS #####################*/
 export function createChild(
@@ -86,6 +82,14 @@ export function createChild(
     commonResolutions: commonResolutions,
     entries: entries,
     parentID: parentID,
+    //initialize statistics
+    totalMeltdowns: 0,
+    mostCommonTrigger: "n/a",
+    averageIntensity: 0,
+    mostUsedResolution: "n/a",
+    talliedTriggers: false,
+    talliedBehaviors: false,
+    talliedResolutions: false,
   };
   const listRef = ref(db, "/Children/");
   const childRef = push(listRef);
@@ -119,7 +123,25 @@ export function updateChild(
     entries: entries,
     parentID: parentID,
   };
-  set(childRef, child);
+  set(childRef, child)
+  .then(() => {console.log("child successfully updated")})
+  .catch((error) => {console.error("child update not successful", error)})
+}
+
+export function updateChildOnNewEntry(updates, childID){
+  const db = getDatabase(app);
+  const childRef = ref(db, "/Children/" + childID);
+  console.log("in updateChildOnNewEntry")
+  const {totalMeltdowns, 
+    averageIntensity, 
+    mostCommonTrigger, 
+    mostUsedResolution, 
+    talliedTriggers,
+    talliedBehaviors,
+    talliedResolutions} = updates;
+  update(childRef, updates)
+  .then(() => {console.log("child successfully updated on new entry")})
+  .catch((error) => {console.error("child update not successful", error)})
 }
 export function getChild(childID) {
   const db = getDatabase(app);
@@ -147,7 +169,7 @@ export function createEntry(
   date,
   time_entry,
   time_experience,
-  severity,
+  intensity,
   location,
   triggers,
   behaviors,
@@ -162,7 +184,7 @@ export function createEntry(
     date: date,
     time_entry: time_entry,
     time_experience: time_experience,
-    severity: severity,
+    intensity: intensity,
     location: location,
     triggers: triggers,
     behaviors: behaviors,
@@ -170,10 +192,17 @@ export function createEntry(
     notes: notes,
     childID: childID,
   };
-  set(entryRef, entry);
-  // add to child entry list
-  const childEntryRef = ref(db, "/Children/" + childID + "/entries");
-  push(childEntryRef, entryRef.key);
+  set(entryRef, entry)
+  .then(() => {
+    //add entry to child's entryList
+    const childEntryRef = ref(db, "/Children/" + childID + "/entries");
+    push(childEntryRef, entryRef.key);
+    //update statistics
+    updateStatistics(entry, childID)
+  })
+  .catch((error) => {console.error("entry creation not successful", error)})
+  //edit child information and statistics
+  
 }
 export function updateEntry(
   entryID,
@@ -181,7 +210,7 @@ export function updateEntry(
   time_entry,
   time_experience,
   duration,
-  severity,
+  intensity,
   location,
   triggers,
   behaviors,
@@ -196,7 +225,7 @@ export function updateEntry(
     time_entry: time_entry,
     time_experience: time_experience,
     duration: duration,
-    severity: severity,
+    intensity: intensity,
     location: location,
     triggers: triggers,
     behaviors: behaviors,
@@ -241,14 +270,76 @@ export function getEntriesByChild(childID) {
   return get(childEntriesRef).val();
 }
 
-//notes: filtering may be harder
-//idea: keep entries as a global variable, call request once
-//take entries into statistics and filter based on date range
-// export function removeEntry(entryID){
-//   const db = getDatabase(app);
-//   //detach from child entry
-//   //get child id,
-//   var childID = get(ref(db, '/Entries' + entryID)).childID;
-//   const childRef = ref(db, '/Children' + childID);
 
-// }
+//
+/**
+ * @summary update child's general statistics upon creating a new entry
+ * @param {Object} entry
+ * @param {String} childID
+ * @returns {JSON} updates
+ */
+export function updateStatistics(entry, childID){
+  var updates = new Object();
+  var {intensity, triggers, behaviors, resolutions} = entry;
+  getChild(childID)
+  .then((childData) => {
+    if(childData){
+      console.log("getChild successful")
+      var {totalMeltdowns,
+        averageIntensity,
+        mostCommonTrigger,
+        mostUsedResolution,
+        talliedTriggers,
+        talliedBehaviors,
+        talliedResolutions} = childData;
+      console.log("totalMeltdowns: " + totalMeltdowns)
+        if(!talliedTriggers){
+          talliedTriggers = new Object();
+        }
+        if(!talliedBehaviors)
+          talliedBehaviors = new Object();
+        if(!talliedResolutions){
+          talliedResolutions = new Object();  
+        }
+        //update both averageIntensity and total Meltdowns
+        averageIntensity = (averageIntensity * totalMeltdowns + intensity) / (totalMeltdowns + 1);
+        totalMeltdowns++;
+      
+        //tabulate entries
+        triggers.forEach((trigger) => {
+            talliedTriggers[trigger] = talliedTriggers[trigger] ? (talliedTriggers[trigger] + 1) : 1;
+            //check for most common trigger change
+            if(!talliedTriggers[mostCommonTrigger] || talliedTriggers[trigger] > talliedTriggers[mostCommonTrigger]){
+              mostCommonTrigger = trigger;
+            }
+        })
+        behaviors.forEach((behavior) => {
+            talliedBehaviors[behavior] = talliedBehaviors[behavior] ? (talliedBehaviors[behavior] + 1) : 1;
+        })
+        resolutions.forEach((resolution) => {
+            talliedResolutions[resolution] = talliedResolutions[resolution] ? (talliedResolutions[resolution] + 1) : 1;
+            //check for most used resolution change
+            if(!talliedResolutions[mostUsedResolution] || talliedResolutions[resolution] > talliedResolutions[mostUsedResolution]){
+              mostUsedResolution = resolution;
+            }
+        })
+        updates['totalMeltdowns'] = totalMeltdowns;
+        updates['averageIntensity'] = averageIntensity;
+        updates['mostCommonTrigger'] = mostCommonTrigger;
+        updates['mostUsedResolution'] = mostUsedResolution;
+        updates['talliedTriggers'] = talliedTriggers;
+        updates['talliedBehaviors'] = talliedBehaviors;
+        updates['talliedResolutions'] = talliedResolutions;
+        console.log("updates: " + JSON.stringify(updates))
+        return updates;
+    }
+    else {
+      console.error((error) => ("getChild not successful: ", error))
+    }
+  })
+  .then((updates) => {
+    console.log("updates in second then chain: ", JSON.stringify(updates))
+    updateChildOnNewEntry(updates, childID)
+  })
+  .catch((error) => {console.error("getChild not successful:", error)});
+}
