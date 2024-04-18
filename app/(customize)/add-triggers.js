@@ -28,7 +28,6 @@ export default function AddTriggers() {
 
   return (
     <>
-      
       <View style={styles.container}>
       <Text style={defaultStyles.title}>Add Triggers</Text>
         <View style={styles.inputContainer}>
