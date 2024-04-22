@@ -16,6 +16,27 @@ export default function ChildAdd() {
 
   const [childName, setChildName] = useState("");
   const [birthday, setBirthday] = useState(new Date());
+  const [commonTriggers, setCommonTriggers] = useState([
+    "Loud Noises",
+    "Being Ignored",
+    "Change in Routine",
+    "Bright Lights",
+  ]);
+  const [commonBehaviors, setCommonBehaviors] = useState([
+    "Hitting",
+    "Kicking",
+    "Pushing",
+    "Yelling",
+  ]);
+  const [commonResolutions, setCommonResolutions] = useState([
+    "Music",
+    "Hugs",
+    "Holding Hands",
+    "Deep Breaths",
+    "Count to 10",
+    "Story Time",
+  ]);
+
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showDoneButton, setShowDoneButton] = useState(false);
   const [profilePicture, setProfilePicture] = useState("");
@@ -31,7 +52,8 @@ export default function ChildAdd() {
   };
 
   const handleProfilePictureSelect = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
       alert("Permission to access camera roll is required!");
       return;
@@ -42,7 +64,7 @@ export default function ChildAdd() {
       aspect: [1, 1],
       quality: 1,
     });
-  
+
     if (!pickerResult.canceled) {
       setProfilePicture(pickerResult.assets[0].uri);
     }
@@ -53,24 +75,35 @@ export default function ChildAdd() {
     console.log("Child's Name:", childName);
     console.log("Birthday:", birthday);
     console.log("Profile Picture:", profilePicture);
-    
-    try {  
-      const childID = createChild(childName, birthday, "", "", "", [], [userID], profilePicture);
+
+    try {
+      const childID = createChild(
+        childName,
+        birthday,
+        commonTriggers,
+        commonBehaviors,
+        commonResolutions,
+        [],
+        [userID],
+        profilePicture
+      );
       console.log("Child created with ID:", childID);
-  
+
       if (profilePicture) {
         uploadChildProfilePicture(childID, profilePicture);
       }
     } catch (error) {
-      console.error("Error creating child or uploading profile picture:", error);
+      console.error(
+        "Error creating child or uploading profile picture:",
+        error
+      );
     }
   };
-  
+
   const handleDonePress = () => {
     setShowDatePicker(false); // Hides the date picker only when "Done" is pressed
     setShowDoneButton(false); // Hide the "Done" button once user is finished picking date
   };
-
 
   return (
     <View style={defaultStyles.container}>
@@ -188,25 +221,24 @@ export default function ChildAdd() {
         />
       </View>
 
-      <Link href="/(customize)/customize" asChild>
+      {/* <Link href="/(customize)/customize" asChild>
       <TouchableOpacity
         style={defaultStyles.btn}
       >
         <Text style={defaultStyles.btnText}>Customize Triggers</Text>
       </TouchableOpacity>
-      </Link>
+      </Link> */}
 
       <View style={defaultStyles.separator2} />
 
       <Link href="/(auth)/child-select" asChild>
-      <TouchableOpacity
-        style={defaultStyles.addChildBtn}
-        onPress={handleSubmit}
-      >
-        <Text style={defaultStyles.btnText}>Submit</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={defaultStyles.addChildBtn}
+          onPress={handleSubmit}
+        >
+          <Text style={defaultStyles.btnText}>Submit</Text>
+        </TouchableOpacity>
       </Link>
-
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -15,10 +15,29 @@ import * as Haptics from "expo-haptics";
 import { defaultStyles } from "../../../../constants/Styles";
 import Colors from "../../../../constants/Colors";
 
-import { createEntry } from "../../../../firebase/requests";
+import { getChild, createEntry } from "../../../../firebase/requests";
+import { color } from "echarts";
 
 export default function NewEntry() {
   const { child } = useLocalSearchParams();
+
+  const [commonTriggers, setCommonTriggers] = useState([]);
+  const [commonBehaviors, setCommonBehaviors] = useState([]);
+  const [commonResolutions, setCommonResolutions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getChild(child)
+      .then((childData) => {
+        setCommonTriggers(childData.commonTriggers || []);
+        setCommonBehaviors(childData.commonBehaviors || []);
+        setCommonResolutions(childData.commonResolutions || []);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching entry:", error);
+      });
+  }, [child]);
 
   const [date, setDate] = useState(new Date());
   const [timeExperience, setTimeExperience] = useState(new Date());
@@ -39,14 +58,38 @@ export default function NewEntry() {
     setLocation(text);
   };
 
-  const handleDateDonePress = () => {
-    setShowDatePicker(false);
-    setShowDateDoneButton(false);
+  const handleDatePress = () => {
+    if (showDatePicker) {
+      setShowDatePicker(false);
+      setShowDateDoneButton(false);
+    } else {
+      if (showTimePicker) {
+        setShowTimePicker(false);
+        setShowTimeDoneButton(false);
+      }
+
+      setShowDatePicker(true);
+      setShowDateDoneButton(true);
+    }
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
-  const handleTimeDonePress = () => {
-    setShowTimePicker(false);
-    setShowTimeDoneButton(false);
+  const handleTimePress = () => {
+    if (showTimePicker) {
+      setShowTimePicker(false);
+      setShowTimeDoneButton(false);
+    } else {
+      if (showDatePicker) {
+        setShowDatePicker(false);
+        setShowDateDoneButton(false);
+      }
+
+      setShowTimePicker(true);
+      setShowTimeDoneButton(true);
+    }
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   const handleDateChange = (event, selectedDate) => {
@@ -61,6 +104,27 @@ export default function NewEntry() {
 
   const handleIntensitySelect = (level) => {
     setIntensity(level);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const handleAddTrigger = () => {
+    router.replace("/(auth)/child-select");
+    router.replace(`${child}/home`);
+    router.navigate(`/(customize)/${child}/add-triggers`);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const handleAddBehavior = () => {
+    router.replace("/(auth)/child-select");
+    router.replace(`${child}/home`);
+    router.navigate(`/(customize)/${child}/add-behaviors`);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const handleAddResolution = () => {
+    router.replace("/(auth)/child-select");
+    router.replace(`${child}/home`);
+    router.navigate(`/(customize)/${child}/add-resolutions`);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
@@ -139,248 +203,256 @@ export default function NewEntry() {
       style={styles.container}
       contentContainerStyle={styles.containerContent}
     >
-      {/* <Text style={styles.h2}>ChildID: {child}</Text> */}
-
-      <View style={styles.box}>
-        <Text style={styles.h1}>Details</Text>
-        <View
-          style={{
-            backgroundColor: "white",
-            borderRadius: 5,
-            marginBottom: 10,
-          }}
-        >
-          <TextInput
-            style={{ padding: 15 }}
-            value={location}
-            onChangeText={handleInputChange}
-            placeholder="Enter Location"
-            returnKeyType="done"
-          />
-          <View
-            style={{
-              backgroundColor: "#e9e9ea",
-              borderRadius: 100,
-              height: 1,
-              width: "100%",
-            }}
-          />
-        </View>
-
-        <TouchableOpacity
-          onPress={() => {
-            setShowDatePicker(true);
-            setShowDateDoneButton(true);
-          }}
-          style={{
-            backgroundColor: "white",
-            borderRadius: 5,
-            marginBottom: 10,
-          }}
-        >
-          <Text style={{ padding: 15 }}>Date: {date.toLocaleDateString()}</Text>
-          {showDateDoneButton && showDatePicker && (
-            <Text
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <>
+          <View style={styles.box}>
+            <Text style={styles.h1}>Details</Text>
+            <View
               style={{
-                position: "absolute",
-                right: 10,
-                top: 15,
+                backgroundColor: "white",
+                borderRadius: 5,
+                marginBottom: 10,
               }}
-              onPress={handleDateDonePress}
             >
-              Done
-            </Text>
-          )}
-        </TouchableOpacity>
+              <TextInput
+                style={{ padding: 15 }}
+                value={location}
+                onChangeText={handleInputChange}
+                placeholder="Enter Location"
+                returnKeyType="done"
+              />
+              <View
+                style={{
+                  backgroundColor: "#e9e9ea",
+                  borderRadius: 100,
+                  height: 1,
+                  width: "100%",
+                }}
+              />
+            </View>
 
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="inline"
-            onChange={handleDateChange}
-          />
-        )}
-
-        <TouchableOpacity
-          onPress={() => {
-            setShowTimePicker(true);
-            setShowTimeDoneButton(true);
-          }}
-          style={{
-            backgroundColor: "white",
-            borderRadius: 5,
-            marginBottom: 10,
-          }}
-        >
-          <Text style={{ padding: 15 }}>
-            Time:{" "}
-            {timeExperience.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })}
-          </Text>
-          {showTimeDoneButton && showTimePicker && (
-            <Text
-              style={{
-                position: "absolute",
-                right: 10,
-                top: 15,
-              }}
-              onPress={handleTimeDonePress}
-            >
-              Done
-            </Text>
-          )}
-        </TouchableOpacity>
-
-        {showTimePicker && (
-          <DateTimePicker
-            value={timeExperience}
-            mode="time"
-            display="spinner"
-            onChange={handleTimeExperienceChange}
-          />
-        )}
-      </View>
-
-      <View style={styles.box}>
-        <Text style={styles.h1}>What happened before?</Text>
-        <Text style={styles.h2}>Select Triggers</Text>
-        <View style={styles.buttonContainer}>
-          {Array.from(mockEntries[0].triggers).map((trigger) => (
             <TouchableOpacity
-              key={trigger}
-              style={[
-                styles.button,
-                triggers.includes(trigger) && {
-                  backgroundColor: Colors.tint,
-                },
-              ]}
-              onPress={() => toggleTrigger(trigger)}
+              onPress={handleDatePress}
+              style={{
+                backgroundColor: "white",
+                borderRadius: 5,
+                marginBottom: 10,
+              }}
             >
               <Text
-                style={[
-                  styles.buttonText,
-                  triggers.includes(trigger) && { color: "white" },
-                ]}
+                style={{ padding: 15, color: "#333", fontFamily: "DMMono" }}
               >
-                {trigger}
+                Date: {date.toLocaleDateString()}
               </Text>
+              {showDateDoneButton && showDatePicker && (
+                <Text
+                  style={{
+                    position: "absolute",
+                    right: 10,
+                    top: 15,
+                    color: "#333",
+                    fontFamily: "DMSans",
+                  }}
+                >
+                  Done
+                </Text>
+              )}
             </TouchableOpacity>
-          ))}
-          <TouchableOpacity
-            style={styles.addBtn}
-            onPress={() => router.navigate("/(customize)/add-triggers")}
-          >
-            <Text style={[styles.buttonText]}>Add Trigger +</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
 
-      <View style={styles.box}>
-        <Text style={styles.h1}>What happened during?</Text>
-        <Text style={styles.h2}>Select Behaviors</Text>
-        <View style={styles.buttonContainer}>
-          {Array.from(mockEntries[0].behaviors).map((behavior) => (
+            {showDatePicker && (
+              <DateTimePicker
+                value={date}
+                mode="date"
+                display="inline"
+                onChange={handleDateChange}
+              />
+            )}
+
             <TouchableOpacity
-              key={behavior}
-              style={[
-                styles.button,
-                behaviors.includes(behavior) && {
-                  backgroundColor: Colors.tint,
-                },
-              ]}
-              onPress={() => toggleBehavior(behavior)}
+              onPress={handleTimePress}
+              style={{
+                backgroundColor: "white",
+                borderRadius: 5,
+                marginBottom: 10,
+              }}
             >
               <Text
-                style={[
-                  styles.buttonText,
-                  behaviors.includes(behavior) && { color: "white" },
-                ]}
+                style={{ padding: 15, color: "#333", fontFamily: "DMMono" }}
               >
-                {behavior}
+                Time:{" "}
+                {timeExperience.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
               </Text>
+              {showTimeDoneButton && showTimePicker && (
+                <Text
+                  style={{
+                    position: "absolute",
+                    right: 10,
+                    top: 15,
+                    color: "#333",
+                    fontFamily: "DMSans",
+                  }}
+                >
+                  Done
+                </Text>
+              )}
             </TouchableOpacity>
-          ))}
-          <TouchableOpacity
-            style={styles.addBtn}
-            onPress={() => router.navigate("/(customize)/add-behaviors")}
-          >
-            <Text style={[styles.buttonText]}>Add Behavior +</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.h2}>Select Intensity Level</Text>
-        <Text style={styles.h3}>Intensity Level: {intensity}</Text>
-        <View style={styles.intensityContainer}>
-          {[1, 2, 3, 4, 5].map((level) => (
-            <Pressable
-              key={level}
-              style={[
-                styles.emptyBox,
-                intensity >= level
-                  ? { backgroundColor: Colors.tint }
-                  : { backgroundColor: Colors.background },
-              ]}
-              onPress={() => handleIntensitySelect(level)}
+
+            {showTimePicker && (
+              <DateTimePicker
+                value={timeExperience}
+                mode="time"
+                display="spinner"
+                onChange={handleTimeExperienceChange}
+              />
+            )}
+          </View>
+
+          <View style={styles.box}>
+            <Text style={styles.h1}>What happened before?</Text>
+            <Text style={styles.h2}>Select Triggers</Text>
+            <View style={styles.buttonContainer}>
+              {commonTriggers.map((trigger) => (
+                <TouchableOpacity
+                  key={trigger}
+                  style={[
+                    styles.button,
+                    triggers.includes(trigger) && {
+                      backgroundColor: Colors.tint,
+                    },
+                  ]}
+                  onPress={() => toggleTrigger(trigger)}
+                >
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      triggers.includes(trigger) && { color: "white" },
+                    ]}
+                  >
+                    {trigger}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity
+                style={styles.addBtn}
+                onPress={handleAddTrigger}
+              >
+                <Text style={[styles.buttonText]}>Add Trigger +</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.box}>
+            <Text style={styles.h1}>What happened during?</Text>
+            <Text style={styles.h2}>Select Behaviors</Text>
+            <View style={styles.buttonContainer}>
+              {commonBehaviors.map((behavior) => (
+                <TouchableOpacity
+                  key={behavior}
+                  style={[
+                    styles.button,
+                    behaviors.includes(behavior) && {
+                      backgroundColor: Colors.tint,
+                    },
+                  ]}
+                  onPress={() => toggleBehavior(behavior)}
+                >
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      behaviors.includes(behavior) && { color: "white" },
+                    ]}
+                  >
+                    {behavior}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity
+                style={styles.addBtn}
+                onPress={handleAddBehavior}
+              >
+                <Text style={[styles.buttonText]}>Add Behavior +</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.h2}>Select Intensity Level</Text>
+            <Text style={[styles.h3, { color: "#333" }]}>
+              Intensity Level: {intensity}
+            </Text>
+            <View style={styles.intensityContainer}>
+              {[1, 2, 3, 4, 5].map((level) => (
+                <Pressable
+                  key={level}
+                  style={[
+                    styles.emptyBox,
+                    intensity >= level
+                      ? { backgroundColor: Colors.tint }
+                      : { backgroundColor: Colors.background },
+                  ]}
+                  onPress={() => handleIntensitySelect(level)}
+                />
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.box}>
+            <Text style={styles.h1}>What happened after?</Text>
+            <Text style={styles.h2}>Select Resolutions</Text>
+            <View style={styles.buttonContainer}>
+              {commonResolutions.map((resolution) => (
+                <TouchableOpacity
+                  key={resolution}
+                  style={[
+                    styles.button,
+                    resolutions.includes(resolution) && {
+                      backgroundColor: Colors.tint,
+                    },
+                  ]}
+                  onPress={() => toggleResolution(resolution)}
+                >
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      resolutions.includes(resolution) && {
+                        color: "white",
+                      },
+                    ]}
+                  >
+                    {resolution}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity
+                style={styles.addBtn}
+                onPress={handleAddResolution}
+              >
+                <Text style={[styles.buttonText]}>Add Resolution +</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.box}>
+            <Text style={styles.h1}>Note</Text>
+            <TextInput
+              style={styles.input}
+              multiline
+              placeholder="Add note..."
+              onChangeText={(text) => setNote(text)}
             />
-          ))}
-        </View>
-      </View>
+          </View>
 
-      <View style={styles.box}>
-        <Text style={styles.h1}>What happened after?</Text>
-        <Text style={styles.h2}>Select Resolutions</Text>
-        <View style={styles.buttonContainer}>
-          {Array.from(mockEntries[0].resolutions).map((resolution) => (
-            <TouchableOpacity
-              key={resolution}
-              style={[
-                styles.button,
-                resolutions.includes(resolution) && {
-                  backgroundColor: Colors.tint,
-                },
-              ]}
-              onPress={() => toggleResolution(resolution)}
-            >
-              <Text
-                style={[
-                  styles.buttonText,
-                  resolutions.includes(resolution) && {
-                    color: "white",
-                  },
-                ]}
-              >
-                {resolution}
-              </Text>
-            </TouchableOpacity>
-          ))}
           <TouchableOpacity
-            style={styles.addBtn}
-            onPress={() => router.navigate("/(customize)/add-resolutions")}
+            style={defaultStyles.signUpPageCABtn}
+            onPress={submitEntry}
           >
-            <Text style={[styles.buttonText]}>Add Resolution +</Text>
+            <Text style={defaultStyles.btnText}>Submit Entry</Text>
           </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.box}>
-        <Text style={styles.h1}>Note</Text>
-        <TextInput
-          style={styles.input}
-          multiline
-          placeholder="Add note..."
-          onChangeText={(text) => setNote(text)}
-        />
-      </View>
-
-      <TouchableOpacity
-        style={defaultStyles.signUpPageCABtn}
-        onPress={submitEntry}
-      >
-        <Text style={defaultStyles.btnText}>Submit Entry</Text>
-      </TouchableOpacity>
+        </>
+      )}
     </ScrollView>
   );
 }

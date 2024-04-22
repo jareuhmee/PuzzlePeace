@@ -41,7 +41,7 @@ export default function ChildSettings() {
     },
     {
       name: "Triggers, Behaviors, & Resolutions",
-      link: "/(customize)/customize",
+      link: `/(customize)/${child}/customize`,
     },
   ];
 

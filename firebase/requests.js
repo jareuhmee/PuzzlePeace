@@ -138,6 +138,19 @@ export function updateChild(
     });
 }
 
+export async function updateChildAttributes(childID, attributesToUpdate) {
+  const db = getDatabase(app);
+  const childRef = ref(db, "/Children/" + childID);
+
+  try {
+    await update(childRef, attributesToUpdate);
+    console.log("Child successfully updated");
+  } catch (error) {
+    console.error("Error updating child:", error);
+    throw error;
+  }
+}
+
 export function updateChildOnNewEntry(updates, childID) {
   const db = getDatabase(app);
   const childRef = ref(db, "/Children/" + childID);

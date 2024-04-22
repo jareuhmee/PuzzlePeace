@@ -7,13 +7,14 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
-import { defaultStyles } from "../../constants/Styles.js";
-import { router } from "expo-router";
+import { defaultStyles } from "../../../constants/Styles.js";
+import { router, useLocalSearchParams } from "expo-router";
 //import { useState } from "react";
 //import * as Haptics from "expo-haptics";
-import Colors from "../../constants/Colors";
+import Colors from "../../../constants/Colors.js";
 
 export default function Customize() {
+  const { child } = useLocalSearchParams();
 
   const handleDone = () => {
     router.back();
@@ -21,9 +22,8 @@ export default function Customize() {
 
   return (
     <>
-    
       <View style={defaultStyles.container}>
-      <Text style={defaultStyles.title}>Customize</Text>
+        {/* <Text style={defaultStyles.title}>Customize</Text> */}
         <View style={styles.box}>
           <Text style={defaultStyles.h1}>Triggers</Text>
           {/* Mock Triggers */}
@@ -36,7 +36,10 @@ export default function Customize() {
               </View>
             ))}
           </View>
-          <TouchableOpacity style={styles.addBtn} onPress={() => router.navigate("./add-triggers")}>
+          <TouchableOpacity
+            style={styles.addBtn}
+            onPress={() => router.navigate("./add-triggers")}
+          >
             <Text style={defaultStyles.btnText}>+</Text>
           </TouchableOpacity>
         </View>
@@ -53,7 +56,10 @@ export default function Customize() {
               </View>
             ))}
           </View>
-          <TouchableOpacity style={styles.addBtn} onPress={() => router.navigate("./add-behaviors")}>
+          <TouchableOpacity
+            style={styles.addBtn}
+            onPress={() => router.navigate("./add-behaviors")}
+          >
             <Text style={defaultStyles.btnText}>+</Text>
           </TouchableOpacity>
         </View>
@@ -69,20 +75,24 @@ export default function Customize() {
               </View>
             ))}
           </View>
-          <TouchableOpacity style={styles.addBtn} onPress={() => router.navigate("./add-resolutions")}>
+          <TouchableOpacity
+            style={styles.addBtn}
+            onPress={() => router.navigate("./add-resolutions")}
+          >
             <Text style={defaultStyles.btnText}>+</Text>
           </TouchableOpacity>
         </View>
 
         <TouchableOpacity
-        style={[defaultStyles.signUpPageCABtn, { alignSelf: "center", marginBottom: 20 }]}
-        onPress={handleDone}
+          style={[
+            defaultStyles.signUpPageCABtn,
+            { alignSelf: "center", marginBottom: 20 },
+          ]}
+          onPress={handleDone}
         >
-        <Text style={defaultStyles.btnText}>Done</Text>
+          <Text style={defaultStyles.btnText}>Done</Text>
         </TouchableOpacity>
-
       </View>
-    
     </>
   );
 }
@@ -91,7 +101,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center", 
+    justifyContent: "center",
   },
   box: {
     padding: 20,
@@ -108,9 +118,9 @@ const styles = StyleSheet.create({
     right: 10,
     backgroundColor: Colors.tint,
     borderRadius: 50,
-    width: 30, 
-    height: 30, 
-    alignItems: "center", 
+    width: 30,
+    height: 30,
+    alignItems: "center",
     justifyContent: "center",
   },
   behaviorContainer: {

@@ -7,6 +7,9 @@ import { auth } from "../firebase/firebase.js";
 import Colors from "../constants/Colors.js";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+import * as Haptics from "expo-haptics";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -112,9 +115,25 @@ function RootLayoutNav() {
           <Stack.Screen
             name="(modals)/[entry]"
             options={{
-              title: "Entry",
-              presentation: "formSheet",
-              headerShown: false,
+              title: "",
+              presentation: "modal",
+              headerShown: true,
+              headerTransparent: true,
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    router.back();
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  }}
+                  style={{
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    padding: 4,
+                  }}
+                >
+                  <Ionicons name="close-outline" size={22} />
+                </TouchableOpacity>
+              ),
               // headerStyle: {
               //   backgroundColor: Colors.background,
               // },
@@ -167,34 +186,54 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="(customize)/customize"
+            name="(customize)/[child]/customize"
+            // options={{
+            //   title: "Customize",
+            //   presentation: "card",
+            //   headerBackTitle: "Back",
+            //   headerTransparent: true,
+            // }}
             options={{
               title: "Customize",
               presentation: "card",
-              headerTransparent: true,
+              headerBackTitle: "Back",
+              headerLargeTitle: true,
+              headerShadowVisible: false,
+
+              headerStyle: {
+                backgroundColor: Colors.background,
+              },
+              headerTitleStyle: {
+                fontFamily: "DMSans",
+                color: Colors.primary,
+                fontSize: 18,
+              },
             }}
           />
           <Stack.Screen
-            name="(customize)/add-triggers"
+            name="(customize)/[child]/add-triggers"
             options={{
               title: "Add Triggers",
               presentation: "card",
+              headerBackTitle: "Back",
               headerTransparent: true,
             }}
           />
           <Stack.Screen
-            name="(customize)/add-behaviors"
+            name="(customize)/[child]/add-behaviors"
             options={{
               title: "Add Behaviors",
               presentation: "card",
+              headerBackTitle: "Back",
               headerTransparent: true,
             }}
           />
           <Stack.Screen
-            name="(customize)/add-resolutions"
+            name="(customize)/[child]/add-resolutions"
             options={{
               title: "Add Resolutions",
               presentation: "card",
+              headerBackTitle: "Back",
               headerTransparent: true,
             }}
           />

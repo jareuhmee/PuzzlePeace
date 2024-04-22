@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ScrollView, SafeAreaView } from "react-native";
 import { defaultStyles } from "../../constants/Styles";
 import { useLocalSearchParams } from "expo-router";
 import Colors from "../../constants/Colors";
@@ -65,105 +65,107 @@ export default function Entry() {
   ];
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.containerContent}
-    >
-      {loading ? ( // Conditional rendering based on loading state
-        <Text>Loading...</Text>
-      ) : (
-        <>
-          <Text style={defaultStyles.title}>{formatDate(currEntry.date)}</Text>
-          <Text>
-            <Text style={{ fontSize: 16, fontFamily: "DMMono" }}>
-              {currEntry.time_experience} at {currEntry.location}
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.containerContent}
+      >
+        {loading ? ( // Conditional rendering based on loading state
+          <Text>Loading...</Text>
+        ) : (
+          <>
+            <Text style={styles.h1}>{formatDate(currEntry.date)}</Text>
+            <Text>
+              <Text style={{ fontSize: 16, fontFamily: "DMMono" }}>
+                {currEntry.time_experience} at {currEntry.location}
+              </Text>
             </Text>
-          </Text>
 
-          <View style={styles.box}>
-            <Text style={styles.h1}>What happened before?</Text>
-            <Text style={styles.title}>Triggers:</Text>
+            <View style={styles.box}>
+              <Text style={styles.h1}>What happened before?</Text>
+              <Text style={styles.title}>Triggers:</Text>
 
-            <View style={styles.behaviorContainer}>
-              {Array.from(currEntry.triggers).map((trigger) => (
-                <View key={trigger} style={styles.trigger}>
-                  <Text key={trigger} style={styles.triggerText}>
-                    {trigger}
-                  </Text>
-                </View>
-              ))}
+              <View style={styles.behaviorContainer}>
+                {Array.from(currEntry.triggers).map((trigger) => (
+                  <View key={trigger} style={styles.trigger}>
+                    <Text key={trigger} style={styles.triggerText}>
+                      {trigger}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
 
-          <View style={styles.box}>
-            <Text style={styles.h1}>What happened during?</Text>
-            <Text style={styles.title}>Behaviors:</Text>
-            <View style={styles.behaviorContainer}>
-              {Array.from(currEntry.behaviors).map((behavior) => (
-                <View key={behavior} style={styles.behavior}>
-                  <Text key={behavior} style={styles.behaviorText}>
-                    {behavior}
-                  </Text>
-                </View>
-              ))}
+            <View style={styles.box}>
+              <Text style={styles.h1}>What happened during?</Text>
+              <Text style={styles.title}>Behaviors:</Text>
+              <View style={styles.behaviorContainer}>
+                {Array.from(currEntry.behaviors).map((behavior) => (
+                  <View key={behavior} style={styles.behavior}>
+                    <Text key={behavior} style={styles.behaviorText}>
+                      {behavior}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+              <Text style={styles.title}>Intensity:</Text>
+              <View style={styles.intensityContainer}>
+                {Array.from({
+                  length: parseInt(currEntry.intensity),
+                }).map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.intensityBox,
+                      {
+                        backgroundColor: intensityColors[currEntry.intensity],
+                      },
+                    ]}
+                  />
+                ))}
+                {Array.from({
+                  length: 5 - parseInt(currEntry.intensity),
+                }).map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.emptyBox,
+                      {
+                        borderColor: intensityColors[currEntry.intensity],
+                      },
+                    ]}
+                  />
+                ))}
+              </View>
             </View>
-            <Text style={styles.title}>Intensity:</Text>
-            <View style={styles.intensityContainer}>
-              {Array.from({
-                length: parseInt(currEntry.intensity),
-              }).map((_, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.intensityBox,
-                    {
-                      backgroundColor: intensityColors[currEntry.intensity],
-                    },
-                  ]}
-                />
-              ))}
-              {Array.from({
-                length: 5 - parseInt(currEntry.intensity),
-              }).map((_, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.emptyBox,
-                    {
-                      borderColor: intensityColors[currEntry.intensity],
-                    },
-                  ]}
-                />
-              ))}
-            </View>
-          </View>
 
-          <View style={styles.box}>
-            <Text style={styles.h1}>What happened after?</Text>
-            <Text style={styles.title}>Resolutions:</Text>
-            <View style={styles.resolutionContainer}>
-              {Array.from(currEntry.resolutions).map((resolution) => (
-                <View key={resolution} style={styles.resolution}>
-                  <Text key={resolution} style={styles.resolutionText}>
-                    {resolution}
-                  </Text>
-                </View>
-              ))}
+            <View style={styles.box}>
+              <Text style={styles.h1}>What happened after?</Text>
+              <Text style={styles.title}>Resolutions:</Text>
+              <View style={styles.resolutionContainer}>
+                {Array.from(currEntry.resolutions).map((resolution) => (
+                  <View key={resolution} style={styles.resolution}>
+                    <Text key={resolution} style={styles.resolutionText}>
+                      {resolution}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.h1}>Notes:</Text>
-            <Text style={styles.text}>{currEntry.notes}</Text>
-          </View>
-        </>
-      )}
-    </ScrollView>
-    // </View>
+            <View style={styles.box}>
+              <Text style={styles.h1}>Notes:</Text>
+              <Text style={styles.text}>{currEntry.notes}</Text>
+            </View>
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: Colors.background,
   },
   containerContent: {
