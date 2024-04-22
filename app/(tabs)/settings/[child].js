@@ -6,15 +6,29 @@ import {
   FlatList,
   StyleSheet,
 } from "react-native";
-import { auth } from "../../../firebase/firebase.js";
+import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import Colors from "../../../constants/Colors.js";
 import { defaultStyles } from "../../../constants/Styles.js";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 
+import { auth } from "../../../firebase/firebase.js";
+import { getChild } from "../../../firebase/requests.js";
+
 export default function ChildSettings() {
   const { child } = useLocalSearchParams();
+  const [currChild, setCurrChild] = useState({});
+
+  useEffect(() => {
+    getChild(child)
+      .then((childData) => {
+        setCurrChild(childData || {});
+      })
+      .catch((error) => {
+        console.error("Error fetching child:", error);
+      });
+  }, [child]);
 
   const account = [
     {
@@ -35,10 +49,10 @@ export default function ChildSettings() {
   ];
 
   const customize = [
-    {
-      name: "Relation to Child",
-      link: `settings/${child}`,
-    },
+    // {
+    //   name: "Relation to Child",
+    //   link: `settings/${child}`,
+    // },
     {
       name: "Triggers, Behaviors, & Resolutions",
       link: `/(customize)/${child}/customize`,
@@ -64,6 +78,7 @@ export default function ChildSettings() {
         contentContainerStyle={{ paddingBottom: 40 }}
       >
         {/* Profile Settings */}
+        <Text style={styles.header}>{currChild.childName}'s Profile</Text>
         <View style={styles.block}>
           <FlatList
             data={account}
@@ -79,6 +94,7 @@ export default function ChildSettings() {
         </View>
 
         {/* Customize */}
+        <Text style={styles.header}>Customization</Text>
         <View style={styles.block}>
           <FlatList
             data={customize}
@@ -97,7 +113,7 @@ export default function ChildSettings() {
         </View>
 
         {/* Child Access */}
-        <View style={styles.block}>
+        {/* <View style={styles.block}>
           <FlatList
             data={access}
             scrollEnabled={false}
@@ -109,10 +125,10 @@ export default function ChildSettings() {
               </TouchableOpacity>
             )}
           />
-        </View>
+        </View> */}
 
         {/* Primary Caregiver Settings */}
-        <View style={styles.block}>
+        {/* <View style={styles.block}>
           <FlatList
             data={primary}
             scrollEnabled={false}
@@ -124,7 +140,7 @@ export default function ChildSettings() {
               </TouchableOpacity>
             )}
           />
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );
@@ -142,6 +158,13 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     gap: 10,
+  },
+  header: {
+    fontSize: 22,
+    fontFamily: "DMSans",
+    color: Colors.primary,
+    marginHorizontal: 24,
+    marginTop: 20,
   },
   separator: {
     height: StyleSheet.hairlineWidth,

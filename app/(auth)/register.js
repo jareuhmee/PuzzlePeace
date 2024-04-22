@@ -13,6 +13,7 @@ import { defaultStyles } from "../../constants/Styles.js";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faInfinity } from "@fortawesome/free-solid-svg-icons";
 import { createUser } from "../../firebase/requests.js";
+import * as Haptics from "expo-haptics";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -22,6 +23,7 @@ export default function Register() {
 
   const signUp = async () => {
     setLoading(true);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     try {
       const response = await createUserWithEmailAndPassword(
         auth,

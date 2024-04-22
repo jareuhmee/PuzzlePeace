@@ -101,7 +101,11 @@ function RootLayoutNav() {
           <Stack.Screen
             name="(auth)/child-add"
             options={{
-              headerShown: false,
+              // headerShown: false,
+              title: "",
+              presentation: "card",
+              headerBackTitle: "Back",
+              headerTransparent: true,
             }}
           />
           <Stack.Screen
@@ -197,17 +201,7 @@ function RootLayoutNav() {
               title: "Customize",
               presentation: "card",
               headerBackTitle: "Back",
-              headerLargeTitle: true,
-              headerShadowVisible: false,
-
-              headerStyle: {
-                backgroundColor: Colors.background,
-              },
-              headerTitleStyle: {
-                fontFamily: "DMSans",
-                color: Colors.primary,
-                fontSize: 18,
-              },
+              headerTransparent: true,
             }}
           />
           <Stack.Screen

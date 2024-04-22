@@ -6,27 +6,50 @@ import {
   FlatList,
   StyleSheet,
 } from "react-native";
-import { auth } from "../../../firebase/firebase.js";
+import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import Colors from "../../../constants/Colors.js";
 import { defaultStyles } from "../../../constants/Styles.js";
 import { Ionicons } from "@expo/vector-icons";
 
+import { getChild, getUser } from "../../../firebase/requests.js";
+import { auth } from "../../../firebase/firebase.js";
+
 export default function Settings() {
-  const account = [
-    {
-      name: "Profile Name",
-    },
-    {
-      name: "Profile Picture",
-    },
-    {
-      name: "Email",
-    },
-    {
-      name: "Password",
-    },
-  ];
+  const userID = auth.currentUser.uid;
+  const [children, setChildren] = useState([]);
+
+  useEffect(() => {
+    getUser(userID)
+      .then((userData) => {
+        const childrenArray = Object.entries(userData.children || []);
+        const promises = childrenArray.map(([childID]) =>
+          getChild(childID).then((childData) => ({ childID, ...childData }))
+        );
+        Promise.all(promises)
+          .then((childDataArray) => {
+            setChildren(childDataArray);
+          })
+          .catch((error) => {
+            console.error("Error fetching child data:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error getting user:", error);
+      });
+  }, [userID]);
+
+  const sendResetEmail = async () => {
+    try {
+      await sendPasswordResetEmail(auth, auth.currentUser.email);
+      setResetSent(true);
+    } catch (error) {
+      console.log(error);
+      alert("Password reset failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const mockChildren = [
     {
@@ -58,41 +81,58 @@ export default function Settings() {
         {/* Account Settings */}
         <Text style={styles.header}>Account Settings</Text>
         <View style={styles.block}>
-          <FlatList
-            data={account}
-            scrollEnabled={false}
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={styles.item}>
-                {/* <BoxedIcon
-                  name={item.icon}
-                  backgroundColor={item.backgroundColor}
-                /> */}
+          <TouchableOpacity style={styles.item}>
+            <Text style={styles.text}>Profile Name</Text>
+            <Ionicons name="chevron-forward" size={20} color="gray" />
+          </TouchableOpacity>
+          <View style={styles.separator} />
 
-                <Text style={styles.text}>{item.name}</Text>
-                <Ionicons name="chevron-forward" size={20} color="gray" />
-              </TouchableOpacity>
-            )}
-          />
+          <TouchableOpacity style={styles.item}>
+            <Text style={styles.text}>Profile Picture</Text>
+            <Ionicons name="chevron-forward" size={20} color="gray" />
+          </TouchableOpacity>
+          <View style={styles.separator} />
+
+          <TouchableOpacity style={styles.item}>
+            <Text style={styles.text}>Email</Text>
+            <Ionicons name="chevron-forward" size={20} color="gray" />
+          </TouchableOpacity>
+          <View style={styles.separator} />
+
+          <TouchableOpacity style={styles.item}>
+            <Text style={styles.text}>Change Password</Text>
+            <Ionicons name="chevron-forward" size={20} color="gray" />
+          </TouchableOpacity>
         </View>
 
         {/* Children Settings */}
         <Text style={styles.header}>Children Settings</Text>
         <View style={styles.block}>
           <FlatList
-            data={mockChildren}
+            data={children}
             scrollEnabled={false}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.item}
-                onPress={() => router.navigate(`settings/${item.name}`)}
+                onPress={() => router.navigate(`settings/${item.childID}`)}
               >
-                <Text style={styles.text}>{item.name}</Text>
+                <Text style={styles.text}>{item.childName}</Text>
                 <Ionicons name="chevron-forward" size={20} color="gray" />
               </TouchableOpacity>
             )}
           />
+          <View style={styles.separator} />
+
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => {
+              router.navigate("/(auth)/child-add");
+            }}
+          >
+            <Text style={styles.text}>Add Child</Text>
+            <Ionicons name="chevron-forward" size={20} color="gray" />
+          </TouchableOpacity>
         </View>
 
         <View style={defaultStyles.btnContainer}>

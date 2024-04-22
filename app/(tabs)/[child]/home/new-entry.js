@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Pressable,
+  Keyboard,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -93,6 +94,7 @@ export default function NewEntry() {
   };
 
   const handleDateChange = (event, selectedDate) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const currentDate = selectedDate || date;
     setDate(currentDate);
   };
@@ -442,6 +444,8 @@ export default function NewEntry() {
               multiline
               placeholder="Add note..."
               onChangeText={(text) => setNote(text)}
+              returnKeyType="done"
+              blurOnSubmit={true}
             />
           </View>
 
@@ -579,55 +583,3 @@ const styles = StyleSheet.create({
     // backgroundColor: "white",
   },
 });
-
-const mockEntries = {
-  0: {
-    name: "Alice",
-    triggers: [
-      "Bright Lights",
-      "Loud Noises",
-      "Being Touched",
-      "Hungry",
-      "Tired",
-      "Thirsty",
-      "Anxious",
-      "Overwhelmed",
-      "Confused",
-      "Guilty",
-      "Jealous",
-      "Lonely",
-      "Stressed",
-      "Rejected",
-      "Ignored",
-      "Teased",
-      "Threatened",
-      "Disciplined",
-      "Yelled At",
-      "Consequences",
-      "Change In Routine",
-    ],
-    behaviors: [
-      "Screaming",
-      "Crying",
-      "Running",
-      "Punching",
-      "Kicking",
-      "Jumping",
-      "Biting",
-    ],
-    resolutions: [
-      "Hugging",
-      "Talking",
-      "Singing",
-      "Dancing",
-      "Drawing",
-      "Reading",
-    ],
-  },
-  1: {
-    name: "Bryan",
-    triggers: ["Screaming", "Hitting"],
-    behaviors: ["Screaming", "Hitting"],
-    resolutions: ["Screaming", "Hitting"],
-  },
-};

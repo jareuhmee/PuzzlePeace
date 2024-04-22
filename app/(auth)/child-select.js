@@ -52,18 +52,16 @@ export default function ChildSelect() {
         >
           <Text style={defaultStyles.btnText}>{childName}</Text>
         </TouchableOpacity>
-        
 
         <View style={styles.profilePicCircle}>
-                  {profilePicture ? (
-                    <Image
-                      source={{ uri: profilePicture }}
-                      style={{ width: 36, height: 36, borderRadius: 18 }}
-                    />
-                  ) : (
-                    <Text>No Pic!</Text>
-                  )}
-              
+          {profilePicture ? (
+            <Image
+              source={{ uri: profilePicture }}
+              style={{ width: 36, height: 36, borderRadius: 18 }}
+            />
+          ) : (
+            <Text>No Pic!</Text>
+          )}
         </View>
       </View>
     );
@@ -91,13 +89,10 @@ export default function ChildSelect() {
 
       <TouchableOpacity
         style={defaultStyles.addChildBtn}
-        onPress={() => router.replace("/(auth)/child-add")}
+        onPress={() => router.navigate("/(auth)/child-add")}
       >
         <Text style={defaultStyles.btnText}>Add Child</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-
-
