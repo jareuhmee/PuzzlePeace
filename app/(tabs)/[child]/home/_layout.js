@@ -32,6 +32,7 @@ export default function HomeLayout() {
             fontFamily: "DMSans",
             fontSize: 20,
           },
+          animation: "slide_from_bottom",
         }}
       />
     </Stack>

@@ -91,7 +91,7 @@ export default function NewEntry() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
-  const submitEntry = () => {
+  const submitEntry = async () => {
     const formattedDate = date.toISOString().split("T")[0];
     const formattedTimeExperience = timeExperience.toLocaleTimeString([], {
       hour: "2-digit",
@@ -103,6 +103,7 @@ export default function NewEntry() {
       minute: "2-digit",
       hour12: true,
     });
+
     console.log(
       formattedDate,
       formattedTimeEntry,
@@ -113,7 +114,8 @@ export default function NewEntry() {
       resolutions,
       note
     );
-    createEntry(
+
+    await createEntry(
       formattedDate,
       formattedTimeEntry,
       formattedTimeExperience,
@@ -128,6 +130,8 @@ export default function NewEntry() {
 
     router.replace("/(auth)/child-select");
     router.replace(`${child}/home`);
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
   };
 
   return (

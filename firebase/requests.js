@@ -181,7 +181,7 @@ export function getChild(childID) {
 }
 
 /*##################### ENTRY REQUESTS ################### */
-export function createEntry(
+export async function createEntry(
   date,
   time_entry,
   time_experience,
@@ -208,18 +208,12 @@ export function createEntry(
     notes: notes,
     childID: childID,
   };
-  set(entryRef, entry)
-    .then(() => {
-      //add entry to child's entryList
-      const childEntryRef = ref(db, "/Children/" + childID + "/entries");
-      push(childEntryRef, entryRef.key);
-      //update statistics
-      updateStatistics(entry, childID);
-    })
-    .catch((error) => {
-      console.error("entry creation not successful", error);
-    });
-  //edit child information and statistics
+  await set(entryRef, entry);
+
+  const childEntryRef = ref(db, "/Children/" + childID + "/entries");
+  await push(childEntryRef, entryRef.key);
+
+  await updateStatistics(entry, childID);
 }
 export function updateEntry(
   entryID,
@@ -294,7 +288,7 @@ export function getEntriesByChild(childID) {
  * @param {String} childID
  * @returns {JSON} updates
  */
-export function updateStatistics(entry, childID) {
+export async function updateStatistics(entry, childID) {
   var updates = new Object();
   var { intensity, triggers, behaviors, resolutions } = entry;
   getChild(childID)
