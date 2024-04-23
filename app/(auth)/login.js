@@ -9,6 +9,7 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import { auth } from "../../firebase/firebase.js";
 import { signInWithEmailAndPassword } from "@firebase/auth";
@@ -43,13 +44,15 @@ export default function Login() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={defaultStyles.container}>
+      <KeyboardAvoidingView style={defaultStyles.container} behavior="padding">
         <FontAwesomeIcon
           icon={faInfinity}
           style={defaultStyles.iconOnLogin}
           size={70}
         />
-        <Text style={defaultStyles.loginPageLogIn}>Log In</Text>
+        <View>
+          <Text style={defaultStyles.loginPageLogIn}>Log In</Text>
+        </View>
         <View style={defaultStyles.separator3} />
 
         <TextInput
@@ -57,6 +60,7 @@ export default function Login() {
           value={email}
           placeholder="Email"
           autoCapitalize="none"
+          autoCorrect={false}
           onChangeText={(text) => setEmail(text)}
           returnKeyType="next"
           onSubmitEditing={() => {
@@ -96,7 +100,7 @@ export default function Login() {
             </TouchableOpacity>
           </>
         )}
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }

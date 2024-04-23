@@ -7,6 +7,9 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
+  StyleSheet,
+  KeyboardAvoidingView,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { defaultStyles } from "../../constants/Styles.js";
@@ -50,6 +53,8 @@ export default function ChildAdd() {
   const [showDoneButton, setShowDoneButton] = useState(false);
   const [profilePicture, setProfilePicture] = useState("");
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleInputChange = (text) => {
     setChildName(text);
   };
@@ -65,6 +70,14 @@ export default function ChildAdd() {
 
     if (Keyboard.isVisible()) {
       Keyboard.dismiss();
+    }
+
+    if (showDatePicker) {
+      setShowDatePicker(false);
+      setShowDoneButton(false);
+    } else {
+      setShowDatePicker(true);
+      setShowDoneButton(true);
     }
 
     let permissionResult =
@@ -86,7 +99,14 @@ export default function ChildAdd() {
   };
 
   const handleSubmit = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setSubmitting(true);
+
+    if (!childName.trim()) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      Alert.alert("Child Name Required", "Please enter a name for your child.");
+
+      return;
+    }
 
     try {
       const childID = createChild(
@@ -99,7 +119,9 @@ export default function ChildAdd() {
         [userID],
         profilePicture
       );
-      console.log("Child created with ID:", childID);
+
+      setSubmitting(false);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
       if (profilePicture) {
         uploadChildProfilePicture(childID, profilePicture);
@@ -136,17 +158,22 @@ export default function ChildAdd() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={defaultStyles.container}>
-        <Text style={defaultStyles.title}>Add Child</Text>
+      <KeyboardAvoidingView style={defaultStyles.container} behavior="padding">
+        <View>
+          <Text style={defaultStyles.title}>Add Child</Text>
+        </View>
         <View style={defaultStyles.separator} />
 
         <View
-          style={{
-            backgroundColor: "white",
-            borderRadius: 5,
-            marginBottom: 20,
-            width: "80%",
-          }}
+          style={[
+            {
+              backgroundColor: "white",
+              borderRadius: 5,
+              marginBottom: 20,
+              width: "80%",
+            },
+            submitting && !childName.trim() && styles.inputError,
+          ]}
         >
           <TextInput
             style={{ padding: 15, color: "#3a644b" }}
@@ -155,14 +182,6 @@ export default function ChildAdd() {
             placeholder="Enter Child's Name"
             placeholderTextColor="#3a644b"
             returnKeyType="done"
-          />
-          <View
-            style={{
-              backgroundColor: "#e9e9ea",
-              borderRadius: 100,
-              height: 1,
-              width: "100%",
-            }}
           />
         </View>
 
@@ -241,14 +260,6 @@ export default function ChildAdd() {
               />
             )}
           </TouchableOpacity>
-          <View
-            style={{
-              backgroundColor: "#e9e9ea",
-              borderRadius: 100,
-              height: 1,
-              width: "100%",
-            }}
-          />
         </View>
 
         {/* <Link href="/(customize)/customize" asChild>
@@ -266,7 +277,25 @@ export default function ChildAdd() {
         >
           <Text style={defaultStyles.btnText}>Submit</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
+
+const styles = StyleSheet.create({
+  inputContainer: {
+    backgroundColor: "white",
+    borderRadius: 5,
+    marginBottom: 10,
+    borderColor: "white",
+    borderWidth: 2,
+  },
+  input: {
+    marginVertical: 4,
+    width: "100%",
+  },
+  inputError: {
+    borderColor: "red",
+    borderWidth: 2,
+  },
+});

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -229,264 +230,266 @@ export default function NewEntry() {
   ];
 
   return (
-    <ScrollView
-      ref={scrollViewRef}
-      style={styles.container}
-      contentContainerStyle={styles.containerContent}
-      showsVerticalScrollIndicator={false}
-    >
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <>
-          <View style={styles.box}>
-            <Text style={styles.h1}>Details</Text>
-            <View
-              style={[
-                styles.inputContainer,
-                submitting && !location.trim() && styles.inputError,
-              ]}
-            >
-              <TextInput
-                ref={locationInputRef}
-                style={[{ padding: 15, fontFamily: "DMMono" }]}
-                value={location}
-                onChangeText={handleInputChange}
-                placeholder="Enter Location"
-                returnKeyType="done"
-              />
-            </View>
-
-            <TouchableOpacity
-              onPress={handleDatePress}
-              style={{
-                backgroundColor: "white",
-                borderRadius: 5,
-                marginBottom: 10,
-              }}
-            >
-              <Text
-                style={{ padding: 15, color: "#333", fontFamily: "DMMono" }}
+    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100}>
+      <ScrollView
+        ref={scrollViewRef}
+        style={styles.container}
+        contentContainerStyle={styles.containerContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {loading ? (
+          <Text>Loading...</Text>
+        ) : (
+          <>
+            <View style={styles.box}>
+              <Text style={styles.h1}>Details</Text>
+              <View
+                style={[
+                  styles.inputContainer,
+                  submitting && !location.trim() && styles.inputError,
+                ]}
               >
-                Date: {date.toLocaleDateString()}
-              </Text>
-              {showDateDoneButton && showDatePicker && (
-                <Text
-                  style={{
-                    position: "absolute",
-                    right: 10,
-                    top: 15,
-                    color: "#333",
-                    fontFamily: "DMSans",
-                  }}
-                >
-                  Done
-                </Text>
-              )}
-            </TouchableOpacity>
-
-            {showDatePicker && (
-              <DateTimePicker
-                value={date}
-                mode="date"
-                display="inline"
-                onChange={handleDateChange}
-              />
-            )}
-
-            <TouchableOpacity
-              onPress={handleTimePress}
-              style={{
-                backgroundColor: "white",
-                borderRadius: 5,
-                marginBottom: 10,
-              }}
-            >
-              <Text
-                style={{ padding: 15, color: "#333", fontFamily: "DMMono" }}
-              >
-                Time:{" "}
-                {timeExperience.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
-              </Text>
-              {showTimeDoneButton && showTimePicker && (
-                <Text
-                  style={{
-                    position: "absolute",
-                    right: 10,
-                    top: 15,
-                    color: "#333",
-                    fontFamily: "DMSans",
-                  }}
-                >
-                  Done
-                </Text>
-              )}
-            </TouchableOpacity>
-
-            {showTimePicker && (
-              <DateTimePicker
-                value={timeExperience}
-                mode="time"
-                display="spinner"
-                onChange={handleTimeExperienceChange}
-              />
-            )}
-          </View>
-
-          <View style={styles.box}>
-            <Text style={styles.h1}>What happened before?</Text>
-            <Text style={styles.h2}>Select Triggers</Text>
-            <View style={styles.buttonContainer}>
-              {commonTriggers.map((trigger) => (
-                <TouchableOpacity
-                  key={trigger}
-                  style={[
-                    styles.button,
-                    triggers.includes(trigger) && {
-                      backgroundColor: Colors.tint,
-                    },
-                  ]}
-                  onPress={() => toggleTrigger(trigger)}
-                >
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      triggers.includes(trigger) && { color: "white" },
-                    ]}
-                  >
-                    {trigger}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-              <TouchableOpacity
-                style={styles.addBtn}
-                onPress={handleAddTrigger}
-              >
-                <Text style={[styles.buttonText]}>Add Trigger +</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <View style={styles.box}>
-            <Text style={styles.h1}>What happened during?</Text>
-            <Text style={styles.h2}>Select Behaviors</Text>
-            <View style={styles.buttonContainer}>
-              {commonBehaviors.map((behavior) => (
-                <TouchableOpacity
-                  key={behavior}
-                  style={[
-                    styles.button,
-                    behaviors.includes(behavior) && {
-                      backgroundColor: Colors.tint,
-                    },
-                  ]}
-                  onPress={() => toggleBehavior(behavior)}
-                >
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      behaviors.includes(behavior) && { color: "white" },
-                    ]}
-                  >
-                    {behavior}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-              <TouchableOpacity
-                style={styles.addBtn}
-                onPress={handleAddBehavior}
-              >
-                <Text style={[styles.buttonText]}>Add Behavior +</Text>
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.h2}>Select Intensity Level</Text>
-            <Text style={[styles.h3, { color: "#333" }]}>
-              Intensity Level: {intensity}
-            </Text>
-            <View style={styles.intensityContainer}>
-              {[1, 2, 3, 4, 5].map((level) => (
-                <Pressable
-                  key={level}
-                  style={[
-                    styles.emptyBox,
-                    intensity >= level
-                      ? {
-                          backgroundColor: intensityColors[intensity],
-                          borderColor: intensityColors[intensity],
-                        }
-                      : {
-                          backgroundColor: Colors.background,
-                          borderColor: intensityColors[intensity],
-                        },
-                  ]}
-                  onPress={() => handleIntensitySelect(level)}
+                <TextInput
+                  ref={locationInputRef}
+                  style={[{ padding: 15, fontFamily: "DMMono" }]}
+                  value={location}
+                  onChangeText={handleInputChange}
+                  placeholder="Enter Location"
+                  returnKeyType="done"
                 />
-              ))}
-            </View>
-          </View>
+              </View>
 
-          <View style={styles.box}>
-            <Text style={styles.h1}>What happened after?</Text>
-            <Text style={styles.h2}>Select Resolutions</Text>
-            <View style={styles.buttonContainer}>
-              {commonResolutions.map((resolution) => (
-                <TouchableOpacity
-                  key={resolution}
-                  style={[
-                    styles.button,
-                    resolutions.includes(resolution) && {
-                      backgroundColor: Colors.tint,
-                    },
-                  ]}
-                  onPress={() => toggleResolution(resolution)}
+              <TouchableOpacity
+                onPress={handleDatePress}
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 5,
+                  marginBottom: 10,
+                }}
+              >
+                <Text
+                  style={{ padding: 15, color: "#333", fontFamily: "DMMono" }}
                 >
+                  Date: {date.toLocaleDateString()}
+                </Text>
+                {showDateDoneButton && showDatePicker && (
                   <Text
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: 15,
+                      color: "#333",
+                      fontFamily: "DMSans",
+                    }}
+                  >
+                    Done
+                  </Text>
+                )}
+              </TouchableOpacity>
+
+              {showDatePicker && (
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display="inline"
+                  onChange={handleDateChange}
+                />
+              )}
+
+              <TouchableOpacity
+                onPress={handleTimePress}
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 5,
+                  marginBottom: 10,
+                }}
+              >
+                <Text
+                  style={{ padding: 15, color: "#333", fontFamily: "DMMono" }}
+                >
+                  Time:{" "}
+                  {timeExperience.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </Text>
+                {showTimeDoneButton && showTimePicker && (
+                  <Text
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: 15,
+                      color: "#333",
+                      fontFamily: "DMSans",
+                    }}
+                  >
+                    Done
+                  </Text>
+                )}
+              </TouchableOpacity>
+
+              {showTimePicker && (
+                <DateTimePicker
+                  value={timeExperience}
+                  mode="time"
+                  display="spinner"
+                  onChange={handleTimeExperienceChange}
+                />
+              )}
+            </View>
+
+            <View style={styles.box}>
+              <Text style={styles.h1}>What happened before?</Text>
+              <Text style={styles.h2}>Select Triggers</Text>
+              <View style={styles.buttonContainer}>
+                {commonTriggers.map((trigger) => (
+                  <TouchableOpacity
+                    key={trigger}
                     style={[
-                      styles.buttonText,
-                      resolutions.includes(resolution) && {
-                        color: "white",
+                      styles.button,
+                      triggers.includes(trigger) && {
+                        backgroundColor: Colors.tint,
                       },
                     ]}
+                    onPress={() => toggleTrigger(trigger)}
                   >
-                    {resolution}
-                  </Text>
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        triggers.includes(trigger) && { color: "white" },
+                      ]}
+                    >
+                      {trigger}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+                <TouchableOpacity
+                  style={styles.addBtn}
+                  onPress={handleAddTrigger}
+                >
+                  <Text style={[styles.buttonText]}>Add Trigger +</Text>
                 </TouchableOpacity>
-              ))}
-              <TouchableOpacity
-                style={styles.addBtn}
-                onPress={handleAddResolution}
-              >
-                <Text style={[styles.buttonText]}>Add Resolution +</Text>
-              </TouchableOpacity>
+              </View>
             </View>
-          </View>
 
-          <View style={styles.box}>
-            <Text style={styles.h1}>Note</Text>
-            <TextInput
-              style={styles.input}
-              multiline
-              placeholder="Add note..."
-              onChangeText={(text) => setNote(text)}
-              returnKeyType="done"
-              blurOnSubmit={true}
-              scrollEnabled={false}
-            />
-          </View>
+            <View style={styles.box}>
+              <Text style={styles.h1}>What happened during?</Text>
+              <Text style={styles.h2}>Select Behaviors</Text>
+              <View style={styles.buttonContainer}>
+                {commonBehaviors.map((behavior) => (
+                  <TouchableOpacity
+                    key={behavior}
+                    style={[
+                      styles.button,
+                      behaviors.includes(behavior) && {
+                        backgroundColor: Colors.tint,
+                      },
+                    ]}
+                    onPress={() => toggleBehavior(behavior)}
+                  >
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        behaviors.includes(behavior) && { color: "white" },
+                      ]}
+                    >
+                      {behavior}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+                <TouchableOpacity
+                  style={styles.addBtn}
+                  onPress={handleAddBehavior}
+                >
+                  <Text style={[styles.buttonText]}>Add Behavior +</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.h2}>Select Intensity Level</Text>
+              <Text style={[styles.h3, { color: "#333" }]}>
+                Intensity Level: {intensity}
+              </Text>
+              <View style={styles.intensityContainer}>
+                {[1, 2, 3, 4, 5].map((level) => (
+                  <Pressable
+                    key={level}
+                    style={[
+                      styles.emptyBox,
+                      intensity >= level
+                        ? {
+                            backgroundColor: intensityColors[intensity],
+                            borderColor: intensityColors[intensity],
+                          }
+                        : {
+                            backgroundColor: Colors.background,
+                            borderColor: intensityColors[intensity],
+                          },
+                    ]}
+                    onPress={() => handleIntensitySelect(level)}
+                  />
+                ))}
+              </View>
+            </View>
 
-          <TouchableOpacity
-            style={defaultStyles.signUpPageCABtn}
-            onPress={submitEntry}
-          >
-            <Text style={defaultStyles.btnText}>Submit Entry</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </ScrollView>
+            <View style={styles.box}>
+              <Text style={styles.h1}>What happened after?</Text>
+              <Text style={styles.h2}>Select Resolutions</Text>
+              <View style={styles.buttonContainer}>
+                {commonResolutions.map((resolution) => (
+                  <TouchableOpacity
+                    key={resolution}
+                    style={[
+                      styles.button,
+                      resolutions.includes(resolution) && {
+                        backgroundColor: Colors.tint,
+                      },
+                    ]}
+                    onPress={() => toggleResolution(resolution)}
+                  >
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        resolutions.includes(resolution) && {
+                          color: "white",
+                        },
+                      ]}
+                    >
+                      {resolution}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+                <TouchableOpacity
+                  style={styles.addBtn}
+                  onPress={handleAddResolution}
+                >
+                  <Text style={[styles.buttonText]}>Add Resolution +</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.box}>
+              <Text style={styles.h1}>Note</Text>
+              <TextInput
+                style={styles.input}
+                multiline
+                placeholder="Add note..."
+                onChangeText={(text) => setNote(text)}
+                returnKeyType="done"
+                blurOnSubmit={true}
+                scrollEnabled={false}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={defaultStyles.signUpPageCABtn}
+              onPress={submitEntry}
+            >
+              <Text style={defaultStyles.btnText}>Submit Entry</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -495,10 +498,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   containerContent: {
-    // flex: 1,
     alignItems: "center",
     paddingTop: 20,
-    paddingBottom: 200,
+    // paddingBottom: 0,
   },
   box: {
     padding: 10,

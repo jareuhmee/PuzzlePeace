@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import { auth } from "../../firebase/firebase.js";
 import { sendPasswordResetEmail } from "@firebase/auth";
@@ -45,7 +46,7 @@ export default function PasswordReset() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={defaultStyles.container}>
+      <KeyboardAvoidingView style={defaultStyles.container} behavior="padding">
         {!resetSent ? (
           <>
             <FontAwesomeIcon
@@ -53,7 +54,9 @@ export default function PasswordReset() {
               style={defaultStyles.iconOnLogin}
               size={70}
             />
-            <Text style={defaultStyles.loginPageLogIn}>Reset Password</Text>
+            <View>
+              <Text style={defaultStyles.loginPageLogIn}>Reset Password</Text>
+            </View>
             <View style={defaultStyles.separator} />
 
             <TextInput
@@ -61,6 +64,7 @@ export default function PasswordReset() {
               value={email}
               placeholder="Email"
               autoCapitalize="none"
+              autoCorrect={false}
               onChangeText={(text) => setEmail(text)}
               returnKeyType="done"
               onSubmitEditing={sendResetEmail}
@@ -92,7 +96,7 @@ export default function PasswordReset() {
             </TouchableOpacity>
           </>
         )}
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
