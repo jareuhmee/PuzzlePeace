@@ -1,8 +1,9 @@
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import { Text, View, TouchableOpacity } from "react-native";
 import { defaultStyles } from "../constants/Styles";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faInfinity } from "@fortawesome/free-solid-svg-icons";
+import * as Haptics from "expo-haptics";
 
 export default function LandingPage() {
   return (
@@ -15,25 +16,27 @@ export default function LandingPage() {
       />
       <View style={defaultStyles.separator} />
 
-      <Link href="/(auth)/register" asChild>
-        <TouchableOpacity style={defaultStyles.firstBtn}>
-          <Text style={defaultStyles.btnText}>Get Started</Text>
-        </TouchableOpacity>
-      </Link>
-
-      {/* <Link href="/(customize)/customize" asChild>
-        <TouchableOpacity style={defaultStyles.btn}>
-          <Text style={defaultStyles.btnText}>TEST: Customize Page</Text>
-        </TouchableOpacity>
-      </Link> */}
+      <TouchableOpacity
+        style={defaultStyles.firstBtn}
+        onPress={() => {
+          router.navigate("/(auth)/register");
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        }}
+      >
+        <Text style={defaultStyles.btnText}>Get Started</Text>
+      </TouchableOpacity>
 
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text style={defaultStyles.loginText}>Have an account?</Text>
-        <Link href="/(auth)/login" asChild>
-          <TouchableOpacity style={defaultStyles}>
-            <Text style={defaultStyles.loginTextBold}>Login</Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity
+          style={defaultStyles}
+          onPress={() => {
+            router.navigate("/(auth)/login");
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          }}
+        >
+          <Text style={defaultStyles.loginTextBold}>Login</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

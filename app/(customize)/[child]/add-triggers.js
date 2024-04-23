@@ -88,6 +88,7 @@ export default function AddTriggers() {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 80 }}
+        showsVerticalScrollIndicator={false}
       >
         {triggers.map((trigger) => (
           <View key={trigger} style={styles.triggerItem}>

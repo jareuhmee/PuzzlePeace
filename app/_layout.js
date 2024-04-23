@@ -73,22 +73,79 @@ function RootLayoutNav() {
           <Stack.Screen
             name="(auth)/login"
             options={{
+              title: "",
               presentation: "modal",
-              headerShown: false,
+              headerShown: true,
+              headerTransparent: true,
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    router.back();
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  }}
+                  style={{
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    padding: 4,
+                    borderColor: "#ccc",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  <Ionicons name="close-outline" size={22} />
+                </TouchableOpacity>
+              ),
             }}
           />
           <Stack.Screen
             name="(auth)/register"
             options={{
+              title: "",
               presentation: "modal",
-              headerShown: false,
+              headerShown: true,
+              headerTransparent: true,
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    router.back();
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  }}
+                  style={{
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    padding: 4,
+                    borderColor: "#ccc",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  <Ionicons name="close-outline" size={22} />
+                </TouchableOpacity>
+              ),
             }}
           />
           <Stack.Screen
             name="(auth)/pw-reset"
             options={{
+              title: "",
               presentation: "modal",
-              headerShown: false,
+              headerShown: true,
+              headerTransparent: true,
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    router.back();
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  }}
+                  style={{
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    padding: 4,
+                    borderColor: "#ccc",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  <Ionicons name="close-outline" size={22} />
+                </TouchableOpacity>
+              ),
             }}
           />
           <Stack.Screen
@@ -133,6 +190,8 @@ function RootLayoutNav() {
                     borderRadius: 20,
                     borderWidth: 1,
                     padding: 4,
+                    borderColor: "#ccc",
+                    backgroundColor: "#fff",
                   }}
                 >
                   <Ionicons name="close-outline" size={22} />
@@ -145,48 +204,6 @@ function RootLayoutNav() {
               //   fontFamily: "DMSans",
               //   fontSize: 20,
               // },
-            }}
-          />
-          <Stack.Screen
-            name="(modals)/create-trigger"
-            options={{
-              title: "Create Trigger",
-              presentation: "modal",
-              headerStyle: {
-                backgroundColor: Colors.background,
-              },
-              headerTitleStyle: {
-                fontFamily: "DMSans",
-                fontSize: 20,
-              },
-            }}
-          />
-          <Stack.Screen
-            name="(modals)/create-behavior"
-            options={{
-              title: "Create Behavior",
-              presentation: "modal",
-              headerStyle: {
-                backgroundColor: Colors.background,
-              },
-              headerTitleStyle: {
-                fontFamily: "DMSans",
-                fontSize: 20,
-              },
-            }}
-          />
-          <Stack.Screen
-            name="(modals)/create-resolution"
-            options={{
-              title: "Create Resolution",
-              presentation: "modal",
-              headerStyle: {
-                backgroundColor: Colors.background,
-              },
-              headerTitleStyle: {
-                fontFamily: "DMSans",
-                fontSize: 20,
-              },
             }}
           />
           <Stack.Screen

@@ -88,6 +88,7 @@ export default function AddBehaviors() {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 80 }}
+        showsVerticalScrollIndicator={false}
       >
         {behaviors.map((behavior) => (
           <View key={behavior} style={styles.behaviorItem}>

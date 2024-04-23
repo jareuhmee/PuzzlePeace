@@ -6,6 +6,9 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
 } from "react-native";
 import { auth } from "../../firebase/firebase.js";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
@@ -22,8 +25,8 @@ export default function Register() {
   const [firstName, setFirstName] = useState("");
 
   const signUp = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setLoading(true);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     try {
       const response = await createUserWithEmailAndPassword(
         auth,
@@ -36,59 +39,78 @@ export default function Register() {
       router.replace("/(auth)/child-add");
     } catch (error) {
       console.log(error);
-      alert("Sign up failed: " + error.message);
+      Alert.alert("Sign Up Failed", error.message);
     } finally {
       setLoading(false);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
   };
 
   return (
-    <View style={defaultStyles.container}>
-      <FontAwesomeIcon
-        icon={faInfinity}
-        style={defaultStyles.iconOnLogin}
-        size={70}
-      />
-      <Text style={defaultStyles.loginPageLogIn}>Create an Account</Text>
-      <View style={defaultStyles.separator3} />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={defaultStyles.container}>
+        <FontAwesomeIcon
+          icon={faInfinity}
+          style={defaultStyles.iconOnLogin}
+          size={70}
+        />
+        <Text style={defaultStyles.loginPageLogIn}>Create an Account</Text>
+        <View style={defaultStyles.separator3} />
 
-      <TextInput
-        style={defaultStyles.input}
-        value={email}
-        placeholder="Email"
-        autoCapitalize="none"
-        onChangeText={(text) => setEmail(text)}
-      />
-      <TextInput
-        style={defaultStyles.input}
-        secureTextEntry={true}
-        value={password}
-        placeholder="Password"
-        autoCapitalize="none"
-        onChangeText={(text) => setPassword(text)}
-      />
-      <TextInput
-        style={defaultStyles.input}
-        value={firstName}
-        placeholder="Your First Name"
-        autoCapitalize="words"
-        onChangeText={(text) => setFirstName(text)}
-      />
+        <TextInput
+          style={defaultStyles.input}
+          value={email}
+          placeholder="Email"
+          autoCapitalize="none"
+          onChangeText={(text) => setEmail(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            passwordInput.focus();
+          }}
+        />
+        <TextInput
+          ref={(input) => {
+            passwordInput = input;
+          }}
+          style={defaultStyles.input}
+          secureTextEntry={true}
+          value={password}
+          placeholder="Password"
+          autoCapitalize="none"
+          onChangeText={(text) => setPassword(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            nameInput.focus();
+          }}
+        />
+        <TextInput
+          ref={(input) => {
+            nameInput = input;
+          }}
+          style={defaultStyles.input}
+          value={firstName}
+          placeholder="Your First Name"
+          autoCapitalize="words"
+          onChangeText={(text) => setFirstName(text)}
+          returnKeyType="done"
+          onSubmitEditing={signUp}
+        />
 
-      <View style={defaultStyles.separator2} />
+        <View style={defaultStyles.separator2} />
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#ffffff" />
-      ) : (
-        <>
-          <TouchableOpacity
-            style={defaultStyles.signUpPageCABtn}
-            onPress={signUp}
-          >
-            <Text style={defaultStyles.btnText}>Create an Account</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+        {loading ? (
+          <ActivityIndicator size="large" color="#ffffff" />
+        ) : (
+          <>
+            <TouchableOpacity
+              style={defaultStyles.signUpPageCABtn}
+              onPress={signUp}
+            >
+              <Text style={defaultStyles.btnText}>Create an Account</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 }

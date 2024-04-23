@@ -65,7 +65,7 @@ export default function Entry() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.containerContent}
@@ -159,7 +159,7 @@ export default function Entry() {
           </>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -167,9 +167,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
+    paddingVertical: 20,
   },
   containerContent: {
-    // flex: 1,
     alignItems: "center",
     marginVertical: 10,
   },

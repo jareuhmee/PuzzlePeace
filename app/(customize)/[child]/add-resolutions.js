@@ -88,6 +88,7 @@ export default function AddResolutions() {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 80 }}
+        showsVerticalScrollIndicator={false}
       >
         {resolutions.map((resolution) => (
           <View key={resolution} style={styles.resolutionItem}>

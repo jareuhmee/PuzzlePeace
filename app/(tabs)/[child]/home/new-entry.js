@@ -233,6 +233,7 @@ export default function NewEntry() {
       ref={scrollViewRef}
       style={styles.container}
       contentContainerStyle={styles.containerContent}
+      showsVerticalScrollIndicator={false}
     >
       {loading ? (
         <Text>Loading...</Text>

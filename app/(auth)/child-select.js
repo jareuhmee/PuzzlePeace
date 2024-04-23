@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import { TouchableOpacity, Text, View, Image } from "react-native";
 import { defaultStyles } from "../../constants/Styles.js";
+import * as Haptics from "expo-haptics";
 
 import { getChild, getUser } from "../../firebase/requests.js";
 import { auth } from "../../firebase/firebase.js";
@@ -48,6 +49,7 @@ export default function ChildSelect() {
           style={[defaultStyles.btn, { flex: 1 }]}
           onPress={() => {
             router.replace(`(tabs)/${childID}/home`);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           }}
         >
           <Text style={defaultStyles.btnText}>{childName}</Text>
@@ -89,7 +91,10 @@ export default function ChildSelect() {
 
       <TouchableOpacity
         style={defaultStyles.addChildBtn}
-        onPress={() => router.navigate("/(auth)/child-add")}
+        onPress={() => {
+          router.navigate("/(auth)/child-add");
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        }}
       >
         <Text style={defaultStyles.btnText}>Add Child</Text>
       </TouchableOpacity>

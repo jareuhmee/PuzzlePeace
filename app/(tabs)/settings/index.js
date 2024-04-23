@@ -11,6 +11,7 @@ import { router } from "expo-router";
 import Colors from "../../../constants/Colors.js";
 import { defaultStyles } from "../../../constants/Styles.js";
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 
 import { getChild, getUser } from "../../../firebase/requests.js";
 import { auth } from "../../../firebase/firebase.js";
@@ -128,6 +129,7 @@ export default function Settings() {
             style={styles.item}
             onPress={() => {
               router.navigate("/(auth)/child-add");
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             }}
           >
             <Text style={styles.text}>Add Child</Text>
@@ -138,7 +140,10 @@ export default function Settings() {
         <View style={defaultStyles.btnContainer}>
           <TouchableOpacity
             style={defaultStyles.btn}
-            onPress={() => auth.signOut()}
+            onPress={() => {
+              auth.signOut();
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            }}
           >
             <Text style={defaultStyles.btnText}>Logout</Text>
           </TouchableOpacity>
