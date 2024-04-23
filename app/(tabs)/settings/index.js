@@ -52,27 +52,6 @@ export default function Settings() {
     }
   };
 
-  const mockChildren = [
-    {
-      name: "Alice",
-    },
-    {
-      name: "Bryan",
-    },
-    {
-      name: "Cole",
-    },
-    {
-      name: "Jemar",
-    },
-    {
-      name: "John",
-    },
-    {
-      name: "Maddy",
-    },
-  ];
-
   return (
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
       <ScrollView
@@ -83,26 +62,27 @@ export default function Settings() {
         <Text style={styles.header}>Account Settings</Text>
         <View style={styles.block}>
           <TouchableOpacity style={styles.item}>
-            <Text style={styles.text}>Profile Name</Text>
+            <Text style={styles.text}>Name</Text>
             <Ionicons name="chevron-forward" size={20} color="gray" />
           </TouchableOpacity>
           <View style={styles.separator} />
 
           <TouchableOpacity style={styles.item}>
-            <Text style={styles.text}>Profile Picture</Text>
+            <Text style={styles.text}>Picture</Text>
             <Ionicons name="chevron-forward" size={20} color="gray" />
           </TouchableOpacity>
           <View style={styles.separator} />
 
-          <TouchableOpacity style={styles.item}>
+          {/* <TouchableOpacity style={styles.item}>
             <Text style={styles.text}>Email</Text>
             <Ionicons name="chevron-forward" size={20} color="gray" />
           </TouchableOpacity>
-          <View style={styles.separator} />
+          <View style={styles.separator} /> */}
 
           <TouchableOpacity style={styles.item}>
-            <Text style={styles.text}>Change Password</Text>
-            <Ionicons name="chevron-forward" size={20} color="gray" />
+            <Text style={[styles.text, { color: Colors.primary }]}>
+              Reset Password
+            </Text>
           </TouchableOpacity>
         </View>
 
