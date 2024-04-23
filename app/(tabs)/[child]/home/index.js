@@ -218,17 +218,19 @@ export default function Home() {
                 ))}
               </View>
               {/* Behaviors */}
-              <View style={entryStyles.behaviorContainer}>
-                {Array.from(item.behaviors).map((behavior) => (
-                  <View key={behavior} style={entryStyles.behavior}>
-                    <Text key={behavior} style={entryStyles.behaviorText}>
-                      {behavior}
-                    </Text>
-                  </View>
-                ))}
-              </View>
+              {item.behaviors && item.behaviors.length > 0 && (
+                <View style={entryStyles.behaviorContainer}>
+                  {Array.from(item.behaviors).map((behavior) => (
+                    <View key={behavior} style={entryStyles.behavior}>
+                      <Text key={behavior} style={entryStyles.behaviorText}>
+                        {behavior}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              )}
               {/* Note */}
-              <Text style={entryStyles.text}>{item.notes}</Text>
+              {item.notes && <Text style={entryStyles.text}>{item.notes}</Text>}
               {/* Expand Button */}
               <View style={entryStyles.expandButton}>
                 <Feather
@@ -394,88 +396,3 @@ const styles = StyleSheet.create({
     color: "black",
   },
 });
-
-const mockEntries = {
-  0: {
-    day: "WEDNESDAY",
-    date: "FEB 28",
-    time: "12:30 PM",
-    location: "Oak's Mall",
-    behaviors: ["Screaming", "Hitting"],
-    intensity: 2,
-    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
-  },
-  1: {
-    day: "TUESDAY",
-    date: "FEB 27",
-    time: "8:00 AM",
-    location: "Home",
-    behaviors: ["Crying", "Yelling", "Hitting"],
-    intensity: 1,
-    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
-  },
-  2: {
-    day: "MONDAY",
-    date: "FEB 26",
-    time: "8:00 AM",
-    location: "Home",
-    behaviors: ["Crying", "Yelling", "Hitting"],
-    intensity: 4,
-    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
-  },
-  3: {
-    day: "SUNDAY",
-    date: "FEB 25",
-    time: "8:00 AM",
-    location: "Home",
-    behaviors: ["Crying", "Yelling", "Hitting"],
-    intensity: 2,
-    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
-  },
-  4: {
-    day: "SATURDAY",
-    date: "FEB 24",
-    time: "8:00 AM",
-    location: "Home",
-    behaviors: ["Crying", "Yelling", "Hitting"],
-    intensity: 3,
-    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
-  },
-  5: {
-    day: "FRIDAY",
-    date: "FEB 23",
-    time: "8:00 AM",
-    location: "Home",
-    behaviors: ["Crying", "Yelling", "Hitting"],
-    intensity: 5,
-    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
-  },
-  6: {
-    day: "THURSDAY",
-    date: "FEB 22",
-    time: "8:00 AM",
-    location: "Home",
-    behaviors: ["Crying", "Yelling", "Hitting"],
-    intensity: 4,
-    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
-  },
-  7: {
-    day: "WEDNESDAY",
-    date: "FEB 21",
-    time: "8:00 AM",
-    location: "Home",
-    behaviors: ["Crying", "Yelling", "Hitting"],
-    intensity: 1,
-    note: "During a visit to Oak's Mall, John was overwhelmed by the bustling environment.",
-  },
-};
-
-// Mock Data: List of children
-const mockChildren = {
-  0: "Alice",
-  1: "Bryan",
-  2: "Cole",
-  3: "Jemar",
-  4: "John",
-  5: "Maddy",
-};

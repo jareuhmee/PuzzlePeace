@@ -218,32 +218,6 @@ const styles = StyleSheet.create({
     fontFamily: "DMMono",
     color: "black",
   },
-
-  intensityContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 2,
-    marginVertical: 5,
-  },
-  intensityBox: {
-    width: 15,
-    height: 10,
-    borderRadius: 2,
-    backgroundColor: Colors.tint,
-  },
-  emptyBox: {
-    width: 15,
-    height: 10,
-    borderRadius: 2,
-    borderWidth: 2,
-    borderColor: Colors.tint,
-  },
-  intensityText: {
-    fontSize: 10,
-    fontFamily: "DMMono",
-    color: "black",
-  },
-
   behaviorContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -298,14 +272,21 @@ const styles = StyleSheet.create({
   intensityContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 2,
+    gap: 6,
     marginVertical: 5,
   },
   intensityBox: {
-    width: 15,
-    height: 10,
-    borderRadius: 2,
+    width: 45,
+    height: 30,
+    borderRadius: 4,
     backgroundColor: Colors.tint,
+  },
+  emptyBox: {
+    width: 45,
+    height: 30,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: Colors.tint,
   },
   intensityText: {
     fontSize: 10,

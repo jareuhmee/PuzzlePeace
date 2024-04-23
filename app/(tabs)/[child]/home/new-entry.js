@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   TextInput,
   Text,
   View,
   ScrollView,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Pressable,
-  Keyboard,
+  Alert,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -17,7 +16,6 @@ import { defaultStyles } from "../../../../constants/Styles";
 import Colors from "../../../../constants/Colors";
 
 import { getChild, createEntry } from "../../../../firebase/requests";
-import { color } from "echarts";
 
 export default function NewEntry() {
   const { child } = useLocalSearchParams();
@@ -25,7 +23,12 @@ export default function NewEntry() {
   const [commonTriggers, setCommonTriggers] = useState([]);
   const [commonBehaviors, setCommonBehaviors] = useState([]);
   const [commonResolutions, setCommonResolutions] = useState([]);
+
+  const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const scrollViewRef = useRef(null);
+  const locationInputRef = useRef(null);
 
   useEffect(() => {
     getChild(child)
@@ -158,6 +161,20 @@ export default function NewEntry() {
   };
 
   const submitEntry = async () => {
+    setSubmitting(true);
+
+    if (!location.trim()) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      Alert.alert(
+        "Location Required",
+        "Please enter a location before submitting the entry."
+      );
+
+      scrollViewRef.current.scrollTo({ y: locationInputRef.current.offsetTop });
+
+      return;
+    }
+
     const formattedDate = date.toISOString().split("T")[0];
     const formattedTimeExperience = timeExperience.toLocaleTimeString([], {
       hour: "2-digit",
@@ -194,14 +211,26 @@ export default function NewEntry() {
       child
     );
 
+    setSubmitting(false);
+
     router.replace("/(auth)/child-select");
     router.replace(`${child}/home`);
 
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   };
+
+  const intensityColors = [
+    "",
+    "#76B18F",
+    "#8DB483",
+    "#A3B777",
+    "#BABA6B",
+    "#D0BC5F",
+  ];
 
   return (
     <ScrollView
+      ref={scrollViewRef}
       style={styles.container}
       contentContainerStyle={styles.containerContent}
     >
@@ -212,26 +241,18 @@ export default function NewEntry() {
           <View style={styles.box}>
             <Text style={styles.h1}>Details</Text>
             <View
-              style={{
-                backgroundColor: "white",
-                borderRadius: 5,
-                marginBottom: 10,
-              }}
+              style={[
+                styles.inputContainer,
+                submitting && !location.trim() && styles.inputError,
+              ]}
             >
               <TextInput
-                style={{ padding: 15 }}
+                ref={locationInputRef}
+                style={[{ padding: 15, fontFamily: "DMMono" }]}
                 value={location}
                 onChangeText={handleInputChange}
                 placeholder="Enter Location"
                 returnKeyType="done"
-              />
-              <View
-                style={{
-                  backgroundColor: "#e9e9ea",
-                  borderRadius: 100,
-                  height: 1,
-                  width: "100%",
-                }}
               />
             </View>
 
@@ -392,8 +413,14 @@ export default function NewEntry() {
                   style={[
                     styles.emptyBox,
                     intensity >= level
-                      ? { backgroundColor: Colors.tint }
-                      : { backgroundColor: Colors.background },
+                      ? {
+                          backgroundColor: intensityColors[intensity],
+                          borderColor: intensityColors[intensity],
+                        }
+                      : {
+                          backgroundColor: Colors.background,
+                          borderColor: intensityColors[intensity],
+                        },
                   ]}
                   onPress={() => handleIntensitySelect(level)}
                 />
@@ -446,6 +473,7 @@ export default function NewEntry() {
               onChangeText={(text) => setNote(text)}
               returnKeyType="done"
               blurOnSubmit={true}
+              scrollEnabled={false}
             />
           </View>
 
@@ -537,7 +565,7 @@ const styles = StyleSheet.create({
     width: 45,
     height: 30,
     borderRadius: 4,
-    borderWidth: 4,
+    borderWidth: 2,
     borderColor: Colors.tint,
   },
   intensityText: {
@@ -572,14 +600,20 @@ const styles = StyleSheet.create({
     fontFamily: "DMMono",
     color: "black",
   },
+
+  inputContainer: {
+    backgroundColor: "white",
+    borderRadius: 5,
+    marginBottom: 10,
+    borderColor: "white",
+    borderWidth: 2,
+  },
   input: {
     marginVertical: 4,
     width: "100%",
-    // height: "40px",
-    // borderWidth: 2,
-    // borderRadius: 4,
-    // borderColor: "gray",
-    // padding: 10,
-    // backgroundColor: "white",
+  },
+  inputError: {
+    borderColor: "red",
+    borderWidth: 2,
   },
 });
