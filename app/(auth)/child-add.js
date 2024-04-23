@@ -127,11 +127,8 @@ export default function ChildAdd() {
         uploadChildProfilePicture(childID, profilePicture);
       }
 
-      if (router.canGoBack()) {
-        router.back();
-      } else {
-        router.replace("/(auth)/child-select");
-      }
+      while (router.canGoBack()) router.back();
+      router.replace("/(auth)/child-select");
     } catch (error) {
       console.error(
         "Error creating child or uploading profile picture:",

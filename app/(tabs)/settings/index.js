@@ -132,7 +132,7 @@ export default function Settings() {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             }}
           >
-            <Text style={styles.text}>Add Child</Text>
+            <Text style={styles.text}>Add Child +</Text>
             <Ionicons name="chevron-forward" size={20} color="gray" />
           </TouchableOpacity>
         </View>

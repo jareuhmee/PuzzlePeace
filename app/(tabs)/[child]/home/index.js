@@ -260,8 +260,21 @@ export default function Home() {
         snapPoints={["50%"]}
         backdropComponent={renderBackdrop}
       >
-        <BottomSheetScrollView>
+        <BottomSheetScrollView
+          contentContainerStyle={{ paddingBottom: 50 }}
+          showsVerticalScrollIndicator={false}
+        >
           {children.map(renderItem)}
+          <TouchableOpacity
+            style={styles.itemContainer}
+            onPress={() => {
+              bottomSheetRef.current.dismiss();
+              router.navigate("/(auth)/child-add");
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            }}
+          >
+            <Text style={styles.btnText}>Add Child +</Text>
+          </TouchableOpacity>
         </BottomSheetScrollView>
       </BottomSheetModal>
     </SafeAreaView>

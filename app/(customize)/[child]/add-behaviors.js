@@ -61,7 +61,9 @@ export default function AddBehaviors() {
     updateChildAttributes(child, { commonBehaviors: behaviors })
       .then(() => {
         console.log("Behaviors updated successfully");
-        router.back();
+        while (router.canGoBack()) router.back();
+        router.replace("/(auth)/child-select");
+        router.replace(`/(tabs)/${child}/home`);
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       })
       .catch((error) => {
@@ -190,55 +192,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-const mockEntries = {
-  0: {
-    name: "Alice",
-    triggers: [
-      "Bright Lights",
-      "Loud Noises",
-      "Being Touched",
-      "Hungry",
-      "Tired",
-      "Thirsty",
-      "Anxious",
-      "Overwhelmed",
-      "Confused",
-      "Guilty",
-      "Jealous",
-      "Lonely",
-      "Stressed",
-      "Rejected",
-      "Ignored",
-      "Teased",
-      "Threatened",
-      "Disciplined",
-      "Yelled At",
-      "Consequences",
-      "Change In Routine",
-    ],
-    behaviors: [
-      "Screaming",
-      "Crying",
-      "Running",
-      "Punching",
-      "Kicking",
-      "Jumping",
-      "Biting",
-    ],
-    resolutions: [
-      "Hugging",
-      "Talking",
-      "Singing",
-      "Dancing",
-      "Drawing",
-      "Reading",
-    ],
-  },
-  1: {
-    name: "Bryan",
-    triggers: ["Screaming", "Hitting"],
-    behaviors: ["Screaming", "Hitting"],
-    resolutions: ["Screaming", "Hitting"],
-  },
-};

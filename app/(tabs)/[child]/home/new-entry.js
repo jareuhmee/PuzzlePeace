@@ -114,22 +114,16 @@ export default function NewEntry() {
   };
 
   const handleAddTrigger = () => {
-    router.replace("/(auth)/child-select");
-    router.replace(`${child}/home`);
     router.navigate(`/(customize)/${child}/add-triggers`);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   const handleAddBehavior = () => {
-    router.replace("/(auth)/child-select");
-    router.replace(`${child}/home`);
     router.navigate(`/(customize)/${child}/add-behaviors`);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   const handleAddResolution = () => {
-    router.replace("/(auth)/child-select");
-    router.replace(`${child}/home`);
     router.navigate(`/(customize)/${child}/add-resolutions`);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
