@@ -70,7 +70,7 @@ export default function Entry() {
         style={styles.container}
         contentContainerStyle={styles.containerContent}
       >
-        {loading ? ( // Conditional rendering based on loading state
+        {loading ? (
           <Text>Loading...</Text>
         ) : (
           <>
@@ -83,32 +83,60 @@ export default function Entry() {
 
             <View style={styles.box}>
               <Text style={styles.h1}>What happened before?</Text>
-              <Text style={styles.title}>Triggers:</Text>
+              <Text style={styles.title}>Triggers</Text>
 
-              <View style={styles.behaviorContainer}>
-                {Array.from(currEntry.triggers).map((trigger) => (
-                  <View key={trigger} style={styles.trigger}>
-                    <Text key={trigger} style={styles.triggerText}>
-                      {trigger}
-                    </Text>
-                  </View>
-                ))}
-              </View>
+              {currEntry.triggers && currEntry.triggers.length > 0 ? (
+                <View style={styles.behaviorContainer}>
+                  {Array.from(currEntry.triggers).map((trigger) => (
+                    <View key={trigger} style={styles.attribute}>
+                      <Text key={trigger} style={styles.triggerText}>
+                        {trigger}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <View style={styles.attribute}>
+                  <Text
+                    style={[
+                      styles.triggerText,
+                      { fontFamily: "DMMonoItalic", textAlign: "center" },
+                    ]}
+                  >
+                    [No Triggers Recorded]
+                  </Text>
+                </View>
+              )}
             </View>
 
             <View style={styles.box}>
               <Text style={styles.h1}>What happened during?</Text>
-              <Text style={styles.title}>Behaviors:</Text>
-              <View style={styles.behaviorContainer}>
-                {Array.from(currEntry.behaviors).map((behavior) => (
-                  <View key={behavior} style={styles.behavior}>
-                    <Text key={behavior} style={styles.behaviorText}>
-                      {behavior}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-              <Text style={styles.title}>Intensity:</Text>
+              <Text style={styles.title}>Behaviors</Text>
+
+              {currEntry.behaviors && currEntry.behaviors.length > 0 ? (
+                <View style={styles.behaviorContainer}>
+                  {Array.from(currEntry.behaviors).map((behavior) => (
+                    <View key={behavior} style={styles.attribute}>
+                      <Text key={behavior} style={styles.behaviorText}>
+                        {behavior}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <View style={styles.attribute}>
+                  <Text
+                    style={[
+                      styles.triggerText,
+                      { fontFamily: "DMMonoItalic", textAlign: "center" },
+                    ]}
+                  >
+                    [No Behaviors Recorded]
+                  </Text>
+                </View>
+              )}
+
+              <Text style={styles.title}>Intensity Level</Text>
               <View style={styles.intensityContainer}>
                 {Array.from({
                   length: parseInt(currEntry.intensity),
@@ -141,20 +169,48 @@ export default function Entry() {
 
             <View style={styles.box}>
               <Text style={styles.h1}>What happened after?</Text>
-              <Text style={styles.title}>Resolutions:</Text>
-              <View style={styles.resolutionContainer}>
-                {Array.from(currEntry.resolutions).map((resolution) => (
-                  <View key={resolution} style={styles.resolution}>
-                    <Text key={resolution} style={styles.resolutionText}>
-                      {resolution}
-                    </Text>
-                  </View>
-                ))}
-              </View>
+              <Text style={styles.title}>Resolutions</Text>
+
+              {currEntry.resolutions && currEntry.resolutions.length > 0 ? (
+                <View style={styles.resolutionContainer}>
+                  {Array.from(currEntry.resolutions).map((resolution) => (
+                    <View key={resolution} style={styles.attribute}>
+                      <Text key={resolution} style={styles.resolutionText}>
+                        {resolution}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <View style={styles.attribute}>
+                  <Text
+                    style={[
+                      styles.triggerText,
+                      { fontFamily: "DMMonoItalic", textAlign: "center" },
+                    ]}
+                  >
+                    [No Resolutions Recorded]
+                  </Text>
+                </View>
+              )}
             </View>
             <View style={styles.box}>
-              <Text style={styles.h1}>Notes:</Text>
-              <Text style={styles.text}>{currEntry.notes}</Text>
+              <Text style={styles.h1}>Note</Text>
+
+              {currEntry.notes && currEntry.notes.length > 0 ? (
+                <Text style={styles.text}>{currEntry.notes}</Text>
+              ) : (
+                <View style={styles.attribute}>
+                  <Text
+                    style={[
+                      styles.triggerText,
+                      { fontFamily: "DMMonoItalic", textAlign: "center" },
+                    ]}
+                  >
+                    [No Note Recorded]
+                  </Text>
+                </View>
+              )}
             </View>
           </>
         )}
@@ -172,6 +228,7 @@ const styles = StyleSheet.create({
   containerContent: {
     alignItems: "center",
     marginVertical: 10,
+    paddingBottom: 100,
   },
   box: {
     padding: 10,
@@ -197,21 +254,21 @@ const styles = StyleSheet.create({
   title: {
     //Trigger
     fontSize: 16,
-    padding: 5,
+    paddingBottom: 5,
     fontFamily: "DMSans",
     color: "black",
   },
   h1: {
     //Questions
     fontSize: 20,
+    paddingBottom: 5,
     fontFamily: "DMSans",
     color: Colors.primary,
   },
   text: {
-    padding: 5,
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "DMSans",
-    color: "black",
+    color: "#333",
   },
   textSmall: {
     fontSize: 12,
@@ -242,9 +299,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
   },
-  trigger: {
-    padding: 5,
-    borderRadius: 2,
+  attribute: {
+    padding: 8,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: "#ddd",
     backgroundColor: "#eee",
   },
   triggerText: {
