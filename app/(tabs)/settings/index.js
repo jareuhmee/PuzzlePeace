@@ -39,17 +39,11 @@ export default function Settings() {
         console.error("Error getting user:", error);
       });
   }, [userID]);
+  
 
-  const sendResetEmail = async () => {
-    try {
-      await sendPasswordResetEmail(auth, auth.currentUser.email);
-      setResetSent(true);
-    } catch (error) {
-      console.log(error);
-      alert("Password reset failed: " + error.message);
-    } finally {
-      setLoading(false);
-    }
+  const navigateToPasswordReset = () => {
+    router.push("/(auth)/pw-reset");
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   return (
@@ -79,7 +73,7 @@ export default function Settings() {
           </TouchableOpacity>
           <View style={styles.separator} /> */}
 
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity style={styles.item} onPress={navigateToPasswordReset}>
             <Text style={[styles.text, { color: Colors.primary }]}>
               Reset Password
             </Text>

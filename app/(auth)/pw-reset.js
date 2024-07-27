@@ -23,7 +23,8 @@ export default function PasswordReset() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
-
+  
+  
   const sendResetEmail = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setLoading(true);
@@ -41,6 +42,7 @@ export default function PasswordReset() {
 
   const goToLogin = () => {
     router.replace("/(auth)/login");
+    auth.signOut();
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
@@ -91,6 +93,7 @@ export default function PasswordReset() {
             <TouchableOpacity
               style={defaultStyles.loginPageLoginBtn}
               onPress={goToLogin}
+              
             >
               <Text style={defaultStyles.btnText}>Return to Login</Text>
             </TouchableOpacity>
